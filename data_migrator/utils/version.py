@@ -37,6 +37,13 @@ def get_main_version(version=None):
     return '.'.join(str(x) for x in version[:parts])
 
 
+def get_development_status(version=None):
+    """Return classifier development status"""
+    version = get_complete_version(version)
+    mapping = {'rc': '5 - Production/Stable', 'alpha': '3 - Alpha', 'beta': '4 - Beta', 'final': '6 - Mature'}
+    return "Development Status :: " + mapping[version[3]]
+
+
 def get_complete_version(version=None):
     """
     Return a tuple of the django version. If version argument is non-empty,

@@ -1,8 +1,8 @@
-from data_migrator.utils import get_version
+from data_migrator.utils import get_version, get_development_status
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
-with open("README.md", "r") as f:
+with open("README.rst", "r") as f:
     long_description = f.read()
 
 setup(
@@ -13,5 +13,19 @@ setup(
     license='MIT',
     author='Ilja Heitlager',
     author_email='iheitlager@schubergphilis.com',
-    packages=['data_migrator','test','data_migrator.utils','data_migrator.models','data_migrator.emitters','data_migrator.contrib'],
+    keywords = "datamigration",
+    url='https://github.com/schubergphilis/data-migrator',
+    packages=find_packages(exclude=['test_*']),
+    classifiers = [
+        get_development_status(),
+        "Environment :: Console",
+        "Topic :: Software Development :: Build Tools",
+        "Topic :: Database",
+        "Topic :: Utilities",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License"
+    ]
 )

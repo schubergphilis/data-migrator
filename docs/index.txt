@@ -29,6 +29,7 @@ Contents
    tutorial0
    overview
    ref/index
+   code-of-conduct
 
 
 
