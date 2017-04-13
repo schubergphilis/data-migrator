@@ -2,8 +2,8 @@
     :target: https://circleci.com/gh/schubergphilis/data-migrator
 
 .. image:: https://readthedocs.org/projects/data-migrator/badge/?version=latest
-:target: http://data-migrator.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
+    :target: http://data-migrator.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 Data-migrator is a simple data-migration package for python lovers. It is
 declarative language in django-esc style for table drive data transformations,
