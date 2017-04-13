@@ -1,3 +1,5 @@
+VIRTUALENV ?= ~/.virtualenv
+
 default: clean test
 
 all: $(TARGETS)
@@ -21,3 +23,6 @@ dev: ## install for development
 
 docs:
 	cd docs && make html
+
+virtualenv: $(VIRTUALENV)/dm/bin/activate
+	virtualenv $(VIRTUALENV)/dm

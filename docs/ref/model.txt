@@ -38,7 +38,7 @@ raised.
 Returns ``self`` so it can be chained
 
 ``save()``
--------------
+----------
 
 .. method:: Model.save()
 
@@ -47,7 +47,7 @@ Save this object and add it to the list.
 Returns ``self`` so it can be chained
 
 ``emit(escaper)``
--------------
+-----------------
 
 .. method:: Model.emit(escaper=None)
 
