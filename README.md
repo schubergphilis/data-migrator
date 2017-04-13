@@ -12,7 +12,7 @@ Core of data-migrator is the unix pipe and filter paradigm to build data transfo
 The most simple single datapump in mysql for example is written like:
 
 ```bash
-	$ mysqldump -u [uname] -p[pass] source_db table  | mysql target_db
+$ mysqldump -u [uname] -p[pass] source_db table  | mysql target_db
 ```
 
 In this case mysqldump will export the table as SQL statements and the new database will process them.
@@ -20,50 +20,50 @@ Now if you want to do something extra and repeatable with respect to the data, y
 Hard to imagine what Pythonista's would do especially if extra columns or something are needed. The basic packages are quite strong and one would setup something like:
 
 ```bash
-	$ mysql source_db -E 'select * from table' -B  | python my_filter.py | mysql target_db
+$ mysql source_db -E 'select * from table' -B  | python my_filter.py | mysql target_db
 ```
 
 With `my_filter.py` written as something like:
 
 ```python
 
-	import sys, csv
+import sys, csv
 
-	reader = csv.DictReader(sys.stdin)
+reader = csv.DictReader(sys.stdin)
 
-	for row in reader:
-		print 'INSERT INTO `table` (a,b) VALUES ("%(a)s", %(b)s)' % row
+for row in reader:
+	print 'INSERT INTO `table` (a,b) VALUES ("%(a)s", %(b)s)' % row
 ```
 
 To see the options for manipulation is left as an exercise to the reader, but do accept that as soon things become just a little more complex (think: splitting in two tables, column reverses, renaming of columns, mixing, joining, filtering, transforming), more declarative support is helpful. That is why we came up with `data-migrator`. One could simply replace this with:
 
 ```python
-	from data_migrator import models, transform
-	from data_migrator.emitters import MySQLEmitter
+from data_migrator import models, transform
+from data_migrator.emitters import MySQLEmitter
 
-	def parse_b(v):
-		if v == 'B':
-			return 'transformed_B'
-		else:
-			return v.lower()
+def parse_b(v):
+	if v == 'B':
+		return 'transformed_B'
+	else:
+		return v.lower()
 
-	class Result(models.Model):
-		id   = models.IntField(pos=0) # keep id
-		uuid = models.UUIDField()     # generate new uuid4 field
-		# replace NULLs and trim
-		a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replace=lambda x:x.upper())
-		# parse this field
-		b    = models.StringField(pos=2, parse=parse_b, name='my_b')
+class Result(models.Model):
+	id   = models.IntField(pos=0) # keep id
+	uuid = models.UUIDField()     # generate new uuid4 field
+	# replace NULLs and trim
+	a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replace=lambda x:x.upper())
+	# parse this field
+	b    = models.StringField(pos=2, parse=parse_b, name='my_b')
 
-		class Meta:
-			table_name = 'new_table_name'
+	class Meta:
+		table_name = 'new_table_name'
 
-	Result(a='my a', b='my b').save()
+Result(a='my a', b='my b').save()
 
-	if __name__ == "__main__":
-		transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
+if __name__ == "__main__":
+	transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
 
-		assert(len(Result.objects) > 1)
+	assert(len(Result.objects) > 1)
 ```
 
 And have a nice self explaining transformer which will generate something like:
