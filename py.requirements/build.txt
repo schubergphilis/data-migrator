@@ -1,6 +1,7 @@
 # ============================================================================
-# DATA-MIGRATOR: PYTHON PACKAGE REQUIREMENTS: For documentation generation
+# DATA-MIGRATOR: PYTHON PACKAGE REQUIREMENTS: For build
 # ============================================================================
 # REQUIRES: pip >= 6.0
 
-Sphinx >= 1.5
+coverage
+codacy-coverage

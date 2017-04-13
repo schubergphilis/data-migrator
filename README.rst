@@ -8,6 +8,9 @@
 .. image:: https://api.codacy.com/project/badge/Grade/bf6030e9e7e248979607802880336611
     :target: https://www.codacy.com/app/iheitlager/data-migrator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=schubergphilis/data-migrator&amp;utm_campaign=Badge_Grade
 
+.. image:: https://api.codacy.com/project/badge/Coverage/bf6030e9e7e248979607802880336611
+    :target: https://www.codacy.com/app/iheitlager/data-migrator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=schubergphilis/data-migrator&amp;utm_campaign=Badge_Coverage
+    
 Data-migrator is a simple data-migration package for python lovers. It is
 declarative language in django-esc style for table drive data transformations,
 set up as an open and extensive system.

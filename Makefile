@@ -9,6 +9,7 @@ clean:
 	@rm -rf docs/_build
 	@find . -name *.pyc -delete
 	@rm -rf build data_migrator.egg* dist
+	@rm .coverage coverage.xml
 
 .PHONY: test dist docs
 
@@ -20,6 +21,12 @@ dist:
 
 dev: ## install for development
 	@pip install -e .
+	@pip install -r py.requirements/build.txt
+
+coverage:
+	coverage run xml -m unittest discover -s test/
+	coverage xml
+	python-codacy-coverage -r coverage.xml
 
 docs:
 	cd docs && make html

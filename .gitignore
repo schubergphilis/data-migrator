@@ -8,3 +8,5 @@ dist
 build
 data_migrator.egg*
 docs/_build
+.coverage
+coverage.xml
