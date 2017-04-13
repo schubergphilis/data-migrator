@@ -1,0 +1,9 @@
+## Customize the test machine
+machine:
+
+  timezone:
+    Europe/Amsterdam # Set the timezone
+
+  # Version of ruby to use
+  python:
+    version: 2.7
