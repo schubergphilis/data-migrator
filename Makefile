@@ -33,3 +33,6 @@ docs:
 
 virtualenv: $(VIRTUALENV)/dm/bin/activate
 	virtualenv $(VIRTUALENV)/dm
+
+register_test:
+	python setup.py register -r pypitest
