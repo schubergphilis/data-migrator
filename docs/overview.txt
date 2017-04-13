@@ -1,0 +1,20 @@
+Overview
+========
+
+Core in the data-migrator is the declarative definition of the target model. Indeed in a django-esc way. Columns of the target table are defined as fields and each field has many settings. The Field is a definition of what to perform scanning, transforming and emitting the record. Output is abstracted into an extensible set of output writers. The whole is controlled with a standard transformer engine.
+
+The scan-emit loop is the basis the data-migrator. Once everything is setup, by default the transformer will read stdin and send every CSV row to the model for scanning. Out of the box the fields define a scan loop:
+
+#. **select** the specified column from the row.
+#. **null** test if not allowed and replace by default.
+#. **validate** the input (if validator is provided).
+#. **parse** the input (if parser is provided).
+#. **store** as native python value (aka NULL=>None).
+
+Once all fields are parsed, the resulting object can be checked for `None` or uniqueness. It can be dropped or the filter can fail because of violations. This are all declarative settings on the Model through the Meta settings.
+Otherwise the record is saved and (accessible by `Model.objects.all()`) is emitted. This is based on a dedicated emitter, like the MySQL `INSERT` statement generator. Emitting provides some of the following features:
+
+#. **trim** if string and max_length is set (note the full string is stored in the intermediate object!).
+#. **validate** the output (if output_validate is provided).
+#. **replace** the value with some output string (if provided).
+#. **write** in a dedicated format as dictated by the emitter.

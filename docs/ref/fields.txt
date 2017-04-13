@@ -1,0 +1,237 @@
+=====================
+Model field reference
+=====================
+
+.. module: data-migrator.models.fields
+   :synopsis: Built-in field types.
+
+.. currentmodule: data-migrator.models
+
+This document contains all API references of :class: `Field` including the
+`field options`_ and `field types`_ data-migrator offers.
+
+.. note::
+
+    Technically, these models are defined in :mod:`data-migrator.models.fields`, but
+    for convenience they're imported into :mod:`data-migrator.models`; the standard
+    convention is to use ``from data-migrator import models`` and refer to fields as
+    ``models.<Foo>Field``
+
+Field options
+=============
+
+The following arguments are available to all field types. All are optional.
+
+``pos``
+--------
+
+.. attribute:: Field.pos
+
+If positive or zero this denotes the column in the source data to select and store in
+this field. If not set (or negative) the fields is interpreted as not selecting just
+a column from the source but to take the full row in the parse function
+
+
+``name``
+--------
+
+.. attribute:: Field.name
+
+The name of this field. By default this is the name provided in the model declaration.
+This attribute is to replace that name by the final column name.
+
+
+``default``
+-----------
+
+.. attribute:: Field.default
+
+The default value to use if the source column is found to be a ``null`` field or if the
+parse function returns None. This attribute has default values for Fields that are not
+Null<xxx>Fields. For example NullStringField has both NULL and empty string as empty
+value. StringField only has empty string as empty value. With this field it can be
+changed to some other standard value. Consider a Country field as string and setting it
+to the home country by default.
+
+``null``
+--------
+
+.. attribute:: Field.null
+
+If set it will match the source column value and consider this a ``None`` value. By
+default this attribute is set to ``None``. Note that for none Null fields ``None``
+will be translated to :attr:`~Field.default`
+
+``replace``
+-----------
+
+.. attribute:: Field.replace
+
+If set this is a pre-emit replacement function. This for example could be used to
+insert replacement lookup select queries. Adding more indirection into the data
+generation.
+
+``replace``
+-----------
+
+.. attribute:: Field.replace
+
+If set this is a pre-emit replacement function. This for example could be used to
+insert replacement lookup select queries. Adding more indirection into the data
+generation.
+
+``parse``
+---------
+
+.. attribute:: Field.parse
+
+If set this is the parsing function to replace the read value into something to use
+further down the data migration. Use this for example to clean phonenumbers, translate
+country definitions into alpha3 codes, or to translate ID's into values based on a
+separately loaded lookup table.
+
+``validate``
+------------
+
+.. attribute:: Field.validate
+
+Expects a function that returns a boolean, and used to validate the input data.
+Expecting data within a range or a specific format, add a column validator here.
+Raises `ValidationException` if set and false.
+
+``max_length``
+--------------
+
+.. attribute:: Field.max_length
+
+In case of StringFields use this to trim string values to maximum length.
+
+``unique``
+----------
+
+.. attribute:: Field.unique
+
+If ``True``, `data-migrator` will check uniqueness of intermediate values
+(after parsing). Default is ``False``.
+
+In relationship with the default manager this will keep track of values for this
+field. The manager can raise exceptions if uniqueness is violated. Note that it
+is up to the manager to either fail or drop the record if the exception is raised.
+
+.. note::
+
+    Use this with HiddenField and a row parse function if some combination of
+    fields (aka a compound key) is expected to be unique and not to be violated.
+
+
+``validate_output``
+-------------------
+
+.. attribute:: Field.validate_output
+
+A pre-emit validator used to scan the bare output and raise exceptions if output is
+not as expected
+
+``creation_order``
+------------------
+
+.. attribute:: Field.creation_order
+
+An automatically generated attribute used to determine order of specification, and
+used in the emitting of dataset
+
+Field types
+===========
+
+.. currentmodule:: data-migrator.models
+
+``BooleanField``
+----------------
+
+.. class:: BooleanField(**options)
+
+a bool that takes any cased permutation of true, yes, 1 and translates this into
+``True`` or ``False`` otherwise.
+
+``IntField``
+----------------
+
+.. class:: IntField(**options)
+
+a field that accepts the column to be integer.
+
+``NullIntField``
+----------------
+
+.. class:: NullIntField(**options)
+
+a field that accepts the column to be integer and can also be None, which is not
+the same as 0 (zero).
+
+``HiddenField``
+----------------
+
+.. class:: HiddenField(**options)
+
+a field that accepts, but does not emit. It is useful for uniqueness checked and
+more. Combine this with a row parse and check the complete row.
+
+
+``StringField``
+----------------
+
+.. class:: StringField(**options)
+
+a field that accepts the column to be string.
+
+``NullStringField``
+-------------------
+
+.. class:: NullStringField(**options)
+
+a field that accepts the column to be string and can also be None, which is not
+the same as empty string ("").
+
+``UUIDField``
+----------------
+
+.. class:: UUIDField(**options)
+
+a field that generates a ``str(uuid.uuid4())``.
+
+``NullField``
+----------------
+
+.. class:: NullField(**options)
+
+a field that generates None.
+
+
+``JSONField``
+----------------
+
+.. class:: JSONField(**options)
+
+a field that takes the values and spits out a JSON encoding string. Great for
+maps and lists to be stored in a string like field.
+
+``MappingField``
+----------------
+
+.. class:: MappingField(data_map={}, as_json=False, **options)
+
+a field that takes the values translates these according to a map. Great for
+identity column replacements. If needed output can be translated as ``json``, for
+example if the map returns lists.
+
+
+:class:`MappingField` has two extra arguments:
+
+.. attribute:: MappingField.data_map
+
+    The data_map needed to translate. Note the fields returns :attr:`~Field.default`
+    if it is not able to map the key
+
+.. attribute:: MappingField.as_json
+
+    If ``True``, the field will be output as json encoded. Default is ``False``.

@@ -1,0 +1,112 @@
+.. _tutorial:
+
+Tutorial: Getting started
+=========================
+
+First, install :doc:`data-migrator <install>`.
+
+Now create a new directory with your migration scripts. Your milage may very, built
+for here we assume you have client access to source data, spitting out a csv in some
+form and client access to a target database. To automate and make it repetitive, just
+use ``make``, we add some Makefile-foo here but do not worry:
+
+.. code-block:: makefile
+
+  TARGETS = table
+  OPTIONS ?=-p 2 --debug
+  OUT_DIR ?= results
+
+  TABLE_QRY='SELECT t.* FROM table LIMIT 0,100'
+
+  default: clean install all
+
+  all: $(TARGETS)
+
+  install:
+  	pip install data-migrator
+
+  clean:
+  	@rm -rf $(OUT_DIR)
+  	@find . -name *.pyc -delete
+
+  $(OUT_DIR)/%.sql: | $(OUT_DIR)
+  	ssh [SOURCE_HOST] "sudo mysql connect -e $($(@F)) -B" | python transform_$*.py  $(OPTIONS) -o $(OUT_DIR)
+
+  $(TARGETS):%:$(OUT_DIR)/%.sql
+
+  $(OUT_DIR):
+  	mkdir -p $@
+
+  upload:
+  	ssh [TARGET_HOST] "sudo mysql [TARGET_DB]" < $(OUT_DIR)/table.sql
+
+
+See that we use a simple query and extract the first 100 lines. The rest of the magic of the ``Makefile`` is to
+separate the extraction from the loading, and allow to easily extend the script with more tables and source.
+Note that in this case we are defining the extract query in the makefile, and we are using sudo rights to
+extract and upload the data. You might want to have an opinion about that.
+
+We now have the ground work for extracting a table, transforming it and loading it. Next step is to build the filter
+and transform the data into something the target database can have. Going back to the example we build a simple
+transformer:
+
+.. code-block:: python
+
+	from data_migrator import models, transform
+	from data_migrator.emitters import MySQLEmitter
+
+	def parse_b(v):
+		if v == 'B':
+			return 'transformed_B'
+		else:
+			return v.lower()
+
+	class Result(models.Model):
+		id   = models.IntField(pos=0) # keep id
+		uuid = models.UUIDField()     # generate new uuid4 field
+		# replace NULLs and trim
+		a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replace=lambda x:x.upper())
+		# parse this field
+		b    = models.StringField(pos=2, parse=parse_b, name='my_b')
+
+		class Meta:
+			table_name = 'new_table_name'
+
+	# django-esc like creating and saving (to a manager)
+	Result(a='my a', b='my b').save()
+
+	if __name__ == "__main__":
+		transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
+
+		assert(len(Result.objects) > 1)
+
+
+And have a nice self explaining transformer which will generate something like:
+
+.. code-block:: sql
+
+	-- transformation for Result to table new_table_name
+	-- input headers: id,a,b
+	-- stats: in=10,dropped=0,out=10
+
+	SET SQL_SAFE_UPDATES = 0; -- you need this to delete without WHERE clause
+	DELETE FROM `new_table_name`;
+	ALTER TABLE `new_table_name` AUTO_INCREMENT = 1;
+
+	INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (0, "ac7100b9-c9ad-4069-8ca5-8db1ebd36fa3", "MY A", "my b");
+	INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (1, "38211712-0eb2-4433-b28f-e3fe33492e7a", "NO_NULL", "some value");
+	INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (2, "a3478903-aed9-462c-8f47-7a89013bc6ea", "CHOPP", "transformed_B");
+
+There you are, you have setup your first pipeline. Execute this by running:
+
+.. code-block:: bash
+
+  $ make table  # extract the data from the database, transform it
+  $ make upload # load it into the database
+
+You can lookup the intermediate result by viewing the generated sql ``results/new_table_name.sql``. data-migrator does not
+focus on the database schema (yet!) so the table is expected to exist in the target system. By default the system
+is wiping the data, not recreating the table. If you have issues with the python libraries, run ``make install`` do
+install the library from this makefile.
+
+Now go ahead and add more fields. See :doc:`fields reference <ref/fields>` for more details about the options of the fields.

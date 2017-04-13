@@ -1,0 +1,57 @@
+Installation
+============
+
+Using pip (or ...)
+------------------
+
+:Category: Stable version
+:Precondition: :pypi:`pip` (or :pypi:`setuptools`) is installed
+
+Execute the following command to install :pypi:`data-migrator` with :pypi:`pip`::
+
+    pip install data-migrator
+
+To update an already installed :pypi:`data-migrator` version, use::
+
+    pip install -U data-migrator
+
+As an alternative,
+you can also use :pypi:`easy_install <setuptools>` to install :pypi:`data-migrator`::
+
+    easy_install data-migrator         # CASE: New installation.
+    easy_install -U data-migrator      # CASE: Upgrade existing installation.
+
+
+.. hint::
+
+    See also `pip related information`_ for installing Python packages.
+
+.. _`pip related information`:  https://pip.pypa.io/en/latest/installing.html
+
+
+
+Using the Github Repository
+---------------------------
+
+:Category: Bleading edge
+:Precondition: :pypi:`pip` is installed
+
+Run the following command
+to install the newest version from the `Github repository`_::
+
+    pip install git+https://github.com/schubergphilis/data-migrator
+
+To install a tagged version from the `Github repository`_, use::
+
+    pip install git+https://github.com/schubergphilis/data-migrator@<tag>
+
+where <tag> is the placeholder for an `existing tag`_.
+
+When running from the repository it is adviced to run in developer mode::
+
+    pip install -e .
+
+This allows to work on the code while using the library
+
+.. _`Github repository`: https://github.com/schubergphilis/data-migrator
+.. _`existing tag`:      https://github.com/schubergphilis/data-migrator/tags

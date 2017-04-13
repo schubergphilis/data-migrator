@@ -1,0 +1,57 @@
+=====================
+Model class reference
+=====================
+
+.. currentmodule:: data-migrator.models
+
+This document covers features of the :class:`~data-migrator.models.Model` class.
+
+Attributes
+==========
+
+``objects``
+-----------
+
+.. attribute:: Model.objects
+
+    Each non-abstract :class:`~data-migrator.models.Model` class must have a
+    :class:`~data-migrator.models.Manager` instance added to it.
+    Data-migrator ensures that in your model class you have  at least a
+    default ``SimpleManager`` specified. If you don't add your own ``Manager``,
+    Django will add an attribute ``objects`` containing default
+    :class:`~data-migrator.models.SimpleManager` instance. If you add your own
+    :class:`~data-migrator.models.Manager` instance attribute, the default one does
+    not appear.
+
+Methods
+=======
+
+``scan(row)``
+-------------
+
+.. method:: Model.scan(row)
+
+Take a row and set values based on the field definitions. All fields in the
+field definitions are parsed. If field index does not exist an IndexError will be
+raised.
+
+Returns ``self`` so it can be chained
+
+``save()``
+-------------
+
+.. method:: Model.save()
+
+Save this object and add it to the list.
+
+Returns ``self`` so it can be chained
+
+``emit(escaper)``
+-------------
+
+.. method:: Model.emit(escaper=None)
+
+Emit the existing object, apply all field translations. Might raise exceptions due to
+validations.
+
+Returns a dict with the translated values

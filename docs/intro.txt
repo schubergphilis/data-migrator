@@ -1,0 +1,15 @@
+Introduction
+============
+
+Data transformation is a classic problem in compute, but underestimated in modern software development. Everybody working with persistent data will be involved somehow in restructuring existing data in databases or files while systems evolve. A wide range of practices exist ranging from ad-hoc scripts to sophisticated ETL processes.
+When we upgraded an existing modules at Schuberg Philis moving from a mono-lithical application to a microservice architecture, we found ourselves in a position to write some ad-hoc python scripts. Table by table the transformation was done, simply by exporting existing in csv's and with some simple python scripts - a single read/print loop - generate new INSERT statements.
+
+How hard can it be, just some basic processing and statement emitting. But soon we found ourselves cleaning/fixing data, generating multiple records out of single rows. The scripts became unreadable and hard to maintain. That is when we came up with the idea of applying a more declarative approach.
+And we were pretty charmed by the Django model approach. Soon after a standardized system based on a declarative definitions originated.
+
+This package is a simple alternative to doing ad-hoc scripts. It is easy to learn, easy to extend and highly expressive in building somewhat more complex transformation. Think of for example:
+
+* renaming, reordering columns
+* changing types
+* lookup data, advanced transformations
+* generating permission records in separate tables for main data

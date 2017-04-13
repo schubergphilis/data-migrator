@@ -1,0 +1,10 @@
+# operational
+results
+**.sql
+**.pyc
+
+# build related
+dist
+build
+data_migrator.egg*
+docs/_build

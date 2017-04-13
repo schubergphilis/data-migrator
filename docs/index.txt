@@ -1,0 +1,40 @@
+.. data-migrator documentation master file, created by
+   sphinx-quickstart on Wed Apr 12 23:55:00 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to data-migrator'!
+============================================
+
+data-migrator is database transformation in a pipes and filter, declarative kind of way, Python/Django style.
+
+Data transformation is an important process in software development when architectures upgrade and data has to move along. This requires fast and easy restructuring of data in a repetitive way. Quite quickly ad-hoc scripts or transfer data, upgrade it in sql second is not flexible enough. For those cases *data-migrator* is an answer.
+
+Once you 've :doc:`installed <install>` *data-migrator*, we recommend reading the
+
+  * :doc:`Introduction <intro>` first, after that continue with the
+  * :doc:`Tutorial <tutorial0>`
+
+
+Contents
+--------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   intro
+   example
+   install
+   tutorial0
+   overview
+   ref/index
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
