@@ -22,7 +22,7 @@ class CSVEmitter(BaseEmitter):
         res.append(self._template % l.emit(escaper=sql_escape))
         return res
 
-    def preamble(self, headers=[]):
+    def preamble(self, headers=None):
         # before we spit out the data
         r = [self._headers]
         return r

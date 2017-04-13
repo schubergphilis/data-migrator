@@ -3,7 +3,7 @@
 
 *.py   text eol=lf
 *.txt  text eolf=lf
-*.md  text eolf=lf
+*.md   text eolf=lf
 
 *.png binary
 *.jpg binary

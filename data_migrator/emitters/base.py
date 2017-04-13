@@ -19,6 +19,6 @@ class BaseEmitter(object):
         _filename = self.meta.file_name or (self.meta.table_name + _ext)
         return _filename
 
-    def preamble(self, headers=[]):
+    def preamble(self, headers=None):
         '''generate a premable for the file to emit'''
         raise NotImplementedError

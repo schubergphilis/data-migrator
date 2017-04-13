@@ -34,11 +34,11 @@ class MySQLEmitterBase(unittest.TestCase):
     def test_start(self):
         e = MySQLEmitter(manager=EmitterModel.objects)
         self.assertEquals(len(EmitterModel.objects), 2)
-        self.assertGreater(len(e.preamble()), 0)
+        self.assertGreater(len(e.preamble(headers=['hello'])), 0)
 
     def test_header(self):
         e = MySQLEmitter(manager=EmitterHeaderModel.objects)
-        h = e.preamble()
+        h = e.preamble(["first line"])
         self.assertIn("hello", h)
         self.assertIn("world", h)
 
