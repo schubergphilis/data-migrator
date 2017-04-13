@@ -1,7 +1,7 @@
 from .manager import SimpleManager
 from .fields import BaseField, HiddenField
 from .options import Options
-from data_migrator.exceptions import DataException, NonUniqueDataException
+from data_migrator.exceptions import DataException
 
 
 # the model structure is the foundation of data_migrator and taken from Django (https://github.com/django/django)
@@ -68,7 +68,7 @@ class Model(object):
     def scan(self, row):
         '''scan model from row based on field definition scanners'''
         _fields = self.__class__._meta.fields
-        for k,v in _fields.items():
+        for k in _fields.keys():
             setattr(self, k, _fields[k].scan(row))
         return self
 

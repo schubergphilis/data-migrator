@@ -3,7 +3,6 @@ import unittest
 from data_migrator.emitters.base import BaseEmitter
 from data_migrator.emitters import MySQLEmitter, CSVEmitter
 from data_migrator.models import Model, StringField
-from data_migrator.exceptions import DataException
 
 class EmitterModel(Model):
     a = StringField(pos=0)

@@ -1,12 +1,10 @@
 import sys
-import csv
 import os
-import argparse
 import logging
 
 from data_migrator.exceptions import DataException, ValidationException
-from data_migrator.utils import configure_logging, default_logger
-from data_migrator.utils import configure_parser, default_parser, default_reader
+from data_migrator.utils import configure_logging
+from data_migrator.utils import configure_parser, default_reader
 from data_migrator.utils import get_version
 from data_migrator.emitters import MySQLEmitter
 

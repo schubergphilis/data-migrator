@@ -1,7 +1,7 @@
 import unittest
 
 from data_migrator.models.options import Options
-from data_migrator.models import Model, IntField
+from data_migrator.models import IntField
 
 
 class OptionsModel:

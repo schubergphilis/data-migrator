@@ -1,7 +1,7 @@
 import sys
 import csv
 
-from data_migrator.exceptions import DefinitionException, DataException
+from data_migrator.exceptions import DefinitionException
 
 def default_reader(infile='<stdin>', skip_headers=False, delimiter='\t'):
     '''default csv reader'''

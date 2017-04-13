@@ -1,7 +1,6 @@
 # Taken from django, just get a proper version
 
 import datetime
-import functools
 import os
 import subprocess
 

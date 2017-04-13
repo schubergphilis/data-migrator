@@ -110,7 +110,7 @@ class BooleanField(BaseField):
     def _value(self, value):
         try:
             return value.lower()[0] in ['y', 't', '1']
-        except AttributeError, IndexError:
+        except (AttributeError, IndexError):
             return False
 
 class UUIDField(BaseField):
