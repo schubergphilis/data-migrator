@@ -17,7 +17,7 @@ test:
 	@python -m unittest discover -s test
 
 dist:
-	@python setup.py bdist_wheel --universal
+	@python setup.py sdist --formats=gztar,zip bdist_wheel
 
 dev: ## install for development
 	@pip install -e .
@@ -36,3 +36,7 @@ virtualenv: $(VIRTUALENV)/dm/bin/activate
 
 register_test:
 	python setup.py register -r pypitest
+
+upload:
+	python setup.py register -r pypi
+	twine upload -s dist/data_migrator-0.4*

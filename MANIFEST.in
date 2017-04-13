@@ -1,0 +1,7 @@
+include *.rst *.txt *.md AUTHORS LICENSE circles.yml docs/Makefile setup.cfg
+recursive-include data_migrator *.py
+recursive-include tests *.py
+recursive-include docs *.txt
+recursive-include docs *.py
+recursive-include py.requirements *.txt
+prune docs/_build

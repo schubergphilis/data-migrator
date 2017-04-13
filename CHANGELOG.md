@@ -6,8 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [0.4.0] - 2017-04-13
 ### Changed
 - First open source structure with license file
+
+### Added
 - Basic Documentation
 - Package infrastructure
+
 
 ## [0.3.0] - 2017-04-10
 ### Added
