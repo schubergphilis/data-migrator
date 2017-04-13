@@ -13,7 +13,9 @@ setup(
     license='MIT',
     author='Ilja Heitlager',
     author_email='iheitlager@schubergphilis.com',
-    keywords = "datamigration",
+    maintainer='Ilja Heitlager',
+    maintainer_email='iheitlager@schubergphilis.com',
+    keywords = "datamigration development-tools",
     url='https://github.com/schubergphilis/data-migrator',
     packages=find_packages(exclude=['test_*']),
     classifiers = [
@@ -26,6 +28,7 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License"
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English"
     ]
 )
