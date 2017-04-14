@@ -62,8 +62,8 @@ class BaseField(object):
     def emit(self, v, escaper=None):
         if self.max_length and isinstance(v, basestring):
             v = v[:self.max_length]
-        if self.validate_output:
-            assert self.validate_output(v), "not able to validate %s=%s" % (self.name, v)
+        if self.validate_output and not self.validate_output(v):
+            raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
         if escaper:
             v = escaper(v)
