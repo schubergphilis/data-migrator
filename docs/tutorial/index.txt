@@ -6,3 +6,4 @@ Tutorial
    :maxdepth: 1
 
    tutorial0
+   tutorial1

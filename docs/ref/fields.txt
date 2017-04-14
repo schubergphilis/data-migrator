@@ -2,19 +2,19 @@
 Model field reference
 =====================
 
-.. module: data-migrator.models.fields
+.. module: data_migrator.models.fields
    :synopsis: Built-in field types.
 
-.. currentmodule: data-migrator.models
+.. currentmodule: data_migrator.models
 
-This document contains all API references of :class: `Field` including the
-`field options`_ and `field types`_ data-migrator offers.
+This document contains all API references of BaseClass :class:`~.fields.BaseField`
+including the `field options`_ and `field types`_ data_migrator offers.
 
 .. note::
 
-    Technically, these models are defined in :mod:`data-migrator.models.fields`, but
-    for convenience they're imported into :mod:`data-migrator.models`; the standard
-    convention is to use ``from data-migrator import models`` and refer to fields as
+    Technically, these models are defined in :mod:`data_migrator.models.fields`, but
+    for convenience they're imported into :mod:`data_migrator.models`, the standard
+    convention is to use ``from data_migrator import models`` and refer to fields as
     ``models.<Foo>Field``
 
 Field options
@@ -86,7 +86,7 @@ generation.
 .. attribute:: Field.parse
 
 If set this is the parsing function to replace the read value into something to use
-further down the data migration. Use this for example to clean phonenumbers, translate
+further down the data migration. Use this for example to clean phone numbers, translate
 country definitions into alpha3 codes, or to translate ID's into values based on a
 separately loaded lookup table.
 
@@ -140,10 +140,12 @@ not as expected
 An automatically generated attribute used to determine order of specification, and
 used in the emitting of dataset
 
+.. _field-types:
+
 Field types
 ===========
 
-.. currentmodule:: data-migrator.models
+.. currentmodule:: data_migrator.models.fields
 
 ``BooleanField``
 ----------------

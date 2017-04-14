@@ -8,3 +8,5 @@ API Reference
    model
    meta
    fields
+   emitter
+   contrib

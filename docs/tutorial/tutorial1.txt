@@ -1,0 +1,145 @@
+Extending types
+===============
+
+This is the next tutorial, see the :doc:`previous <tutorial0>`
+
+Once you have your base transformation up and running it is up to extending the fields. Out
+of the box the system delivers various extensions, the full list of :ref:`Field types <field-types>` can be
+found in the reference.
+
+Translating IDs
+---------------
+
+One of the patterns we see in the evolution towards microservices is a move away from fully normalized database
+schema's. Modern systems rely more on auto-completion, data is cheaper and probably a lot more reasons to store
+full strings instead of IDs. In ``data-migrator`` this is easily done for hardcoded values with a small python
+function
+
+.. code-block:: python
+
+  M = {
+    0: "NOT SET",
+    1: "Hallo",
+    2: "Hello",
+    3: "Bonjour"
+  }
+
+  def parse_b(v):
+    if v is not None:
+      return M.get(int(v), None)
+    return None
+
+  class Result(models.Model):
+    id = models.IntField(pos=0) # keep id
+    ....
+    # replace ID with value
+    b  = models.StringField(pos=2, parse=parse_b, default="How are you doing?")
+
+Note the values are received as string from the CSV reader and ``NULL`` is by default translated to ``None``, which
+is replaced by the default value.
+
+Merging columns
+---------------
+
+Another migration patter is to transform separate (boolean) columns back to a single enumerator. For that
+use a row parser instead of a single value parser. Note that if no ``pos`` is given, the parser will be
+row based instead of singel value:
+
+.. code-block:: python
+
+  def employment_type(row):
+    if row[26] == "1": 		# contractor
+      return 'contractor'
+    elif row[27] == "1": 	# intern
+      return 'intern'
+    else:
+      return 'perm'
+
+  class Result(models.Model):
+    id = models.IntField(pos=0) # keep id
+    ....
+    b  = models.StringField(parse=employment_type, default="perm")
+
+
+Dynamic lookups
+---------------
+
+At moments one needs to lookup a value in the target database. Do not be shy to generate dynamic lookups in the
+target database by using SELECT statements that run during import in the target database.
+
+.. code-block:: python
+
+  class Result(models.Model):
+    recruiter_uuid = models.StringField(pos=38,
+      replace=lambda x:'(SELECT uuid FROM `persons` WHERE `mail`=%s limit 0,1)' % x)
+
+Obviously this can be combined with python based transformations to fix delete records:
+
+.. code-block:: python
+
+  def recruiter(v):
+    if v is None or v in ['missing1@mail.com', 'missing2@mail.com']:
+        return 'default_person@mail.com'
+    else:
+      return v
+
+  class Result(models.Model):
+    recruiter_uuid = models.StringField(pos=38, parse=recruiter,
+      replace=lambda x:'(SELECT uuid FROM `persons` WHERE `mail`=%s limit 0,1)' % x)
+
+See that we emit the value from the target database as being the input for a query on the target database.
+
+Table lookups
+-------------
+
+More extensive functions can be done with table driven lookups form outside CSV (also ad-hoc generated)
+files. For this ``data-migrator`` offers a helper function :func:`~.read_map_from_csv`.
+
+.. code-block:: python
+
+  from data_migrator.contrib.read import read_map_from_csv
+
+  class Result(models.Model):
+    country = models.MappingField(pos=33, default='NLD',
+      data_map=read_map_from_csv(f=open('data/country.csv'), delimiter=';', key='country_id', value='alpha3'))
+
+
+Flatten multi values
+--------------------
+
+The most extensive many-2-many flattening is for example a tagging of multiple values to a main entity.
+This is mostly implemented in a 3 table structure, following the classic normalization approach: A table with
+the main entity (for example persons), a table with the attributes in a fixed id,value structure and last
+a many-to-many table linking the attributes to the main entities.
+
+A simple approach is to use a four step approach:
+
+# Extract the data from the old system fully expanded
+# Read the CSV and flatten to a map of lists
+# Link the values at read time replacing the main ID with lists
+# Emit the whole as JSON strings
+
+The first step relies on queries like
+
+.. code-block:: sql
+
+	SELECT
+		P.person_id,
+		S.name as skill
+	FROM person_skill_m2m P
+	INNER JOIN skills S
+		ON S.id=C.skill_id;
+
+After that loading and emitting to JSON is easy using the :class:`~.MappingField`
+
+.. code-block:: python
+
+  from data_migrator.contrib.read import read_map_from_csv
+
+  class Result(models.Model):
+    skills = models.MappingField(pos=0, default=[], as_json=True,
+    data_map=read_map_from_csv(f=open('results/skill.csv'), key='candidate_id', value='skill', as_list=True))
+
+
+Now take this examples and mix your own. It is standard Python, so we have no doubt you can come up with all kinds
+of amazing transformations.

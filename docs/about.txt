@@ -1,0 +1,45 @@
+About
+=====
+
+Data transformation is a classic problem in compute, but underestimated in modern software development.
+Everybody working with persistent data will be involved somehow in restructuring existing data in
+databases or files when systems and architectures evolve. A wide range of practices exist ranging from
+ad-hoc scripts to sophisticated ETL processes.
+We were upgraded existing codebases at `Schuberg Philis`_, moving from a mono-lithical application to a
+microservice architecture. At that moment we found ourselves in a position to write some ad-hoc python
+data migration scripts. Table by table the transformation was done, simply by exporting existing in
+csv's and with some simple python scripts - a single read/print loop - generate new INSERT statements.
+
+How hard can it be? Just some basic processing and statement emitting, but soon we found ourselves
+cleaning/fixing data, generating multiple records out of single rows. The scripts became larger,
+more exceptions: unreadable and hard to maintain. That is when we came up with the idea of applying a
+more declarative approach.
+Being pretty charmed by the Django model approach, we adopted the declarative approach. Soon after,
+a standardized system based on a declarative definitions originated.
+
+This package is a simple alternative to doing ad-hoc scripts. It is easy to learn, easy to extend
+and highly expressive in building somewhat more complex transformation. Think of for example:
+
+* renaming, reordering columns
+* changing types
+* lookup data, advanced transformations
+* generating permission records in separate tables for main data
+
+Alternatives
+------------
+
+There are many packages that offer parts to do this stuff, some packages we know:
+
+* `ruffus <http://www.ruffus.org.uk/>`_: A nice data transformation package, however more geared to long running computational processes (DNA Sequencing) and less to frictionless table transformation.
+* `petl <https://petl.readthedocs.io/en/latest/>`_: the name says it all extract, tranform and load. You can do cool stuff with it. Basically movint table manipulation to Python. We preferred a more direct map and transform approach.
+* `tablib <https://github.com/kennethreitz/tablib>`_: very handy if you need to open various sources, a nice extension to ``data-migrator``
+* `pandas <http://pandas.pydata.org/>`_: A big one, if you need more data analysis and less common datamigration, this could be your favorite poison.
+* Your average bulk of SQL scripts. Still a useful tool, we love the easy of repetiveness using the pipes-and-filters paradigm in ``data-migrator``.
+* `R <https://www.r-project.org/>`_: R is not Python, but tremendously handy if you need large data set processing and statistics.
+
+Next step
+---------
+
+Now see the :doc:`example <tutorial/tutorial0>` and move on to the :doc:`installation <install>`
+
+.. _Schuberg Philis: http://schubergphilis.com

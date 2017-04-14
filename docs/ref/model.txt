@@ -2,9 +2,9 @@
 Model class reference
 =====================
 
-.. currentmodule:: data-migrator.models
+.. currentmodule:: data_migrator.models
 
-This document covers features of the :class:`~data-migrator.models.Model` class.
+This document covers features of the :class:`~data_migrator.models.Model` class.
 
 Attributes
 ==========
@@ -14,13 +14,13 @@ Attributes
 
 .. attribute:: Model.objects
 
-    Each non-abstract :class:`~data-migrator.models.Model` class must have a
-    :class:`~data-migrator.models.Manager` instance added to it.
+    Each non-abstract :class:`~data_migrator.models.Model` class must have a
+    :class:`~data_migrator.models.Manager` instance added to it.
     Data-migrator ensures that in your model class you have  at least a
     default ``SimpleManager`` specified. If you don't add your own ``Manager``,
     Django will add an attribute ``objects`` containing default
-    :class:`~data-migrator.models.SimpleManager` instance. If you add your own
-    :class:`~data-migrator.models.Manager` instance attribute, the default one does
+    :class:`~data_migrator.models.SimpleManager` instance. If you add your own
+    :class:`~data_migrator.models.Manager` instance attribute, the default one does
     not appear.
 
 Methods

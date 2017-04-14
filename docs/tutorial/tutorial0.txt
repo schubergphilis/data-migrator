@@ -1,14 +1,20 @@
-.. _tutorial:
-
 Getting Started
 ===============
 
-First, install :doc:`data-migrator </install>`.
+Obviously first, install :doc:`data-migrator </install>`.
 
-Now create a new directory with your migration scripts. Your milage may very, built
-for here we assume you have client access to source data, spitting out a csv in some
-form and client access to a target database. To automate and make it repetitive, just
-use ``make``, we add some Makefile-foo here but do not worry:
+Now create a new directory with your migration scripts. Your milage may very, but
+we assume you have client access to source data. Some like we discussed in the
+:doc:`example </example>`. A client like ``mysql`` spitting out csv's in some
+form and also expect you have client access to the target database. To automate
+and make it repetitive, just use ``make``. We add some Makefile-foo here but do not worry.
+Basically what we want to execute is something like this:
+
+.. code-block:: bash
+
+  mysql [SOURCE] -e "SELECT * FROM table" -B" | python transform.py | mysql [TARGET]
+
+In a more generic way and running the clients directly on the host, we will get:
 
 .. code-block:: makefile
 
@@ -40,15 +46,14 @@ use ``make``, we add some Makefile-foo here but do not worry:
   upload:
   	ssh [TARGET_HOST] "sudo mysql [TARGET_DB]" < $(OUT_DIR)/table.sql
 
-
 See that we use a simple query and extract the first 100 lines. The rest of the magic of the ``Makefile`` is to
 separate the extraction from the loading, and allow to easily extend the script with more tables and source.
-Note that in this case we are defining the extract query in the makefile, and we are using sudo rights to
+Note that in this case, we are defining the extract query in the makefile, and we are using sudo rights to
 extract and upload the data. You might want to have an opinion about that.
 
 We now have the ground work for extracting a table, transforming it and loading it. Next step is to build the filter
-and transform the data into something the target database can have. Going back to the example we build a simple
-transformer:
+and transform the data into something the target database can accept. Like in the :doc:`example </example>` we can
+build a simple transformer:
 
 .. code-block:: python
 
@@ -78,10 +83,11 @@ transformer:
 	if __name__ == "__main__":
 		transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
 
+    # prove we have objects
 		assert(len(Result.objects) > 1)
 
 
-And have a nice self explaining transformer which will generate something like:
+And we now have a nice self explaining transformer, which will generate something like:
 
 .. code-block:: sql
 
@@ -105,8 +111,9 @@ There you are, you have setup your first pipeline. Execute this by running:
   $ make upload # load it into the database
 
 You can lookup the intermediate result by viewing the generated sql ``results/new_table_name.sql``. data-migrator does not
-focus on the database schema (yet!) so the table is expected to exist in the target system. By default the system
+focus on the database schema (yet!) so the table is expected to exist in the target system. But by default the system
+(or actually the :doc:`emitter </ref/emitter>`)
 is wiping the data, not recreating the table. If you have issues with the python libraries, run ``make install`` do
 install the library from this makefile.
 
-Now go ahead and add more fields. See :doc:`fields reference </ref/fields>` for more details about the options of the fields.
+Now go ahead and add :doc:`more fields <tutorial1>`. See :doc:`fields reference </ref/fields>` for more details about the options of the fields.

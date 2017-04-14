@@ -2,14 +2,14 @@
 Meta class reference
 =====================
 
-.. currentmodule:: data-migrator.models
+.. currentmodule:: data_migrator.models
 
-This document covers features of the :class:`~data-migrator.models.Meta` class. The meta class
+This document covers features of the :class:`~data_migrator.models.Meta` class. The meta class
 defines model specific settings.
 
 .. note::
 
-    Technically, Meta is just a container and forwarded to :class:`data-migrator.models.options.Options`
+    Technically, Meta is just a container and forwarded to :class:`data_migrator.models.options.Options`
 
 Field options
 =============

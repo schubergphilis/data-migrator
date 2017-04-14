@@ -24,7 +24,7 @@ class Transformer(object):
         self.args = self.argparser or configure_parser()
         self._interpret_cmdline()
         self.log.info("data_migrator pipeline starting")
-        self.log.info("version: %s", get_version())
+        self.log.debug("version: %s", get_version())
         self._open_input()
         self._read_input()
         self._write_output()

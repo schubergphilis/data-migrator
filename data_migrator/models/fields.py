@@ -137,12 +137,10 @@ class MappingField(BaseField):
         self.as_json = as_json
 
     def _value(self, v):
-        if not v:
+        if v is None:
             return v
-        elif self._default is not None:
-            return self.data_map.get(v, self._default)
-        else:
-            return self.data_map.get(v, v)
+        else
+            return self.data_map.get(v, self._default or v)
 
     def emit(self, v, escaper=None):
         if self.as_json:
