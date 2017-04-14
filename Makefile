@@ -42,3 +42,6 @@ upload:
 	# twine upload -s dist/data_migrator-0.4*
 	for i in dist/*; do twine register $i; done
 	twine upload dist/*
+
+drop:
+	bumpversion drop --commit

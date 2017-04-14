@@ -1,3 +1,3 @@
-VERSION = (0,4,4,'alpha',0)
+VERSION = (0,4,4,'alpha',1)
 
 PACKAGE_NAME = 'data_migrator'

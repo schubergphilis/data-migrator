@@ -79,7 +79,7 @@ class Transformer(object):
                     _out = _emitter.emit(l)
                     for x in _out:
                         f.write(x+'\n')
-                except AssertionError, err:
+                except AssertionError as err:
                     raise ValidationException("object: %d, %s" % (lineno, err))
                 lineno += 1
             if f != sys.stdout:

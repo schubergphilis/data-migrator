@@ -29,6 +29,14 @@ you can also use :pypi:`easy_install <setuptools>` to install :pypi:`data-migrat
 .. _`pip related information`:  https://pip.pypa.io/en/latest/installing.html
 
 
+Using a Source Distribution
+---------------------------
+
+After unpacking the :pypi:`data-migrator` source distribution,
+enter the newly created directory "data-migrator-<version>" and run::
+
+    python setup.py install
+
 
 Using the Github Repository
 ---------------------------

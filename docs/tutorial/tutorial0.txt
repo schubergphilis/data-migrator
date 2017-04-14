@@ -1,6 +1,6 @@
 .. _tutorial:
 
-Getting started
+Getting Started
 ===============
 
 First, install :doc:`data-migrator </install>`.
