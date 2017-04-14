@@ -108,16 +108,18 @@ Flatten multi values
 --------------------
 
 The most extensive many-2-many flattening is for example a tagging of multiple values to a main entity.
-This is mostly implemented in a 3 table structure, following the classic normalization approach: A table with
-the main entity (for example persons), a table with the attributes in a fixed id,value structure and last
-a many-to-many table linking the attributes to the main entities.
+This is mostly implemented in a 3 table structure, following the classic normalization approach:
+
+* A table with the main entity (for example persons)
+* a table with the attributes in a fixed id,value structure and last
+* a many-to-many table linking the attributes to the main entities.
 
 A simple approach is to use a four step approach:
 
-# Extract the data from the old system fully expanded
-# Read the CSV and flatten to a map of lists
-# Link the values at read time replacing the main ID with lists
-# Emit the whole as JSON strings
+#. Extract the data from the old system fully expanded
+#. Read the CSV and flatten to a map of lists
+#. Link the values at read time replacing the main ID with lists
+#. Emit the whole as JSON strings
 
 The first step relies on queries like
 
