@@ -139,7 +139,7 @@ class MappingField(BaseField):
     def _value(self, v):
         if v is None:
             return v
-        else
+        else:
             return self.data_map.get(v, self._default or v)
 
     def emit(self, v, escaper=None):
