@@ -1,5 +1,5 @@
-Overview
-========
+The Scan Emit Loop
+==================
 
 Core in the data-migrator is the declarative definition of the target model. Indeed in a django-esc way. Columns of the target table are defined as fields and each field has many settings. The Field is a definition of what to perform scanning, transforming and emitting the record. Output is abstracted into an extensible set of output writers. The whole is controlled with a standard transformer engine.
 

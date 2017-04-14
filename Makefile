@@ -9,7 +9,7 @@ clean:
 	@rm -rf docs/_build
 	@find . -name *.pyc -delete
 	@rm -rf build data_migrator.egg* dist
-	@rm .coverage coverage.xml
+	-@rm -f .coverage coverage.xml
 
 .PHONY: test dist docs
 
@@ -38,5 +38,7 @@ register_test:
 	python setup.py register -r pypitest
 
 upload:
-	python setup.py register -r pypi
-	twine upload -s dist/data_migrator-0.4*
+	# python setup.py register -r pypi
+	# twine upload -s dist/data_migrator-0.4*
+	for i in dist/*; do twine register $i; done
+	twine upload dist/*

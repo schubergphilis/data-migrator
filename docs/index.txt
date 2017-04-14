@@ -12,8 +12,9 @@ Data transformation is an important process in software development when archite
 
 Once you 've :doc:`installed <install>` *data-migrator*, we recommend reading the
 
-  * :doc:`Introduction <intro>` first, after that continue with the
-  * :doc:`Tutorial <tutorial0>`
+  * :doc:`Introduction <intro>` first,
+  * Take a look at the :doc:`Example <example>`
+  * after that continue with the :doc:`Tutorial <tutorial/tutorial0>`
 
 
 Contents
@@ -26,8 +27,8 @@ Contents
    intro
    example
    install
-   tutorial0
-   overview
+   tutorial/index
+   concepts/index
    ref/index
    code-of-conduct
 

@@ -51,7 +51,7 @@ When running from the repository it is adviced to run in developer mode::
 
     pip install -e .
 
-This allows to work on the code while using the library
+This allows to work on the code while using the library. Be sure to make that pull-request ;-)
 
 .. _`Github repository`: https://github.com/schubergphilis/data-migrator
 .. _`existing tag`:      https://github.com/schubergphilis/data-migrator/tags

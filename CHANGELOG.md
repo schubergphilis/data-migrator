@@ -1,16 +1,15 @@
 # Change Log
-This is a simple data-migration package for python lovers. It is declarative language in django-esc style for table drive data transformations, set up as an open and extensive system.
+This is a simple data-migration package for python lovers. It is declarative language for table drive data transformations, set up as an open and extensive system.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ## [0.4.0] - 2017-04-13
 ### Changed
-- First open source structure with license file
+- First open source structure with MIT license and Apache like notice
 
 ### Added
 - Basic Documentation
-- Package infrastructure
-
+- Build/Package infrastructure, deployed on github.com, readthedocs, pypi and circle-ci
 
 ## [0.3.0] - 2017-04-10
 ### Added

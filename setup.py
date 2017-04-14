@@ -15,7 +15,7 @@ setup(
     author_email='iheitlager@schubergphilis.com',
     maintainer='Ilja Heitlager',
     maintainer_email='iheitlager@schubergphilis.com',
-    keywords = "datamigration development-tools",
+    keywords = ["datamigration", "development-tools"],
     url='https://github.com/schubergphilis/data-migrator',
     packages=find_packages(exclude=['test_*']),
     classifiers = [
@@ -30,5 +30,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English"
-    ]
+    ],
+    zip_safe=True,
 )

@@ -1,9 +1,9 @@
 .. _tutorial:
 
-Tutorial: Getting started
-=========================
+Getting started
+===============
 
-First, install :doc:`data-migrator <install>`.
+First, install :doc:`data-migrator </install>`.
 
 Now create a new directory with your migration scripts. Your milage may very, built
 for here we assume you have client access to source data, spitting out a csv in some
@@ -109,4 +109,4 @@ focus on the database schema (yet!) so the table is expected to exist in the tar
 is wiping the data, not recreating the table. If you have issues with the python libraries, run ``make install`` do
 install the library from this makefile.
 
-Now go ahead and add more fields. See :doc:`fields reference <ref/fields>` for more details about the options of the fields.
+Now go ahead and add more fields. See :doc:`fields reference </ref/fields>` for more details about the options of the fields.

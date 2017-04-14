@@ -13,3 +13,5 @@ This package is a simple alternative to doing ad-hoc scripts. It is easy to lear
 * changing types
 * lookup data, advanced transformations
 * generating permission records in separate tables for main data
+
+Now see the :doc:`example <tutorial/tutorial0>` and move on to the :doc:`installation <install>`
