@@ -12,7 +12,7 @@ def clean_phone(v):
         020 -123 345 6 -> +31201233456
         +440.203.020.23 -> +4402030203
     '''
-    
+
     v = _PHONE_CHARS.sub('', v)
     v = _INTERNATIONAL_ZERO_START.sub('+', v)
     v = _MUNICIPALY_ZERO_START.sub('+31', v)
