@@ -1,0 +1,67 @@
+Validation
+==========
+
+This is the next tutorial, see the :doc:`previous <tutorial2>`
+
+Another aspect is to have some control over the data received. Out of the box ``data-migrator``
+offers a wide range of facilities
+
+None column test
+----------------
+
+The current list of :ref:`Field types <field-types>` contains Nullables and non Nullable fields.
+In some cases you might want to exclude those nulls. This is a generic function in the manager and
+can be set on a model basis in the Meta block
+
+.. code-block:: python
+
+  class Result(models.Model):
+    id = models.IntField(pos=0) # keep id
+    a  = models.StringField(pos=1)
+    b  = models.StringField(pos=2, null=None)
+
+    class Meta:
+      drop_if_none = ['b']
+
+The moment records are saved they are validated and records are dropped if b turns out to be ``None``
+
+Unique columns
+--------------
+
+Another common pattern is to drop non unique values (last to be dropped), for example when scanning
+unique emailaddresses. This functionality is also out of the box:
+
+.. code-block:: python
+
+  class Result(models.Model):
+    id = models.IntField(pos=0) # keep id
+    a  = models.StringField(pos=1, unique=True)
+
+    class Meta:
+      drop_non_unique = True
+
+This is checked at the parsing of the input, before any records are written. Use ``fail_non_unique``
+if you do not want to drop, but completely fail the transformation.
+
+
+Complex Unique columns
+----------------------
+
+A more complex situation when a combination of (input) columns need to be checked. Consider
+for example the de-duplication of membership records. This is a solved by using a parse function and
+a hidden column:
+
+.. code-block:: python
+
+  def compound(row):
+    return row[0] + row[1] + row[2]
+
+  class Result(models.Model):
+    id  = models.IntField(pos=0) # keep id
+    key = models.HiddenField(parse=compound, unique=True)
+    a   = models.StringField(pos=1)
+
+    class Meta:
+      drop_non_unique = True
+
+In this example key is set to check uniqueness but not output in the end result.

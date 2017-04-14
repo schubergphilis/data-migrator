@@ -41,9 +41,9 @@ is replaced by the default value.
 Merging columns
 ---------------
 
-Another migration patter is to transform separate (boolean) columns back to a single enumerator. For that
-use a row parser instead of a single value parser. Note that if no ``pos`` is given, the parser will be
-row based instead of singel value:
+Another migration pattern is to merge separate (boolean) columns back to a single enumerator. To support
+that use a row parser instead of a single value parser. If no ``pos`` is given, the parser will be
+row based instead of linked to a single column value:
 
 .. code-block:: python
 
@@ -64,7 +64,7 @@ row based instead of singel value:
 Dynamic lookups
 ---------------
 
-At moments one needs to lookup a value in the target database. Do not be shy to generate dynamic lookups in the
+At moments one needs to lookup values in the target database. Do not be shy to generate dynamic lookups in the
 target database by using SELECT statements that run during import in the target database.
 
 .. code-block:: python
@@ -87,13 +87,14 @@ Obviously this can be combined with python based transformations to fix delete r
     recruiter_uuid = models.StringField(pos=38, parse=recruiter,
       replace=lambda x:'(SELECT uuid FROM `persons` WHERE `mail`=%s limit 0,1)' % x)
 
-See that we emit the value from the target database as being the input for a query on the target database.
+We emit the value from the target database as being the input for a query on that target database.
 
 Table lookups
 -------------
 
-More extensive functions can be done with table driven lookups form outside CSV (also ad-hoc generated)
-files. For this ``data-migrator`` offers a helper function :func:`~.read_map_from_csv`.
+More extensive functions can be done with table driven lookups from external CSV files, or the
+table could be ad-hoc generated. For this ``data-migrator`` offers a helper function
+:func:`~.read_map_from_csv`.
 
 .. code-block:: python
 
@@ -121,7 +122,7 @@ A simple approach is to use a four step approach:
 #. Link the values at read time replacing the main ID with lists
 #. Emit the whole as JSON strings
 
-The first step relies on queries like
+The first step relies on queries like:
 
 .. code-block:: sql
 
@@ -130,9 +131,9 @@ The first step relies on queries like
 		S.name as skill
 	FROM person_skill_m2m P
 	INNER JOIN skills S
-		ON S.id=C.skill_id;
+		ON S.id=P.skill_id;
 
-After that loading and emitting to JSON is easy using the :class:`~.MappingField`
+After that, loading and emitting to JSON is simple using the :class:`~.MappingField`
 
 .. code-block:: python
 

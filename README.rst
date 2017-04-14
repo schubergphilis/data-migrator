@@ -11,6 +11,9 @@
 .. image:: https://api.codacy.com/project/badge/Coverage/bf6030e9e7e248979607802880336611
     :target: https://www.codacy.com/app/iheitlager/data-migrator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=schubergphilis/data-migrator&amp;utm_campaign=Badge_Coverage
 
+.. image:: https://badge.fury.io/py/data-migrator.svg
+    :target: https://badge.fury.io/py/data-migrator
+
 Data-migrator is a simple data-migration package for python lovers. It is
 declarative language in django-esc style for table drive data transformations. It is
 set up as an open and extensive system.
@@ -21,6 +24,34 @@ instructions on installing, upgrading, and uninstalling data-migrator.
 
 The project is `maintained at GitHub <https://github.com/schubergphilis/data-migrator>`_.
 
+
+Example
+-------
+
+Data-migrator assumes data is extracted and loaded with client access.
+
+.. code-block:: bash
+
+	$ mysql source_db -E 'select id,a,b from table' -B  | python my_filter.py | mysql target_db
+
+It than offers a wide range of primitives with default settings to build complex transformations
+fast, readable and extendable
+
+.. code-block:: python
+
+  from data_migrator import models, transform
+
+  class Result(models.Model):
+    id   = models.IntField(pos=0) # keep id
+    uuid = models.UUIDField()     # generate new uuid4 field
+    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replace=lambda x:x.upper())
+    b    = models.StringField(pos=2, name='my_b')
+
+  if __name__ == "__main__":
+    transform.Transformer(models=[Result]).process()
+
+Support and contribute
+----------------------
 Questions, comments, bug reports and especially tested patches may be
 submitted directly to the `issue tracker
 <https://github.com/schubergphilis/data-migrator/issues>`_.
