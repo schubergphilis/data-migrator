@@ -40,7 +40,7 @@ register_test:
 upload:
 	# python setup.py register -r pypi
 	# twine upload -s dist/data_migrator-0.4*
-	for i in dist/*; do twine register $i; done
+	for i in dist/*; do twine register $$i; done
 	twine upload dist/*
 
 drop:
