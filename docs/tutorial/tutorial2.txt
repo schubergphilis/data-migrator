@@ -1,7 +1,7 @@
 Validation
 ==========
 
-This is the next tutorial, see the :doc:`previous <tutorial2>`
+See the :doc:`previous <tutorial1>` tutorial.
 
 Another aspect is to have some control over the data received. Out of the box ``data-migrator``
 offers a wide range of facilities

@@ -1,0 +1,35 @@
+Advanced record generation
+==========================
+
+See the :doc:`previous <tutorial2>` tutorial.
+
+A typical case in system evolution is the growing complexity of entities into more detailed
+records. For example a system that maintains grouping can be expanding in more interlinked
+groups in the new system. This might generate more (linked) entities. ``data-migrator`` is
+build for these kind of questions.
+
+One to many records
+-------------------
+
+Linked to every model is a manager, which contains all logic to parse and emit records. By default
+this is a simple manager that scans one record per row. In those cases the system has to generate
+many, this is easily achieved by adding a dedicated manager:
+
+.. code-block:: python
+
+  from data_migrator import models
+
+  class ResultManager(models.Manager):
+    def transform(self, row, previous, model):
+      res = [model().scan(row), model().scan(row), model().scan(row)]
+      return res
+
+  class Result(models.Model):
+    id = models.IntField(pos=0) # keep id
+    a  = models.StringField(pos=1)
+    b  = models.StringField(pos=2, null=None)
+
+    class Meta:
+      manager = ResultManager
+
+This example is not really helpful, it just generates 3 records instead of one.
