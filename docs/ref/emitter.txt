@@ -9,7 +9,7 @@ has two emitter ``CSVEmitter`` and ``MySQLEmitter`` implemented, of which the la
 An emitter provides the export format for the scanned and cleaned datasets. It also provides preambles in
 the output files, for example to clean the target table before loading it.
 
-The basic structure for emitting is a combination between ```manager`` and ``emitter``:
+The basic structure for emitting is a combination between ``manager`` and ``emitter``:
 
 .. code-block:: python
 
@@ -41,7 +41,7 @@ Attributes
 
 .. attribute:: BaseEmitter.model_class
 
-    A reference to the model linked to the class, ``model_class`` and ```manager`` are linked together
+    A reference to the model linked to the class, ``model_class`` and ``manager`` are linked together
 
 ``extension``
 -------------

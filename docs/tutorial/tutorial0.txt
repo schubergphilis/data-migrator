@@ -57,51 +57,51 @@ build a simple transformer:
 
 .. code-block:: python
 
-	from data_migrator import models, transform
-	from data_migrator.emitters import MySQLEmitter
+  from data_migrator import models, transform
+  from data_migrator.emitters import MySQLEmitter
 
-	def parse_b(v):
-		if v == 'B':
-			return 'transformed_B'
-		else:
-			return v.lower()
+  def parse_b(v):
+    if v == 'B':
+      return 'transformed_B'
+    else:
+     return v.lower()
 
-	class Result(models.Model):
-		id   = models.IntField(pos=0) # keep id
-		uuid = models.UUIDField()     # generate new uuid4 field
-		# replace NULLs and trim
-		a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replace=lambda x:x.upper())
-		# parse this field
-		b    = models.StringField(pos=2, parse=parse_b, name='my_b')
+  class Result(models.Model):
+    id   = models.IntField(pos=0) # keep id
+    uuid = models.UUIDField()     # generate new uuid4 field
+    # replace NULLs and trim
+    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replace=lambda x:x.upper())
+    # parse this field
+    b    = models.StringField(pos=2, parse=parse_b, name='my_b')
 
-		class Meta:
-			table_name = 'new_table_name'
+  class Meta:
+  table_name = 'new_table_name'
 
-	# django-esc like creating and saving (to a manager)
-	Result(a='my a', b='my b').save()
+  # django-esc like creating and saving (to a manager)
+  Result(a='my a', b='my b').save()
 
-	if __name__ == "__main__":
-		transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
+  if __name__ == "__main__":
+    transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
 
     # prove we have objects
-		assert(len(Result.objects) > 1)
+    assert(len(Result.objects) > 1)
 
 
 And we now have a nice self explaining transformer, which will generate something like:
 
 .. code-block:: sql
 
-	-- transformation for Result to table new_table_name
-	-- input headers: id,a,b
-	-- stats: in=10,dropped=0,out=10
+  -- transformation for Result to table new_table_name
+  -- input headers: id,a,b
+  -- stats: in=10,dropped=0,out=10
 
-	SET SQL_SAFE_UPDATES = 0; -- you need this to delete without WHERE clause
-	DELETE FROM `new_table_name`;
-	ALTER TABLE `new_table_name` AUTO_INCREMENT = 1;
+  SET SQL_SAFE_UPDATES = 0; -- you need this to delete without WHERE clause
+  DELETE FROM `new_table_name`;
+  ALTER TABLE `new_table_name` AUTO_INCREMENT = 1;
 
-	INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (0, "ac7100b9-c9ad-4069-8ca5-8db1ebd36fa3", "MY A", "my b");
-	INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (1, "38211712-0eb2-4433-b28f-e3fe33492e7a", "NO_NULL", "some value");
-	INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (2, "a3478903-aed9-462c-8f47-7a89013bc6ea", "CHOPP", "transformed_B");
+  INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (0, "ac7100b9-c9ad-4069-8ca5-8db1ebd36fa3", "MY A", "my b");
+  INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (1, "38211712-0eb2-4433-b28f-e3fe33492e7a", "NO_NULL", "some value");
+  INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (2, "a3478903-aed9-462c-8f47-7a89013bc6ea", "CHOPP", "transformed_B");
 
 There you are, you have setup your first pipeline. Execute this by running:
 
