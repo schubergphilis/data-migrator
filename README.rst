@@ -14,16 +14,9 @@
 .. image:: https://badge.fury.io/py/data-migrator.svg
     :target: https://badge.fury.io/py/data-migrator
 
-Data-migrator is a simple data-migration package for python lovers. It is
-declarative language in django-esc style for table drive data transformations. It is
-set up as an open and extensive system.
-
-See the `Installation Instructions
-<http://data-migrator.readthedocs.io/en/latest/install.html>`_ in Documentation for
-instructions on installing, upgrading, and uninstalling data-migrator.
-
-The project is `maintained at GitHub <https://github.com/schubergphilis/data-migrator>`_.
-
+Data-migrator is a simple data-migration package for python lovers. It is a
+declarative DSL for table drive data transformations, set up as an open and 
+extensive system.
 
 Example
 -------
@@ -49,6 +42,15 @@ fast, readable and extendable
 
   if __name__ == "__main__":
     transform.Transformer(models=[Result]).process()
+
+Installation
+------------
+
+See the `Installation Instructions
+<http://data-migrator.readthedocs.io/en/latest/install.html>`_ in Documentation for
+instructions on installing, upgrading, and uninstalling data-migrator.
+
+The project is `maintained at GitHub <https://github.com/schubergphilis/data-migrator>`_.
 
 Support and contribute
 ----------------------
