@@ -33,7 +33,7 @@ from data_migrator.utils import get_docs_version, get_version
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
+    # 'sphinx.ext.githubpages',
     "sphinx.ext.extlinks",
 ]
 
