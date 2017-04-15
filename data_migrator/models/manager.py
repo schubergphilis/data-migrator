@@ -27,7 +27,19 @@ class BaseManager(object):
             self.unique_values[u] = set()
 
     def transform(self, row, previous, model):
-        '''transform defines the instantiation of objects from a row'''
+        '''defines the instantiation of objects from a row
+
+        Override this function in your own manager. Models are ordered and generated records are
+        offered in the consequtives managers too.
+
+        Args:
+            row (list): all input data for a new row
+            previous (list): all generated objects from previous managers in chain
+            model (Model): Model this manager is linked to
+
+        Returns:
+            list of all generated objects
+        '''
         raise NotImplementedError
 
     def scan_rows(self, rows):
@@ -36,7 +48,7 @@ class BaseManager(object):
             self.scan_row(row)
 
     def scan_row(self, row, previous=None):
-        '''scan one row'''
+        '''scan one row and save to list'''
         self.rows += 1
         try:
             res = self.transform(row, previous, self.model_class)

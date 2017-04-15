@@ -31,6 +31,7 @@ from data_migrator.utils import get_docs_version, get_version
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     "sphinx.ext.extlinks",
