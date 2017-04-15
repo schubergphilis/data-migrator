@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Added
 - Basic Documentation
 - Build/Package infrastructure, deployed on github.com, readthedocs, pypi and circle-ci
-- bumpversion
+- bumpversion for version management
 
 ## [0.3.0] - 2017-04-10
 ### Added
