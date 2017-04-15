@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from data_migrator.emitters.base import BaseEmitter
 from data_migrator.models.fields import HiddenField
 from data_migrator.utils import sql_escape, default_logger

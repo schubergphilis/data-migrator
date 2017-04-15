@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from .manager import SimpleManager
 from .fields import BaseField, HiddenField
 from .options import Options

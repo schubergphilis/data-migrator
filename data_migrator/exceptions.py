@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 class InternalException(Exception):
     """Unexpected internal error"""
     pass

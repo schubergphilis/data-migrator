@@ -1,4 +1,5 @@
-
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 
 def sql_escape(v):
     '''Translate Python native types to SQL relevant strings'''

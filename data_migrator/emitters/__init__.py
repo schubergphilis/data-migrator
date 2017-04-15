@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from .mysql import MySQLEmitter
 from .csv import CSVEmitter
 

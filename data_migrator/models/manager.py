@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from data_migrator.exceptions import NonUniqueDataException, ValidationException
 from data_migrator.utils import default_logger
 

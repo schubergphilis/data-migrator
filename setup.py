@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from data_migrator.utils import get_version, get_development_status
 
 from setuptools import setup, find_packages

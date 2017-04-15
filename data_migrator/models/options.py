@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from collections import OrderedDict
 
 from data_migrator.exceptions import DefinitionException

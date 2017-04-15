@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 import re
 
 _PHONE_CHARS=re.compile('[^\+\d]+')

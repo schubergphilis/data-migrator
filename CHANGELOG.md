@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [0.4.6] - 2017-04-13
 ### Changed
 - First open source structure with MIT license and Apache like notice
+- #6: pep 263 - add encoding cookie to .py files
 
 ### Added
 - Basic Documentation

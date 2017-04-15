@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 import unittest
 
 from data_migrator.contrib.dutch import clean_phone

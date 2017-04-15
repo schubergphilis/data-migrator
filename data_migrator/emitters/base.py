@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 class BaseEmitter(object):
     '''Base for emitters of the data_migrator'''
 
