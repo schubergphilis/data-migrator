@@ -8,5 +8,6 @@ API Reference
    model
    meta
    fields
+   manager
    emitter
    contrib

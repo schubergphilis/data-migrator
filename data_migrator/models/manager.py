@@ -4,7 +4,13 @@ from data_migrator.utils import default_logger
 log = default_logger()
 
 
-class Manager(object):
+class BaseManager(object):
+    """
+    BaseManager is the foundation for all managers, contains to base logic to
+    maintain models: parse, keep and emit.
+
+    Extend this class for actual managers
+    """
     def __init__(self, *args, **kwargs):
         self.model_class = None  # holding the class of the Model to manager
         self.results = []
@@ -21,10 +27,11 @@ class Manager(object):
             self.unique_values[u] = set()
 
     def transform(self, row, previous, model):
-        '''transform instantiates objects from a row'''
+        '''transform defines the instantiation of objects from a row'''
         raise NotImplementedError
 
     def scan_rows(self, rows):
+        '''scan many rows'''
         for row in rows:
             self.scan_row(row)
 
@@ -104,8 +111,11 @@ class Manager(object):
         }
 
 
-class SimpleManager(Manager):
+class SimpleManager(BaseManager):
+    """
+    The default manager to handle models, all standard logic and generates one object per row
+    """
     def transform(self, row, previous, model):
-        '''transform instantiates objects from a row'''
+        '''specific transform implementation, instantiates one object from a row'''
         res = [model().scan(row)]
         return res

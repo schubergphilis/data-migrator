@@ -1,0 +1,20 @@
+=======================
+Manager class reference
+=======================
+
+.. module:: data_migrator.models.manager
+   :synopsis: Model managers handling object instantiation, parsing and emitting
+
+.. currentmodule:: data_migrator.models.manager
+
+``BaseManager``
+---------------
+
+.. autoclass:: data_migrator.models.manager.BaseManager
+   :members:
+
+``SimpleManager``
+-----------------
+
+.. autoclass:: data_migrator.models.manager.SimpleManager
+   :members:

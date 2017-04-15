@@ -57,7 +57,7 @@ Methods
 ``emit(object)``
 ----------------
 
-.. method:: BaseEmitter.emit(object : Model) --> []string
+.. method:: BaseEmitter.emit
 
     The ``emit`` method is were the object is translated into the target structure. For example a row is translated
     into an ``INSERT`` statement
@@ -66,7 +66,7 @@ Methods
 ``premable(headers)``
 ---------------------
 
-.. method:: BaseEmitter.preamble(headers : []string) --> []string
+.. method:: BaseEmitter.preamble
 
     The ``premable`` method provides the file premable for emitting the model to file
 
@@ -74,7 +74,7 @@ Methods
 ``filename()``
 --------------
 
-.. method:: BaseEmitter.filename() -> string
+.. method:: BaseEmitter.filename
 
     The ``filename`` method generates a filename bases on :attr:`BaseEmitter.extension` and either
     :attr:`Meta.file_name` or :attr:`Meta.table_name`

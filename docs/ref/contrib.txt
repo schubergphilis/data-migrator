@@ -7,15 +7,12 @@ Contrib reference
 
 .. currentmodule: data_migrator.contrib
 
-This document contains all contributions to the package, general helper functions that are widely usable.
-
+.. automodule:: data_migrator.contrib
 
 ``read_map_from_csv``
 ---------------------
 
-.. function:: data_migrator.contrib.read.read_map_from_csv(f, delimiter='\t', key=0, value=1, as_list=False, unique=False, header=True)
-
-A function that returns a map for :class:`MappingField` to use as input in its :attr:`MappingField.data_map`.
+.. autofunction:: data_migrator.contrib.read.read_map_from_csv
 
 :func:`~.read_map_from_csv` has many extra arguments:
 

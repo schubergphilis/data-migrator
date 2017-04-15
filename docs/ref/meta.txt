@@ -9,7 +9,7 @@ defines model specific settings.
 
 .. note::
 
-    Technically, Meta is just a container and forwarded to :class:`data_migrator.models.options.Options`
+    Technically, Meta is just a container and forwarded to :class:`~.Options`
 
 Field options
 =============
