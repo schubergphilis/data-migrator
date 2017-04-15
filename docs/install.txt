@@ -47,19 +47,17 @@ Using the Github Repository
 Run the following command
 to install the newest version from the `Github repository`_::
 
-    pip install git+https://github.com/schubergphilis/data-migrator
+    pip install -e git+https://github.com/schubergphilis/data-migrator
 
 To install a tagged version from the `Github repository`_, use::
 
-    pip install git+https://github.com/schubergphilis/data-migrator@<tag>
+    pip install -e git+https://github.com/schubergphilis/data-migrator@<tag>
 
-where <tag> is the placeholder for an `existing tag`_.
-
-When running from the repository it is adviced to run in developer mode::
-
-    pip install -e .
-
-This allows to work on the code while using the library. Be sure to make that pull-request ;-)
+where <tag> is the placeholder for an `existing tag`_. You can drop the -e and not 
+install in `editable mode`_ if you expect **not** to edit the source. Running in editable 
+mode allows to work on the code while the library is installed and available. Be sure 
+to make that pull-request ;-)
 
 .. _`Github repository`: https://github.com/schubergphilis/data-migrator
 .. _`existing tag`:      https://github.com/schubergphilis/data-migrator/tags
+.. _`editable mode`:     https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
