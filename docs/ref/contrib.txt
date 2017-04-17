@@ -44,3 +44,8 @@ Contrib reference
 .. attribute:: read_map_from_csv.header
 
     If ``True``, `data-migrator` will treat row as a header column. Default is ``True``.
+
+``clean_phone``
+---------------------
+
+.. autofunction:: data_migrator.contrib.dutch.clean_phone

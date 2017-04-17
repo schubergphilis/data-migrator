@@ -8,7 +8,13 @@ from data_migrator.utils import default_logger, sql_escape
 log = default_logger()
 
 class CSVEmitter(BaseEmitter):
-    '''CSV emitter to output delimited data'''
+    '''CSV emitter to output delimited data
+
+    Attributes:
+        base_template: base template to output the object
+        extension (str): file extension for output file of this emitter
+
+    '''
     extension = '.csv'
     base_template = '''%s'''
 
@@ -18,7 +24,7 @@ class CSVEmitter(BaseEmitter):
         self._prepare()
 
     def emit(self, l):
-        '''Output the result set of an object'''
+        '''Output the result set of an object as CSV string'''
         res = []
         if hasattr(l, self.meta.remark):
             res.append("# %s" % getattr(l, self.meta.remark))

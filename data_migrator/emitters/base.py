@@ -2,26 +2,54 @@
 # -*- coding: UTF-8 -*-
 
 class BaseEmitter(object):
-    '''Base for emitters of the data_migrator'''
+    '''Base for emitters of the data_migrator.
+
+    Attributes:
+        manager (BaseManager): reference to the manager that is calling this emitter to export objects from that manager
+        model_class (Model): reference to the model linked to the class
+        extension (str): file extension for output file of this emitter
+
+    note: ``model_class`` and ``manager`` are linked together
+    '''
 
     def __init__(self, extension=None, manager=None):
+        # reference to the manager that is calling this emitter to export objects from the manager
         self.manager=manager
         self.model_class=manager.model_class
         self.meta=self.model_class._meta
         self.extension = extension or getattr(self.__class__, 'extension', '.txt')
 
-    def emit(self, l):
-        '''output the result set of an object'''
+    def emit(self, o):
+        '''output the result set of an object.
+
+        Args:
+            o (Model): object to transform
+        Returns:
+            list: generated strings
+        '''
         raise NotImplementedError
 
     def filename(self):
-        '''generate filename for this emitter'''
+        '''generate filename for this emitter.
+
+        generates a filename bases on :attr:`BaseEmitter.extension` and either
+        :attr:`Meta.file_name` or :attr:`Meta.table_name`
+
+        Returns:
+            str: filename
+        '''
         _ext = self.extension
         if _ext[0] != '.':
             _ext = '.' + _ext
         _filename = self.meta.file_name or (self.meta.table_name + _ext)
         return _filename
 
-    def preamble(self, headers=None):
-        '''generate a premable for the file to emit'''
+    def preamble(self, headers):
+        '''generate a premable for the file to emit.
+
+        Args:
+            headers (list): additional header to provide outside the emitter (e.g. statistics)
+        Returns:
+            list: preamble lines
+        '''
         raise NotImplementedError

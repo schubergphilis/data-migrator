@@ -8,7 +8,12 @@ from data_migrator.utils import sql_escape, default_logger
 log = default_logger()
 
 class MySQLEmitter(BaseEmitter):
-    '''MySQL emitter to output MySQL specific insert statements'''
+    '''MySQL emitter to output MySQL specific insert statements
+
+    Attributes:
+        base_template: base template to output the object
+        extension (str): file extension for output file of this emitter
+    '''
     base_template = '''INSERT INTO `%s` (%s) VALUES (%s);'''
     extension = '.sql'
 
@@ -17,7 +22,7 @@ class MySQLEmitter(BaseEmitter):
         self._prepare()
 
     def emit(self, l):
-        '''Output the result set of an object'''
+        '''Output the result set of an object as MYSQL insert statement'''
         res = []
         if hasattr(l, self.meta.remark):
             res.append("# %s" % getattr(l, self.meta.remark))
@@ -25,6 +30,7 @@ class MySQLEmitter(BaseEmitter):
         return res
 
     def preamble(self, headers):
+        '''override the preamble method to make it specific for MySQL'''
         # before we spit out the data
         _meta = self.meta
         h1 = [
