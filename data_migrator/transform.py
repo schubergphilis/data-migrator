@@ -5,6 +5,7 @@ import sys
 import os
 import logging
 
+from data_migrator import __version__
 from data_migrator.exceptions import DataException, ValidationException
 from data_migrator.utils import configure_logging
 from data_migrator.utils import configure_parser, default_reader
@@ -48,7 +49,7 @@ class Transformer(object):
         self.args = self.argparser or configure_parser()
         self._interpret_cmdline()
         self.log.info("data_migrator pipeline starting")
-        self.log.debug("version: %s", get_version())
+        self.log.debug("version: %s", __version__)
         self._open_input()
         self._read_input()
         self._write_output()
