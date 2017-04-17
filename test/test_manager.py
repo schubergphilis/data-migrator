@@ -25,12 +25,6 @@ class TestFields(unittest.TestCase):
         a._prepare(ManagerModel)
         self.assertEquals(a.unique_values, {})
 
-    def test_prepare(self):
-        '''low level prepare step, done by ModelBase'''
-        a= SimpleManager()
-        a._prepare(ManagerModel)
-        self.assertEquals(a.unique_values, {})
-
     def test_scan(self):
         a = [
             ["hello", "world"],
