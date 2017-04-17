@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import csv
-import sys
 
 from data_migrator.exceptions import DataException, DefinitionException
 
