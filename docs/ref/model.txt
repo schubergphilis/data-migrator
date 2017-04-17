@@ -9,13 +9,11 @@ This document covers features of the :class:`~data_migrator.models.Model` class.
 
 Model
 =====
-
 .. autoclass::  data_migrator.models.base.Model
    :members:
 
 
 ModelBase
 =========
-
 .. autoclass::  data_migrator.models.base.ModelBase
   :members:

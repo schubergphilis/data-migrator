@@ -25,20 +25,19 @@ The basic structure for emitting is a combination between ``manager`` and ``emit
     cleaning and transforming data (yet!).
 
 
-BaseEmitter
-===========
-
-.. autoclass::  data_migrator.emitters.base.BaseEmitter
-   :members:
-
 MySQLEmitter
 ============
-
 .. autoclass::  data_migrator.emitters.mysql.MySQLEmitter
   :members:
 
+
 CSVEmitter
 ==========
-
 .. autoclass::  data_migrator.emitters.csv.CSVEmitter
   :members:
+
+
+BaseEmitter
+===========
+.. autoclass::  data_migrator.emitters.base.BaseEmitter
+   :members:

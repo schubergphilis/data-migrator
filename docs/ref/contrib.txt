@@ -11,11 +11,9 @@ Contrib reference
 
 ``read_map_from_csv``
 ---------------------
-
 .. autofunction:: data_migrator.contrib.read.read_map_from_csv
 
 
 ``clean_phone``
----------------------
-
+---------------
 .. autofunction:: data_migrator.contrib.dutch.clean_phone
