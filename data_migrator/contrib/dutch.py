@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+'''
+commonly used dutch support functions
+'''
 
 import re
 

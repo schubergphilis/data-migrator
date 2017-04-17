@@ -19,7 +19,6 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-from data_migrator.utils import get_docs_version, get_version
 
 # -- General configuration ------------------------------------------------
 
@@ -113,6 +112,8 @@ else:
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_show_sourcelink = True
+html_show_sphinx = True
 
 # -- Options for HTMLHelp output ------------------------------------------
 
