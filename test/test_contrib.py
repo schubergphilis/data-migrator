@@ -2,8 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
+import sys
+import StringIO
 
 from data_migrator.contrib.dutch import clean_phone, clean_zip_code
+from data_migrator.contrib.read import read_map_from_csv
 
 class TestDutch(unittest.TestCase):
     def test_phone(self):
@@ -29,3 +32,11 @@ class TestDutch(unittest.TestCase):
         ]
         for i, o in l:
             self.assertEquals(o, clean_zip_code(i))
+
+data = 'key,value\nhello,world\nhappy,camper\n'
+
+class TestRead(unittest.TestCase):
+    def test_reader(self):
+        f = StringIO.StringIO(data)
+        a = read_map_from_csv(key='key', value='value', f=f, delimiter=',')
+        self.assertIn('hello', a)

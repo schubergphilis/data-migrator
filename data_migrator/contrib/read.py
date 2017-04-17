@@ -6,7 +6,7 @@ import sys
 
 from data_migrator.exceptions import DataException, DefinitionException
 
-def read_map_from_csv(key=0, value=1, f=sys.stdin, delimiter="\t", header=True, as_list=False, unique=False):
+def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_list=False, unique=False):
     '''
     Generates a map from a csv and adds some validation and list parsing. A function that
     returns a map for MappingField to use as input in its MappingField.data_map.
@@ -31,7 +31,8 @@ def read_map_from_csv(key=0, value=1, f=sys.stdin, delimiter="\t", header=True, 
         map: a key, value map from the csv
     '''
     data_map = {}
-
+    if not f:
+        f = sys.stdin
     r = csv.reader(f, delimiter=delimiter)
 
     if header:
