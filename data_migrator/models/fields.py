@@ -82,9 +82,12 @@ class BaseField(object):
         return value
 
 class HiddenField(BaseField):
-    '''Field for validation and checking, will not be emitted'''
-    pass
+    '''Non emitting Field for validation and checking.
 
+    a field that accepts, but does not emit. It is useful for uniqueness checked and
+    more. Combine this with a row parse and check the complete row.
+    '''
+    pass
 
 class IntField(BaseField):
     '''Basic integer field handler'''
@@ -93,23 +96,35 @@ class IntField(BaseField):
         return int(value)
 
 class NullIntField(BaseField):
-    '''Null integer field handler'''
+    '''Null integer field handler.
+
+    a field that accepts the column to be integer and can also be None, which is not
+    the same as 0 (zero).
+    '''
     def _value(self, value):
         return int(value)
 
 class StringField(BaseField):
-    '''String field handler'''
+    '''String field handler, a field that accepts the column to be string.'''
     _default = ""
     def _value(self, value):
         return value.strip()
 
 class NullStringField(BaseField):
-    '''Null String field handler'''
+    '''Null String field handler.
+
+    a field that accepts the column to be string and can also be None, which is not
+    the same as empty string ("").
+    '''
     def _value(self, value):
         return value.strip() if isinstance(value, str) else value
 
 class BooleanField(BaseField):
-    '''Boolean field handler'''
+    '''Boolean field handler.
+
+    a bool that takes any cased permutation of true, yes, 1 and translates this into
+    ``True`` or ``False`` otherwise.
+    '''
     _default = False
     def _value(self, value):
         try:
@@ -118,24 +133,41 @@ class BooleanField(BaseField):
             return False
 
 class UUIDField(BaseField):
-    '''UUID generating field'''
+    '''UUID generating field.
+
+    a field that generates a ``str(uuid.uuid4())``
+    '''
     def _value(self, value):
         return str(uuid.uuid4())
 
 class NullField(BaseField):
-    '''NULL returning field'''
+    '''NULL returning field by generating None'''
     def _value(self, value):
         return None
 
 
 class JSONField(BaseField):
+    '''a field that takes the values and spits out a JSON encoding string. Great for
+    maps and lists to be stored in a string like field.
+    '''
     def emit(self, v, escaper=None):
+        """Emit is overwritten to add the to_json option"""
         v = json.dumps(v)
         return super(JSONField, self).emit(v, escaper)
 
 class MappingField(BaseField):
-    '''Map based field translator'''
+    '''Map based field translator.
+
+    a field that takes the values translates these according to a map. Great for
+    identity column replacements. If needed output can be translated as ``json``,
+    for example if the map returns lists.
+    '''
     def __init__(self, data_map={}, as_json=False, **kwargs):
+        """
+        Args:
+            data_map: The data_map needed to translate. Note the fields returns :attr:`~Field.default` if it is not able to map the key.
+            as_json: If ``True``, the field will be output as json encoded. Default is ``False``
+        """
         super(MappingField, self).__init__(**kwargs)
         self.data_map = data_map
         self.as_json = as_json
@@ -147,6 +179,7 @@ class MappingField(BaseField):
             return self.data_map.get(v, self._default or v)
 
     def emit(self, v, escaper=None):
+        """Emit is overwritten to add the to_json option"""
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)

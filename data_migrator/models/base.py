@@ -7,9 +7,13 @@ from .options import Options
 from data_migrator.exceptions import DataException
 
 
-# the model structure is the foundation of data_migrator and taken from Django (https://github.com/django/django)
 class ModelBase(type):
-    """Metaclass for all models."""
+    """Metaclass for all models.
+
+    Note:
+        the model structure is the foundation of ``data-migrator`` and
+        is taken from Django (https://github.com/django/django)
+    """
     def __new__(cls, name, bases, attrs):
         super_new = super(ModelBase, cls).__new__
 
@@ -47,7 +51,20 @@ class ModelBase(type):
 
 
 class Model(object):
-    """Model is foundation for every transformation"""
+    """Model is foundation for every transformation
+
+    Each non-abstract :class:`~data_migrator.models.Model` class must have a
+    :class:`~data_migrator.models.Manager` instance added to it.
+    Data-migrator ensures that in your model class you have  at least a
+    default ``SimpleManager`` specified. If you don't add your own ``Manager``,
+    Django will add an attribute ``objects`` containing default
+    :class:`~data_migrator.models.SimpleManager` instance. If you add your own
+    :class:`~data_migrator.models.Manager` instance attribute, the default one does
+    not appear.
+
+    Attributes:
+        objects: reference to manager
+    """
     __metaclass__=ModelBase
 
     def __init__(self, **kwargs):
@@ -69,14 +86,25 @@ class Model(object):
             setattr(self, k, _fields[k].default())
 
     def scan(self, row):
-        '''scan model from row based on field definition scanners'''
+        '''scan model from row based on field definition scanners.
+
+        Returns:
+            self, so that methods can be chained
+        '''
         _fields = self.__class__._meta.fields
         for k in _fields.keys():
             setattr(self, k, _fields[k].scan(row))
         return self
 
     def emit(self, escaper=None):
-        '''output and escape this object instance to a dict'''
+        '''output and escape this object instance to a dict.
+
+        Returns:
+            map: object transfored according to field definitions
+
+        Note:
+            HiddenFields are not emitted
+        '''
         res = {}
         _fields = self.__class__._meta.fields
         for k,f in _fields.items():
@@ -85,6 +113,11 @@ class Model(object):
         return res
 
     def save(self):
+        '''Save this object and add it to the list.
+
+        Returns:
+            self, so that methods can be chained
+        '''
         self.objects.save(self)
         return self
 

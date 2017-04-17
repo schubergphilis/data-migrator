@@ -149,91 +149,50 @@ Field types
 
 ``BooleanField``
 ----------------
+.. autoclass::  data_migrator.models.fields.BooleanField
 
-.. class:: BooleanField(**options)
-
-a bool that takes any cased permutation of true, yes, 1 and translates this into
-``True`` or ``False`` otherwise.
 
 ``IntField``
 ----------------
+.. autoclass::  data_migrator.models.fields.IntField
 
-.. class:: IntField(**options)
-
-a field that accepts the column to be integer.
 
 ``NullIntField``
 ----------------
+.. autoclass::  data_migrator.models.fields.NullIntField
 
-.. class:: NullIntField(**options)
-
-a field that accepts the column to be integer and can also be None, which is not
-the same as 0 (zero).
 
 ``HiddenField``
 ----------------
-
-.. class:: HiddenField(**options)
-
-a field that accepts, but does not emit. It is useful for uniqueness checked and
-more. Combine this with a row parse and check the complete row.
+.. autoclass::  data_migrator.models.fields.HiddenField
 
 
 ``StringField``
 ----------------
+.. autoclass::  data_migrator.models.fields.StringField
 
-.. class:: StringField(**options)
-
-a field that accepts the column to be string.
 
 ``NullStringField``
 -------------------
+.. autoclass::  data_migrator.models.fields.NullStringField
 
-.. class:: NullStringField(**options)
-
-a field that accepts the column to be string and can also be None, which is not
-the same as empty string ("").
 
 ``UUIDField``
 ----------------
+.. autoclass::  data_migrator.models.fields.UUIDField
 
-.. class:: UUIDField(**options)
-
-a field that generates a ``str(uuid.uuid4())``.
 
 ``NullField``
 ----------------
-
-.. class:: NullField(**options)
-
-a field that generates None.
+.. autoclass::  data_migrator.models.fields.NullField
 
 
 ``JSONField``
 ----------------
+.. autoclass::  data_migrator.models.fields.JSONField
 
-.. class:: JSONField(**options)
-
-a field that takes the values and spits out a JSON encoding string. Great for
-maps and lists to be stored in a string like field.
 
 ``MappingField``
 ----------------
-
-.. class:: MappingField(data_map={}, as_json=False, **options)
-
-a field that takes the values translates these according to a map. Great for
-identity column replacements. If needed output can be translated as ``json``, for
-example if the map returns lists.
-
-
-:class:`MappingField` has two extra arguments:
-
-.. attribute:: MappingField.data_map
-
-    The data_map needed to translate. Note the fields returns :attr:`~Field.default`
-    if it is not able to map the key
-
-.. attribute:: MappingField.as_json
-
-    If ``True``, the field will be output as json encoded. Default is ``False``.
+.. autoclass::  data_migrator.models.fields.MappingField
+   :members:

@@ -17,6 +17,18 @@ def read_map_from_csv(key=0, value=1, f=sys.stdin, delimiter="\t", header=True, 
         10
 
     Note that by default it is expected to have headers in the csv.
+
+    Args:
+        f: Filehandle to read the csv from into the map
+        delimiter: Option to select another delimiter, other than `\\\\t`
+        key: Name or position of the Key, if ``header`` is false, the ordinal position is expected (default first)
+        value: Name or position of the Value, if ``header`` is false, the ordinal position is expected (default second)
+        as_list (boolean): If ``True``, `data-migrator` will treat add all values for ``key`` as a list. Default is ``False``.
+        unique (boolean): If ``True``, `data-migrator` will treat add all non unique values for ``key`` as a violation and raise a ``DataException``. Default is ``False``.
+        header (boolean): If ``True``, `data-migrator` will treat row as a header column. Default is ``True``
+
+    Returns:
+        map: a key, value map from the csv
     '''
     data_map = {}
 

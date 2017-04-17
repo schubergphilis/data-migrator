@@ -14,36 +14,6 @@ Contrib reference
 
 .. autofunction:: data_migrator.contrib.read.read_map_from_csv
 
-:func:`~.read_map_from_csv` has many extra arguments:
-
-.. attribute:: read_map_from_csv.f
-
-    Filehandle to read the csv from into the map
-
-.. attribute:: read_map_from_csv.delimiter
-
-    Option to select another delimiter, other than ``\t``
-
-.. attribute:: read_map_from_csv.key
-
-    Name or position of the Key, if ``header`` is false, the ordinal position is expected (default first)
-
-.. attribute:: read_map_from_csv.value
-
-    Name or position of the Value, if ``header`` is false, the ordinal position is expected (default second)
-
-.. attribute:: read_map_from_csv.as_list
-
-    If ``True``, `data-migrator` will treat add all values for ``key`` as a list. Default is ``False``.
-
-.. attribute:: read_map_from_csv.unique
-
-    If ``True``, `data-migrator` will treat add all non unique values for ``key`` as a violation
-    and raise a ``DataException``. Default is ``False``.
-
-.. attribute:: read_map_from_csv.header
-
-    If ``True``, `data-migrator` will treat row as a header column. Default is ``True``.
 
 ``clean_phone``
 ---------------------
