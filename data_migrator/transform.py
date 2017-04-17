@@ -9,7 +9,6 @@ from data_migrator import __version__
 from data_migrator.exceptions import DataException, ValidationException
 from data_migrator.utils import configure_logging
 from data_migrator.utils import configure_parser, default_reader
-from data_migrator.utils import get_version
 from data_migrator.emitters import MySQLEmitter
 
 class Transformer(object):
@@ -20,7 +19,6 @@ class Transformer(object):
         >>> if __name__ == "__main__":
         >>>    t = transform.Transformer(models=[Model])
         >>>    t.process()
-
 
     '''
     def __init__(self, models=None, reader=None, argparser=None, outdir=None, emitter=MySQLEmitter):
