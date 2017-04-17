@@ -79,6 +79,7 @@ class BaseField(object):
         return self._value(self._default)
 
     def _value(self, value):
+        # pylint: disable=R0201, no-self-use
         return value
 
 class HiddenField(BaseField):
@@ -162,7 +163,7 @@ class MappingField(BaseField):
     identity column replacements. If needed output can be translated as ``json``,
     for example if the map returns lists.
     '''
-    def __init__(self, data_map={}, as_json=False, **kwargs):
+    def __init__(self, data_map, as_json=False, **kwargs):
         """
         Args:
             data_map: The data_map needed to translate. Note the fields returns :attr:`~Field.default` if it is not able to map the key.
