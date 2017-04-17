@@ -174,6 +174,7 @@ class MappingField(BaseField):
         self.as_json = as_json
 
     def _value(self, v):
+        print self.name, v
         if v is None:
             return v
         else:

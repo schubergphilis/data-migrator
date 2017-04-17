@@ -3,7 +3,7 @@
 
 import unittest
 
-from data_migrator.contrib.dutch import clean_phone
+from data_migrator.contrib.dutch import clean_phone, clean_zip_code
 
 class TestDutch(unittest.TestCase):
     def test_phone(self):
@@ -17,3 +17,15 @@ class TestDutch(unittest.TestCase):
         ]
         for i, o in l:
             self.assertEquals(o, clean_phone(i))
+
+    def test_zip_code(self):
+        '''test zip code'''
+        l = [
+            ('1234 AB','1234AB'),
+            ('1234ba','1234BA'),
+            ('1234    ba','1234BA'),
+            ('1 2 3 4 A B','1 2 3 4 A B'),
+            ('blabla', 'blabla')
+        ]
+        for i, o in l:
+            self.assertEquals(o, clean_zip_code(i))

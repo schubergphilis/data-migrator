@@ -14,6 +14,13 @@ Contrib reference
 .. autofunction:: data_migrator.contrib.read.read_map_from_csv
 
 
+contrib.dutch
+=============
+
 ``clean_phone``
 ---------------
 .. autofunction:: data_migrator.contrib.dutch.clean_phone
+
+``clean_zip_code``
+---------------
+.. autofunction:: data_migrator.contrib.dutch.clean_zip_code
