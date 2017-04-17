@@ -12,10 +12,30 @@ from data_migrator.utils import get_version
 from data_migrator.emitters import MySQLEmitter
 
 class Transformer(object):
-    '''Main transformation engine'''
-    def __init__(self, models=[], reader=None, argparser=None, outdir=None, emitter=MySQLEmitter):
+    '''Main transformation engine
+
+    Use this class as your main entry to build your Transformer
+
+        >>> if __name__ == "__main__":
+        >>>    t = transform.Transformer(models=[Model])
+        >>>    t.process()
+
+
+    '''
+    def __init__(self, models=None, reader=None, argparser=None, outdir=None, emitter=MySQLEmitter):
+        '''
+        Args:
+            models (list): list of all models to be processed in this transformer
+            reader: reference to and external reader if not <stdin>
+            argparse: reference to another argument parser if not default_parser
+            outdir: output directory for results, otherwise scan from argparser
+            emitter: emitter to be used for this transformation
+
+        Note that the order of models is relevant for the generation
+        '''
+
         self.outdir = outdir
-        self.models = models
+        self.models = models or []
         self.emitter = emitter
         self.print_rows=0
         self.argparser = argparser
@@ -23,6 +43,7 @@ class Transformer(object):
         self.max_pos = max([x._meta.max_pos for x in models])
 
     def process(self):
+        '''Main processing loop'''
         self.log = configure_logging()
         self.args = self.argparser or configure_parser()
         self._interpret_cmdline()

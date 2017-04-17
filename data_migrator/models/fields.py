@@ -82,6 +82,7 @@ class BaseField(object):
         return value
 
 class HiddenField(BaseField):
+    '''Field for validation and checking, will not be emitted'''
     pass
 
 

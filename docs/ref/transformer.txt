@@ -1,0 +1,16 @@
+===========================
+Transformer class reference
+===========================
+
+.. currentmodule:: data_migrator.transform
+
+This document covers features of the :class:`~data_migrator.transform.Transformer` class.
+
+
+``Transformer``
+---------------
+
+.. autoclass:: data_migrator.transform.Transformer
+   :members: process
+
+   .. automethod:: __init__
