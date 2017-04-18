@@ -16,3 +16,4 @@ on how to use the various parts of this library.
    manager
    emitter
    contrib
+   exceptions

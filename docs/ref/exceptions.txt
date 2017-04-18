@@ -1,0 +1,19 @@
+====================
+Exceptions reference
+====================
+
+.. currentmodule:: data_migrator.exceptions
+
+.. automodule:: data_migrator.exceptions
+
+.. autoexception::  data_migrator.exceptions.InternalException
+
+.. autoexception::  data_migrator.exceptions.DefinitionException
+
+.. autoexception::  data_migrator.exceptions.ValidationException
+
+.. autoexception::  data_migrator.exceptions.DataException
+
+.. autoexception::  data_migrator.exceptions.NonUniqueDataException
+
+.. autoexception::  data_migrator.exceptions.NullDataException

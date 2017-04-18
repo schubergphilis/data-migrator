@@ -2,11 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-import sys
 import StringIO
 
 from data_migrator.contrib.dutch import clean_phone, clean_zip_code
 from data_migrator.contrib.read import read_map_from_csv
+from data_migrator.exceptions import DefinitionException, NonUniqueDataException
 
 class TestDutch(unittest.TestCase):
     def test_phone(self):
@@ -33,10 +33,21 @@ class TestDutch(unittest.TestCase):
         for i, o in l:
             self.assertEquals(o, clean_zip_code(i))
 
-data = 'key,value\nhello,world\nhappy,camper\n'
 
 class TestRead(unittest.TestCase):
     def test_reader(self):
-        f = StringIO.StringIO(data)
+        f = StringIO.StringIO('key,value\nhello,world\nhappy,camper\n')
         a = read_map_from_csv(key='key', value='value', f=f, delimiter=',')
         self.assertIn('hello', a)
+
+    def test_reader_fail(self):
+        o = [
+            ('bla', 'value', 'key,value\nhello,world\nhappy,camper\n',',',False,DefinitionException),
+            ('key', 'bla', 'key,value\nhello,world\nhappy,camper\n',',',False,DefinitionException),
+            (0, 'value', 'key,value\nhello,world\nhappy,camper\n',',',False,DefinitionException),
+            ('key', 'value', 'key,value\nhello,world\nhello,camper\n',',',False,DefinitionException),
+            ('key', 'value', 'key,value\nhello,world\nhello,camper\n',',',True,NonUniqueDataException),
+        ]
+        for k,v,f,d,u,exc in o:
+            f = StringIO.StringIO(f)
+            self.assertRaises(exc, read_map_from_csv, key=k, value=v, f=f, delimiter=d, unique=u)

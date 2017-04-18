@@ -20,8 +20,8 @@ dist:
 	@python setup.py sdist --formats=gztar,zip bdist_wheel
 
 dev: ## install for development
-	@pip install -e
-	
+	@pip install -e .
+
 dev_requirements:
 	@pip install -r py.requirements/build.txt
 

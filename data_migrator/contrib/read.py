@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-
 import csv
+import sys
 
-from data_migrator.exceptions import DataException, DefinitionException
+from data_migrator.exceptions import DataException, DefinitionException, NonUniqueDataException
 
 def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_list=False, unique=False):
     '''
@@ -57,7 +57,7 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_li
         v = [l[vi]] if as_list else l[vi]
         if l[ki] in data_map:
             if unique:
-                raise DataException('line %d - unique constraint failed: %s' % (i, l[ki]))
+                raise NonUniqueDataException('line %d - unique constraint failed: %s' % (i, l[ki]))
             elif as_list:
                 data_map[l[ki]] += v
             else:

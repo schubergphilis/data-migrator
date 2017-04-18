@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+"""Explicit exceptions for this package
+"""
 
 class InternalException(Exception):
     """Unexpected internal error"""
