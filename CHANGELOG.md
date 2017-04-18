@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [0.4.7] - 2017-04-18
 ### Added
 - #11 exception documentation
-- CONTRIBUTING.md added
+- #12 CONTRIBUTING.md with first guidelines
 
 
 ## [0.4.6] - 2017-04-13
