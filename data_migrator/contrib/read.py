@@ -3,7 +3,7 @@
 import csv
 import sys
 
-from data_migrator.exceptions import DataException, DefinitionException, NonUniqueDataException
+from data_migrator.exceptions import DefinitionException, NonUniqueDataException
 
 def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_list=False, unique=False):
     '''
