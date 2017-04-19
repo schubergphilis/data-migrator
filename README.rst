@@ -60,4 +60,4 @@ submitted directly to the `issue tracker
 
 Everyone interacting with this codebase, issue trackers,
 chat rooms, and mailing lists is expected to follow the
-`Code of Conduct <http://data-migrator.readthedocs.io/en/latest/code-of-conduct.html/>`_.
+`Code of Conduct <http://data-migrator.readthedocs.io/en/latest/code-of-conduct.html>`_.
