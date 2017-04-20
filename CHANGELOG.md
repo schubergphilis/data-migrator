@@ -4,18 +4,21 @@ This is a simple data-migration package for python lovers. It is declarative lan
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ## [0.4.7] - 2017-04-18
+### Changed
+- Reversed the default setting logic #5
+
 ### Added
-- #11 exception documentation
-- #12 CONTRIBUTING.md with first guidelines
+- exception documentation #11
+- CONTRIBUTING.md with first guidelines #12
 
 
 ## [0.4.6] - 2017-04-13
 ### Changed
 - First open source structure with MIT license and Apache like notice
-- #6: pep 263 - add encoding cookie to .py files
-- #9: fix codacy issues
-- #3: codacy code coverage linked with circle-ci
-- #10: remove django version string in favor of bumpversion
+- pep 263 - add encoding cookie to .py files #6
+- Fix codacy issues #9
+- Codacy code coverage linked with circle-ci #3
+- Remove django version string in favor of bumpversion #10
 
 ### Added
 - Basic Documentation
@@ -28,9 +31,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ## [0.2.0] - 2017-03-22
 ### Added
-- modularization of code in engine and emitters
-- full testing architecture
+- Modularization of code in engine and emitters
+- Full testing architecture
 
 ## [0.1.0] 2017-02-20
 ### Added
-- django like structure
+- Django like structure

@@ -81,9 +81,9 @@ class Model(object):
                 f.remove(k)
             else:
                 raise DataException("trying to set unknown field %s" % k)
-        # add missing fields, put in default values
+        # add missing fields, put in None values (to be replaced by default at emit)
         for k in f:
-            setattr(self, k, _fields[k].default())
+            setattr(self, k, None)
 
     def scan(self, row):
         '''scan model from row based on field definition scanners.

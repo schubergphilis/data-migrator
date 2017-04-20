@@ -11,6 +11,8 @@ class ManagerModel(Model):
     a = StringField(pos=0)
     b = StringField(pos=1)
 
+    class Meta:
+        drop_if_none = ['b']
 
 class TestFields(unittest.TestCase):
     def test_init(self):
@@ -34,6 +36,18 @@ class TestFields(unittest.TestCase):
         ManagerModel.objects.scan_rows(a)
         l2 = len(ManagerModel.objects)
         self.assertEquals(l+2, l2)
+        s = ManagerModel.objects.stats()
+        self.assertEquals(s['out'], l2)
+
+    def test_drop_if_none(self):
+        a = [
+            ["hello", "world"],
+            ["goodbye", "NULL"],
+        ]
+        l = len(ManagerModel.objects)
+        ManagerModel.objects.scan_rows(a)
+        l2 = len(ManagerModel.objects)
+        self.assertEquals(l+1, l2)
         s = ManagerModel.objects.stats()
         self.assertEquals(s['out'], l2)
 

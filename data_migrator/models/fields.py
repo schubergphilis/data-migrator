@@ -4,7 +4,7 @@
 import uuid
 import json
 
-from data_migrator.exceptions import ValidationException
+from data_migrator.exceptions import ValidationException, DataException
 
 def new_exception(field, exc_class, msg, *args):
     msg = "%s[%s]: " + msg
@@ -46,11 +46,11 @@ class BaseField(object):
     def scan(self, row):
         '''scan row and harvest distinct value'''
         # see if we want to read a column in the row
-        v = self._default
+        v = None
         if self.pos >= 0:
             # do null check if enabled
             if self.null is not None and row[self.pos] == self.null:
-                return self._default
+                return v
             v = row[self.pos]
             if self.validate and not self.validate(v):
                 raise ValidationException('field %r input data did not validate' % self.name)
@@ -65,6 +65,7 @@ class BaseField(object):
     def emit(self, v, escaper=None):
         if self.max_length and isinstance(v, basestring):
             v = v[:self.max_length]
+        v = v or self._default
         if self.validate_output and not self.validate_output(v):
             raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
@@ -103,13 +104,13 @@ class NullIntField(BaseField):
     the same as 0 (zero).
     '''
     def _value(self, value):
-        return int(value)
+        return int(value) if isinstance(value, int) else value
 
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''
     _default = ""
     def _value(self, value):
-        return value.strip()
+        return value.strip() if isinstance(value, str) else value
 
 class NullStringField(BaseField):
     '''Null String field handler.
@@ -163,25 +164,32 @@ class MappingField(BaseField):
     identity column replacements. If needed output can be translated as ``json``,
     for example if the map returns lists.
     '''
-    def __init__(self, data_map, as_json=False, **kwargs):
+    def __init__(self, data_map, as_json=False, strict=False, **kwargs):
         """
         Args:
             data_map: The data_map needed to translate. Note the fields returns :attr:`~Field.default` if it is not able to map the key.
             as_json: If ``True``, the field will be output as json encoded. Default is ``False``
+            strict: If ``True``, the value must by found in the map. Default is ``False``
         """
         super(MappingField, self).__init__(**kwargs)
+        if strict and self._default:
+            data_map[self._default] = self._default
         self.data_map = data_map
         self.as_json = as_json
+        self.strict = strict
 
-    def _value(self, v):
-        print self.name, v
-        if v is None:
-            return v
-        else:
-            return self.data_map.get(v, self._default or v)
 
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option"""
+        if v is None:
+            v = self._default if self._default is not None else v
+        if self.strict:
+            try:
+                v = self.data_map[v]
+            except KeyError:
+                raise DataException("%s - %s not in map" % (self.name, v))
+        else:
+            v = self.data_map.get(v, self._default if self._default is not None else v)
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)
