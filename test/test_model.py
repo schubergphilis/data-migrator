@@ -22,6 +22,12 @@ class TestModel(unittest.TestCase):
             pass
         self.assertEquals(BasicModel._meta.model_name, "BasicModel")
 
+    def test_default_init(self):
+        '''model default initialization'''
+        o = TrailModel()
+        self.assertIsNone(o.a)
+        self.assertIsNone(o.b)
+
     def test_init(self):
         '''model initialization'''
         d = {"a":"hello", "b":"World"}
@@ -50,6 +56,20 @@ class TestModel(unittest.TestCase):
         row = ['hello', 'world']
         o1 = TrailModel.objects.scan_row(row)
         self.assertEquals(o1[0].a, 'hello')
+
+    def test_default_emit(self):
+        '''default values are returned on emit'''
+        o = TrailModel()
+        e = o.emit()
+        self.assertEquals(e['a'], '')
+        self.assertEquals(e['b'], '')
+
+    def test_init_emit(self):
+        '''(default) values are returned on emit'''
+        o = TrailModel(a="hello", b=None)
+        e = o.emit()
+        self.assertEquals(e['a'], 'hello')
+        self.assertEquals(e['b'], '')
 
 if __name__ == '__main__':
     unittest.main()

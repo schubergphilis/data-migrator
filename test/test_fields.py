@@ -5,7 +5,7 @@ import unittest
 
 from data_migrator import models
 from data_migrator.utils import sql_escape
-from data_migrator.exceptions import ValidationException
+from data_migrator.exceptions import ValidationException, DataException
 
 class TestFields(unittest.TestCase):
 
@@ -28,7 +28,7 @@ class TestFields(unittest.TestCase):
     def test_default_null(self):
         '''null handling'''
         f = models.IntField(pos=0, null="NULL", default=10)
-        self.assertEquals(f.scan(row=["NULL","20"]), 10)
+        self.assertEquals(f.scan(row=["NULL","20"]), None)
         self.assertEquals(f.default(), 10)
 
     def test_exception(self):
@@ -48,6 +48,13 @@ class TestFields(unittest.TestCase):
         self.assertIsNone(r)
         self.assertEquals(f.emit(r, escaper=sql_escape), "NULL")
 
+    def test_null_int(self):
+        '''dedicated null string fields'''
+        f = models.NullIntField(pos=0)
+        r = f.scan(row=["NULL"])
+        self.assertIsNone(r)
+        self.assertEquals(f.emit(r, escaper=sql_escape), "NULL")
+
     def test_parse_value(self):
         '''add a parse function for a field'''
         f = models.IntField(pos=0, parse=lambda x: int(x) * 2)
@@ -62,6 +69,27 @@ class TestFields(unittest.TestCase):
         '''validation exception generation'''
         f = models.IntField(pos=0, validate=lambda x: x < 100)
         self.assertRaises(ValidationException, f.scan, row=["200","20"])
+
+    def test_mapping_field(self):
+        '''test mapping field'''
+        f = models.MappingField(pos=0, default="bad", data_map={"10": "hello", "200": "world"})
+        self.assertEquals(f.scan(row=["200","20"]), "200")
+        self.assertEquals(f.emit("10"), "hello")
+        self.assertEquals(f.emit("200"), "world")
+        self.assertEquals(f.emit("mis"), "bad")
+
+    def test_mapping_field_list(self):
+        '''test mapping field with lists'''
+        f = models.MappingField(pos=0, default=[], data_map={"10": ["hello"], "200": ["world"]})
+        self.assertEquals(f.emit("10"), ["hello"])
+        self.assertEquals(f.emit("200"), ["world"])
+        self.assertEquals(f.emit("mis"), [])
+
+    def test_mapping_field_strict(self):
+        '''test mapping field'''
+        f = models.MappingField(pos=0, strict=True, default="bad", data_map={"10": "hello", "200": "world"})
+        self.assertRaises(DataException, f.emit, "mis")
+
 
 if __name__ == '__main__':
     unittest.main()

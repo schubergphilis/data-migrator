@@ -11,7 +11,7 @@ This module contains all classes for models, managers and fields
 
 from .base import Model
 from .manager import SimpleManager
-from .fields import IntField, StringField, NullStringField, BooleanField, UUIDField, NullField, JSONField, MappingField, HiddenField
+from .fields import IntField, NullIntField, StringField, NullStringField, BooleanField, UUIDField, NullField, JSONField, MappingField, HiddenField
 
 
 __all__ = [
