@@ -30,6 +30,7 @@ class TestFields(unittest.TestCase):
         f = models.IntField(pos=0, null="NULL", default=10)
         self.assertEquals(f.scan(row=["NULL","20"]), None)
         self.assertEquals(f.default(), 10)
+        self.assertEquals(f.emit(None), 10)
 
     def test_exception(self):
         '''exception generation'''

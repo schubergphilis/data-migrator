@@ -95,7 +95,7 @@ class IntField(BaseField):
     '''Basic integer field handler'''
     _default = 0
     def _value(self, value):
-        return int(value)
+        return int(value) if isinstance(value, basestring) else value
 
 class NullIntField(BaseField):
     '''Null integer field handler.
@@ -104,7 +104,7 @@ class NullIntField(BaseField):
     the same as 0 (zero).
     '''
     def _value(self, value):
-        return int(value) if isinstance(value, int) else value
+        return int(value) if isinstance(value, basestring) else value
 
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''
@@ -154,6 +154,8 @@ class JSONField(BaseField):
     '''
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option"""
+        if v is None:
+            v = self._default if self._default is not None else v
         v = json.dumps(v)
         return super(JSONField, self).emit(v, escaper)
 
