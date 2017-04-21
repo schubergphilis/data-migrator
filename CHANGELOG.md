@@ -3,6 +3,11 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+## [0.5.0] - 2017-04-21
+### Changed
+- Moving to python3 #4
+
+
 ## [0.4.7] - 2017-04-18
 ### Changed
 - Reversed the default setting logic #5

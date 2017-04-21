@@ -18,14 +18,14 @@ class TestFields(unittest.TestCase):
     def test_init(self):
         '''basic manager, default init'''
         a= SimpleManager()
-        self.assertEquals(a.rows, 0)
-        self.assertEquals(a.dropped, 0)
+        self.assertEqual(a.rows, 0)
+        self.assertEqual(a.dropped, 0)
 
     def test_empty_prepare(self):
         '''low level prepare step, done by ModelBase'''
         a= SimpleManager()
         a._prepare(ManagerModel)
-        self.assertEquals(a.unique_values, {})
+        self.assertEqual(a.unique_values, {})
 
     def test_scan(self):
         a = [
@@ -35,9 +35,9 @@ class TestFields(unittest.TestCase):
         l = len(ManagerModel.objects)
         ManagerModel.objects.scan_rows(a)
         l2 = len(ManagerModel.objects)
-        self.assertEquals(l+2, l2)
+        self.assertEqual(l+2, l2)
         s = ManagerModel.objects.stats()
-        self.assertEquals(s['out'], l2)
+        self.assertEqual(s['out'], l2)
 
     def test_drop_if_none(self):
         a = [
@@ -47,9 +47,9 @@ class TestFields(unittest.TestCase):
         l = len(ManagerModel.objects)
         ManagerModel.objects.scan_rows(a)
         l2 = len(ManagerModel.objects)
-        self.assertEquals(l+1, l2)
+        self.assertEqual(l+1, l2)
         s = ManagerModel.objects.stats()
-        self.assertEquals(s['out'], l2)
+        self.assertEqual(s['out'], l2)
 
 ### Features to test
 # 1. Validation

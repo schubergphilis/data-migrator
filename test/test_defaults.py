@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
+import six
 
 from data_migrator import models
 
@@ -29,7 +30,7 @@ class TestModel(unittest.TestCase):
         self.assertEqual(m.e, None)
         self.assertEqual(m.f, False)
         self.assertIsNone(m.g)
-        self.assertRegexpMatches(m.h, u'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        six.assertRegex(self, m.h, u'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
         self.assertEqual(m.i, None)
         self.assertEqual(m.j, None)
 
@@ -43,6 +44,6 @@ class TestModel(unittest.TestCase):
         self.assertEqual(m.e, None)
         self.assertEqual(m.f, False)
         self.assertIsNone(m.g)
-        self.assertRegexpMatches(m.h, u'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        six.assertRegex(self, m.h, u'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
         self.assertEqual(m.i, ["json"])
         self.assertEqual(m.j, "M")

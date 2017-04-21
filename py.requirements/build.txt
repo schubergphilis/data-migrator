@@ -5,3 +5,5 @@
 
 coverage
 codacy-coverage
+bumpversion
+six

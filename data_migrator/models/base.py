@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+from six import with_metaclass
 
 from .manager import SimpleManager
 from .fields import BaseField, HiddenField
@@ -50,7 +51,7 @@ class ModelBase(type):
         return new_class
 
 
-class Model(object):
+class Model(with_metaclass(ModelBase)):
     """Model is foundation for every transformation
 
     Each non-abstract :class:`~data_migrator.models.Model` class must have a
@@ -63,14 +64,14 @@ class Model(object):
     Attributes:
         objects: reference to manager
     """
-    __metaclass__=ModelBase
+    # __metaclass__=ModelBase
 
     def __init__(self, **kwargs):
         _meta = self.__class__._meta
         # set value fields from kwargs if declared
         # model is very strict raise those not declared
         _fields = _meta.fields
-        f = _fields.keys()[:]
+        f = list(_fields.keys())[:]
         for k,v in kwargs.items():
             if k == _meta.remark:
                 setattr(self, k, v)

@@ -30,7 +30,7 @@ class Options(object):
         for k, d in _options.items():
             setattr(self, k, getattr(self.meta, k, d))
         for k in self.meta.__dict__.keys():
-            if k[0:2] != '__' and k not in _options.keys() + ['table_name', 'manager']:
+            if k[0:2] != '__' and k not in list(_options.keys()) + ['table_name', 'manager']:
                 raise DefinitionException("%s, %s not a valid meta key" % (self.model_name, k))
 
         # store all fields, sorted

@@ -2,6 +2,7 @@
 results
 **.sql
 **.pyc
+__pycache__/
 
 # build related
 dist

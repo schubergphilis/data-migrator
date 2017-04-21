@@ -26,17 +26,17 @@ class TestEmitterBase(unittest.TestCase):
     def test_base_default(self):
         '''Base Emitter defaults'''
         b = BaseEmitter(manager=EmitterModel.objects)
-        self.assertEquals(b.filename(), "emittermodel.txt")
+        self.assertEqual(b.filename(), "emittermodel.txt")
 
     def test_base_fileext(self):
         '''Base Emitter defaults'''
         b = BaseEmitter(manager=EmitterModel.objects, extension='.sql')
-        self.assertEquals(b.filename(), "emittermodel.sql")
+        self.assertEqual(b.filename(), "emittermodel.sql")
 
 class MySQLEmitterBase(unittest.TestCase):
     def test_start(self):
         e = MySQLEmitter(manager=EmitterModel.objects)
-        self.assertEquals(len(EmitterModel.objects), 2)
+        self.assertEqual(len(EmitterModel.objects), 2)
         self.assertGreater(len(e.preamble(headers=['hello'])), 0)
 
     def test_header(self):
@@ -48,8 +48,8 @@ class MySQLEmitterBase(unittest.TestCase):
     def test_emit(self):
         e = MySQLEmitter(manager=EmitterHeaderModel.objects)
         o = EmitterModel.objects.all()
-        self.assertEquals(e.emit(o[0]), ['INSERT INTO `test` (`b`, `a`) VALUES ("world", "hello");'])
-        self.assertEquals(e.emit(o[1]), ['INSERT INTO `test` (`b`, `a`) VALUES ("cruel world", "goodbye");'])
+        self.assertEqual(e.emit(o[0]), ['INSERT INTO `test` (`b`, `a`) VALUES ("world", "hello");'])
+        self.assertEqual(e.emit(o[1]), ['INSERT INTO `test` (`b`, `a`) VALUES ("cruel world", "goodbye");'])
 
 class CSVEmitterBase(unittest.TestCase):
 
@@ -61,8 +61,8 @@ class CSVEmitterBase(unittest.TestCase):
     def test_emit(self):
         e = CSVEmitter(manager=EmitterHeaderModel.objects)
         o = EmitterModel.objects.all()
-        self.assertEquals(e.emit(o[0]), ['"world", "hello"'])
-        self.assertEquals(e.emit(o[1]), ['"cruel world", "goodbye"'])
+        self.assertEqual(e.emit(o[0]), ['"world", "hello"'])
+        self.assertEqual(e.emit(o[1]), ['"cruel world", "goodbye"'])
 
 if __name__ == '__main__':
     unittest.main()
