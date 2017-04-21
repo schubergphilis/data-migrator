@@ -102,7 +102,7 @@ class TestFields(unittest.TestCase):
         self.assertIsNone(f.default)
         self.assertEquals(f.emit("some value"), "some value")
 
-    def test_uuid_field(self):
+    def test_uuid_field_default(self):
         '''uuid field, trying to set default'''
         f = models.UUIDField(default='bla')
         self.assertEquals(f.emit("some value"), "some value")
