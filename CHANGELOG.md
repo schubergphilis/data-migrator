@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [0.4.7] - 2017-04-18
 ### Changed
 - Reversed the default setting logic #5
+- Direct string replacement #18
 
 ### Added
 - exception documentation #11

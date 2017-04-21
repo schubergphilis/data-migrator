@@ -3,6 +3,7 @@
 
 import uuid
 import json
+from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
 
@@ -10,19 +11,23 @@ def new_exception(field, exc_class, msg, *args):
     msg = "%s[%s]: " + msg
     return exc_class(msg % ((field.__class__.__name__, field.name) + args))
 
+def _replace(format_str, x):
+    return format_str.format(x)
+
 class BaseField(object):
-    '''Base column definition for the transformation DSL'''
+    '''Base column definition for the transformation DSL
+    '''
     creation_order = 0
 
     def __init__(self,
         pos=-1, name="",
         default=None, null="NULL",
-        replace=None, parse=None, validate=None,
+        replacement=None, parse=None, validate=None,
         max_length=None, unique=False,
         validate_output=None):
 
         # default value if null
-        self._default = default if default is not None else getattr(self.__class__, '_default', default)
+        self.default = default if default is not None else getattr(self.__class__, 'default', default)
         # fixed position in the row to read
         self.max_length = max_length
         # name of this field (will be set in Model class construction)
@@ -33,7 +38,9 @@ class BaseField(object):
         self.parse = parse or getattr(self.__class__, 'parse', None)
         self.pos = int(pos)
         # replace string to use in output
-        self.replace = getattr(self.__class__, 'replace', replace)
+        if isinstance(replacement, basestring):
+            replacement = partial(_replace, replacement)
+        self.replace = getattr(self.__class__, 'replace', replacement)
         self.unique = unique
         # some function to apply to value
         self.validate = validate or getattr(self.__class__, 'validate', None)
@@ -65,7 +72,7 @@ class BaseField(object):
     def emit(self, v, escaper=None):
         if self.max_length and isinstance(v, basestring):
             v = v[:self.max_length]
-        v = v or self._default
+        v = v or self.default
         if self.validate_output and not self.validate_output(v):
             raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
@@ -75,9 +82,6 @@ class BaseField(object):
         if self.replace:
             v = self.replace(v)
         return v
-
-    def default(self):
-        return self._value(self._default)
 
     def _value(self, value):
         # pylint: disable=R0201, no-self-use
@@ -93,7 +97,7 @@ class HiddenField(BaseField):
 
 class IntField(BaseField):
     '''Basic integer field handler'''
-    _default = 0
+    default = 0
     def _value(self, value):
         return int(value) if isinstance(value, basestring) else value
 
@@ -108,7 +112,7 @@ class NullIntField(BaseField):
 
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''
-    _default = ""
+    default = ""
     def _value(self, value):
         return value.strip() if isinstance(value, str) else value
 
@@ -127,26 +131,40 @@ class BooleanField(BaseField):
     a bool that takes any cased permutation of true, yes, 1 and translates this into
     ``True`` or ``False`` otherwise.
     '''
-    _default = False
+    default = False
     def _value(self, value):
         try:
             return value.lower()[0] in ['y', 't', '1']
         except (AttributeError, IndexError):
             return False
 
+
+class DefaultField(BaseField):
+    '''DefaultField always returns the default value'''
+    def emit(self, v, escaper=None):
+        """Emit is overwritten return default always"""
+        return super(DefaultField, self).emit(self.default, escaper)
+
+    def _value(self, v):
+        '''override so we can never set'''
+        return self.default
+
+class NullField(DefaultField):
+    '''NULL returning field by generating None'''
+    pass
+
 class UUIDField(BaseField):
     '''UUID generating field.
 
     a field that generates a ``str(uuid.uuid4())``
     '''
-    def _value(self, value):
+    def __init__(self, *args, **kwargs):
+        kwargs['default'] = None
+        super(UUIDField, self).__init__(*args, **kwargs)
+
+    def _value(self, v):
+        '''override and automatically set'''
         return str(uuid.uuid4())
-
-class NullField(BaseField):
-    '''NULL returning field by generating None'''
-    def _value(self, value):
-        return None
-
 
 class JSONField(BaseField):
     '''a field that takes the values and spits out a JSON encoding string. Great for
@@ -155,7 +173,7 @@ class JSONField(BaseField):
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option"""
         if v is None:
-            v = self._default if self._default is not None else v
+            v = self.default if self.default is not None else v
         v = json.dumps(v)
         return super(JSONField, self).emit(v, escaper)
 
@@ -174,8 +192,8 @@ class MappingField(BaseField):
             strict: If ``True``, the value must by found in the map. Default is ``False``
         """
         super(MappingField, self).__init__(**kwargs)
-        if strict and self._default:
-            data_map[self._default] = self._default
+        if strict and self.default:
+            data_map[self.default] = self.default
         self.data_map = data_map
         self.as_json = as_json
         self.strict = strict
@@ -184,14 +202,14 @@ class MappingField(BaseField):
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option"""
         if v is None:
-            v = self._default if self._default is not None else v
+            v = self.default if self.default is not None else v
         if self.strict:
             try:
                 v = self.data_map[v]
             except KeyError:
                 raise DataException("%s - %s not in map" % (self.name, v))
         else:
-            v = self.data_map.get(v, self._default if self._default is not None else v)
+            v = self.data_map.get(v, self.default if self.default is not None else v)
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)

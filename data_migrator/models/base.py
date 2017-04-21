@@ -56,9 +56,7 @@ class Model(object):
     Each non-abstract :class:`~data_migrator.models.Model` class must have a
     :class:`~data_migrator.models.Manager` instance added to it.
     Data-migrator ensures that in your model class you have  at least a
-    default ``SimpleManager`` specified. If you don't add your own ``Manager``,
-    Django will add an attribute ``objects`` containing default
-    :class:`~data_migrator.models.SimpleManager` instance. If you add your own
+    standard ``SimpleManager`` specified. If you add your own
     :class:`~data_migrator.models.Manager` instance attribute, the default one does
     not appear.
 
@@ -77,13 +75,14 @@ class Model(object):
             if k == _meta.remark:
                 setattr(self, k, v)
             elif k in f:
-                setattr(self, k, v)
+                setattr(self, k, _fields[k]._value(v))
                 f.remove(k)
             else:
                 raise DataException("trying to set unknown field %s" % k)
         # add missing fields, put in None values (to be replaced by default at emit)
         for k in f:
-            setattr(self, k, None)
+            _f = _fields[k]
+            setattr(self, k, _f._value(_f.default))
 
     def scan(self, row):
         '''scan model from row based on field definition scanners.

@@ -3,12 +3,14 @@
 
 import unittest
 
-from data_migrator.models import Model, StringField
+from data_migrator.models import Model, StringField, NullField, UUIDField
 from data_migrator.exceptions import DataException
 
 class TrailModel(Model):
     a = StringField(pos=0)
     b = StringField(pos=1)
+    empty = NullField()
+    uuid = UUIDField()
 
     class Meta:
         table_name = "new_name"
@@ -25,15 +27,21 @@ class TestModel(unittest.TestCase):
     def test_default_init(self):
         '''model default initialization'''
         o = TrailModel()
-        self.assertIsNone(o.a)
-        self.assertIsNone(o.b)
+        self.assertEquals(o.a, '')
+        self.assertEquals(o.b, '')
+        self.assertIsNone(o.empty)
+        self.assertIsNotNone(o.uuid)
+        self.assertNotEquals(o.uuid, '')
 
     def test_init(self):
         '''model initialization'''
         d = {"a":"hello", "b":"World"}
-        o1 = TrailModel(a="hello", b="world")
+        o1 = TrailModel(a="hello", b="world", empty="somevalue", uuid='bla')
         o2 = TrailModel(**d)
         self.assertEquals(o1.a, "hello")
+        self.assertEquals(o1.empty, None)
+        self.assertNotEquals(o1.uuid, 'bla')
+        self.assertIsNotNone(o1.uuid)
         self.assertEquals(o2.a, "hello")
         self.assertEquals(o2._meta.model_name, "TrailModel")
         self.assertEquals(o2._meta.table_name, "new_name")
