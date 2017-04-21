@@ -12,7 +12,7 @@ class TestFields(unittest.TestCase):
     def test_basics(self):
         '''get the basics of parsing and emitting'''
         f = models.IntField(pos=0)
-        self.assertEquals(f.default(), 0)
+        self.assertEquals(f.default, 0)
         self.assertEquals(f.scan(row=["10","20"]), 10)
         self.assertEquals(f.emit(10), 10)
 
@@ -29,7 +29,7 @@ class TestFields(unittest.TestCase):
         '''null handling'''
         f = models.IntField(pos=0, null="NULL", default=10)
         self.assertEquals(f.scan(row=["NULL","20"]), None)
-        self.assertEquals(f.default(), 10)
+        self.assertEquals(f.default, 10)
         self.assertEquals(f.emit(None), 10)
 
     def test_exception(self):
@@ -91,6 +91,18 @@ class TestFields(unittest.TestCase):
         f = models.MappingField(pos=0, strict=True, default="bad", data_map={"10": "hello", "200": "world"})
         self.assertRaises(DataException, f.emit, "mis")
 
+    def test_uuid_field(self):
+        '''test uuid field'''
+        f = models.UUIDField()
+        self.assertIsNone(f.default)
+        self.assertEquals(f.emit("some value"), "some value")
+
+    def test_uuid_field(self):
+        '''test uuid field'''
+        f = models.UUIDField(default='bla')
+        self.assertEquals(f.emit("some value"), "some value")
+        self.assertNotEquals( f.default, 'bla')
+        self.assertIsNone(f.default)
 
 if __name__ == '__main__':
     unittest.main()
