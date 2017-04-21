@@ -62,23 +62,14 @@ If set it will match the source column value and consider this a ``None`` value.
 default this attribute is set to ``None``. Note that for none Null fields ``None``
 will be translated to :attr:`~Field.default`
 
-``replace``
+``replacement``
 -----------
 
-.. attribute:: Field.replace
+.. attribute:: Field.replacement
 
-If set this is a pre-emit replacement function. This for example could be used to
-insert replacement lookup select queries. Adding more indirection into the data
-generation.
-
-``replace``
------------
-
-.. attribute:: Field.replace
-
-If set this is a pre-emit replacement function. This for example could be used to
-insert replacement lookup select queries. Adding more indirection into the data
-generation.
+If set, this is a pre-emit replacement function. This could be used to insert dynamic
+replacement lookup select queries, adding more indirection into the data generation.
+Value could be either function or a string.
 
 ``parse``
 ---------

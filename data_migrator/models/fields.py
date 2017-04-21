@@ -15,7 +15,8 @@ def _replace(format_str, x):
     return format_str.format(x)
 
 class BaseField(object):
-    '''Base column definition for the transformation DSL'''
+    '''Base column definition for the transformation DSL
+    '''
     creation_order = 0
 
     def __init__(self,

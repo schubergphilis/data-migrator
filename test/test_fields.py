@@ -37,7 +37,7 @@ class TestFields(unittest.TestCase):
         self.assertEquals(f.default, 10)
         self.assertEquals(f.emit(None), 10)
 
-    def test_exception(self):
+    def test_exception_int(self):
         '''exception generation'''
         f = models.IntField(pos=0)
         self.assertRaises(ValueError, f.scan, row=["BLA","20"])
