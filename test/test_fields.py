@@ -16,11 +16,16 @@ class TestFields(unittest.TestCase):
         self.assertEquals(f.scan(row=["10","20"]), 10)
         self.assertEquals(f.emit(10), 10)
 
+    def test_replacement_string(self):
+        '''replacement facility'''
+        f = models.StringField(replacement='hello {}')
+        self.assertEquals(f.emit("world"), "hello world")
+
     def test_functions(self):
         '''check the functions for parsing and emitting'''
         f1 = lambda x:abs(int(x))
         f2 = lambda x:"number = %s"%x
-        f = models.IntField(pos=0, parse=f1, replace=f2)
+        f = models.IntField(pos=0, parse=f1, replacement=f2)
         self.assertEquals(f.scan(row=["-10","20"]), 10)
         self.assertEquals(f.emit(10), 'number = 10')
         self.assertEquals(f.emit(10, escaper=lambda x:"xx%sxx" % x), 'number = xx10xx')
@@ -72,7 +77,7 @@ class TestFields(unittest.TestCase):
         self.assertRaises(ValidationException, f.scan, row=["200","20"])
 
     def test_mapping_field(self):
-        '''test mapping field'''
+        '''basic mapping field'''
         f = models.MappingField(pos=0, default="bad", data_map={"10": "hello", "200": "world"})
         self.assertEquals(f.scan(row=["200","20"]), "200")
         self.assertEquals(f.emit("10"), "hello")
@@ -80,28 +85,28 @@ class TestFields(unittest.TestCase):
         self.assertEquals(f.emit("mis"), "bad")
 
     def test_mapping_field_list(self):
-        '''test mapping field with lists'''
+        '''mapping field with lists'''
         f = models.MappingField(pos=0, default=[], data_map={"10": ["hello"], "200": ["world"]})
         self.assertEquals(f.emit("10"), ["hello"])
         self.assertEquals(f.emit("200"), ["world"])
         self.assertEquals(f.emit("mis"), [])
 
     def test_mapping_field_strict(self):
-        '''test mapping field'''
+        '''mapping field in a strict way'''
         f = models.MappingField(pos=0, strict=True, default="bad", data_map={"10": "hello", "200": "world"})
         self.assertRaises(DataException, f.emit, "mis")
 
     def test_uuid_field(self):
-        '''test uuid field'''
+        '''uuid field'''
         f = models.UUIDField()
         self.assertIsNone(f.default)
         self.assertEquals(f.emit("some value"), "some value")
 
     def test_uuid_field(self):
-        '''test uuid field'''
+        '''uuid field, trying to set default'''
         f = models.UUIDField(default='bla')
         self.assertEquals(f.emit("some value"), "some value")
-        self.assertNotEquals( f.default, 'bla')
+        self.assertNotEquals(f.default, 'bla')
         self.assertIsNone(f.default)
 
 if __name__ == '__main__':

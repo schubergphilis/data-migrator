@@ -3,12 +3,16 @@
 
 import uuid
 import json
+from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
 
 def new_exception(field, exc_class, msg, *args):
     msg = "%s[%s]: " + msg
     return exc_class(msg % ((field.__class__.__name__, field.name) + args))
+
+def _replace(format_str, x):
+    return format_str.format(x)
 
 class BaseField(object):
     '''Base column definition for the transformation DSL'''
@@ -17,7 +21,7 @@ class BaseField(object):
     def __init__(self,
         pos=-1, name="",
         default=None, null="NULL",
-        replace=None, parse=None, validate=None,
+        replacement=None, parse=None, validate=None,
         max_length=None, unique=False,
         validate_output=None):
 
@@ -33,7 +37,9 @@ class BaseField(object):
         self.parse = parse or getattr(self.__class__, 'parse', None)
         self.pos = int(pos)
         # replace string to use in output
-        self.replace = getattr(self.__class__, 'replace', replace)
+        if isinstance(replacement, basestring):
+            replacement = partial(_replace, replacement)
+        self.replace = getattr(self.__class__, 'replace', replacement)
         self.unique = unique
         # some function to apply to value
         self.validate = validate or getattr(self.__class__, 'validate', None)
