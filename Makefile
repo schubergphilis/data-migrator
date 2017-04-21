@@ -25,6 +25,12 @@ dev: ## install for development
 dev_requirements:
 	@pip install -r py.requirements/build.txt
 
+dev_env:
+	@pip install -r py.requirements/environment.txt
+
+tox:
+	tox -e py27,py36,docs
+
 coverage: dev
 	coverage run -m unittest discover -s tests/
 	coverage xml
