@@ -25,8 +25,8 @@ dev: ## install for development
 dev_requirements:
 	@pip install -r py.requirements/build.txt
 
-coverage:
-	coverage run -m unittest discover -s test/
+coverage: dev
+	coverage run -m unittest discover -s tests/
 	coverage xml
 	python-codacy-coverage -r coverage.xml
 
