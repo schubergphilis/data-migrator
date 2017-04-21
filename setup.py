@@ -17,7 +17,9 @@ setup(
     maintainer_email='iheitlager@schubergphilis.com',
     keywords = ["datamigration", "development-tools"],
     url='https://github.com/schubergphilis/data-migrator',
-    packages=find_packages(exclude=['test_*']),
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    test_suite="tests",
     classifiers = [
         "Development Status :: 6 - Mature",
         "Environment :: Console",

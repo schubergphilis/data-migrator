@@ -7,3 +7,4 @@ coverage
 codacy-coverage
 bumpversion
 six
+tox

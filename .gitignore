@@ -11,3 +11,4 @@ data_migrator.egg*
 docs/_build
 .coverage
 coverage.xml
+.tox
