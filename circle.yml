@@ -6,4 +6,4 @@ machine:
 
   # Version of ruby to use
   python:
-    version: 2.7
+    version: 2.7 3.6
