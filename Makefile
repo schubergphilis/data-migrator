@@ -11,7 +11,10 @@ clean:
 	@rm -rf build data_migrator.egg* dist
 	-@rm -f .coverage coverage.xml
 
-.PHONY: test dist docs
+.PHONY: test dist docs show_version
+
+show_version:
+	@python -c "import data_migrator; print(data_migrator.__version__)"
 
 test:
 	@python -m unittest discover -s tests
