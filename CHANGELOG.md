@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Changed
 - Moving to python3 #4
 
+### Added
+- tox based build
+
 
 ## [0.4.7] - 2017-04-18
 ### Changed
