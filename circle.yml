@@ -4,7 +4,5 @@ machine:
   timezone:
     Europe/Amsterdam # Set the timezone
 
-  dependencies:
-    override:
-      - pip install tox tox-pyenv
-      - pyenv local 2.7.12 3.6.1
+  post:
+    - pyenv global 2.7.12 3.6.1
