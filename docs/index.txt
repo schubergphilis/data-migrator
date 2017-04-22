@@ -28,7 +28,8 @@ Contents
    concepts/index
    ref/index
    about
-   code-of-conduct
+   contrib/index
+   releases
 
 
 Indices and tables

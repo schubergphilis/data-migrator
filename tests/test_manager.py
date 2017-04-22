@@ -5,14 +5,15 @@ import unittest
 
 from data_migrator.models import SimpleManager
 from data_migrator.models import Model, StringField
-
+from data_migrator.exceptions import NonUniqueDataException
 
 class ManagerModel(Model):
-    a = StringField(pos=0)
+    a = StringField(pos=0, unique=True)
     b = StringField(pos=1)
 
     class Meta:
         drop_if_none = ['b']
+        fail_non_unique = True
 
 class TestFields(unittest.TestCase):
     def test_init(self):
@@ -25,12 +26,12 @@ class TestFields(unittest.TestCase):
         '''low level prepare step, done by ModelBase'''
         a= SimpleManager()
         a._prepare(ManagerModel)
-        self.assertEqual(a.unique_values, {})
+        self.assertIn('a', a.unique_values)
 
     def test_scan(self):
         a = [
-            ["hello", "world"],
-            ["goodbye", "cruel world"],
+            ["hallo", "wereld"],
+            ["bon jour", "le monde"],
         ]
         l = len(ManagerModel.objects)
         ManagerModel.objects.scan_rows(a)
@@ -51,10 +52,18 @@ class TestFields(unittest.TestCase):
         s = ManagerModel.objects.stats()
         self.assertEqual(s['out'], l2)
 
+
+    def test_fail_non_unique(self):
+        a = [
+            ["foo", "bar"],
+            ["foo", "bar"],
+        ]
+        self.assertRaises(NonUniqueDataException, ManagerModel.objects.scan_rows, a)
+
 ### Features to test
 # 1. Validation
-# 2. None test
-# 3. Unique test
+# 2. [Done] None test
+# 3. [Done] Unique test
 # 4. Fails and drops
-# 5. replace
-# 6. max_length scanning
+# 5. [done] replace
+# 6. [done] max_length scanning

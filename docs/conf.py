@@ -63,7 +63,7 @@ author = u'Ilja Heitlager'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = "0.5.0"
+release = "0.5.1alpha0"
 # The short X.Y version.
 version = ".".join(release.split(".")[0:2])
 
@@ -114,6 +114,8 @@ html_static_path = ['_static']
 
 html_show_sourcelink = True
 html_show_sphinx = True
+
+suppress_warnings = ['image.nonlocal_uri']
 
 # -- Options for HTMLHelp output ------------------------------------------
 

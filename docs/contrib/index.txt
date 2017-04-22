@@ -1,0 +1,33 @@
+==========
+Contribute
+==========
+
+.. image:: https://circleci.com/gh/schubergphilis/data-migrator.svg?style=svg
+    :target: https://circleci.com/gh/schubergphilis/data-migrator
+
+.. image:: https://readthedocs.org/projects/data-migrator/badge/?version=latest
+    :target: http://data-migrator.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. image:: https://api.codacy.com/project/badge/Grade/bf6030e9e7e248979607802880336611
+    :target: https://www.codacy.com/app/schubergphilis/data-migrator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=schubergphilis/data-migrator&amp;utm_campaign=Badge_Grade
+
+.. image:: https://api.codacy.com/project/badge/Coverage/bf6030e9e7e248979607802880336611
+    :target: https://www.codacy.com/app/schubergphilis/data-migrator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=schubergphilis/data-migrator&amp;utm_campaign=Badge_Coverage
+
+.. image:: https://badge.fury.io/py/data-migrator.svg
+    :target: https://badge.fury.io/py/data-migrator
+
+----
+
+.. image:: https://img.shields.io/pypi/pyversions/data-migrator.svg
+    :target: https://pypi.python.org/pypi/data-migrator
+
+Feel welcome if you would like to contribute. The details on how are described in
+the `CONTRIBUTING.md <https://github.com/schubergphilis/data-migrator/blob/master/CONTRIBUTING.md/>`_
+
+.. toctree::
+   :maxdepth: 1
+
+   build-environment
+   code-of-conduct

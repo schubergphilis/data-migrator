@@ -6,3 +6,7 @@ machine:
 
   post:
     - pyenv global 2.7.12 3.6.1
+
+database:
+  override:
+    - echo "Skipping DB section."
