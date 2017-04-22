@@ -3,6 +3,5 @@
 # ============================================================================
 # REQUIRES: pip >= 6.0
 
-coverage
-codacy-coverage
-six
+bumpversion
+tox

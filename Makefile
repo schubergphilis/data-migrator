@@ -14,7 +14,7 @@ clean:
 .PHONY: test dist docs
 
 test:
-	@python -m unittest discover -s test
+	@python -m unittest discover -s tests
 
 dist:
 	@python setup.py sdist --formats=gztar,zip bdist_wheel
@@ -25,8 +25,14 @@ dev: ## install for development
 dev_requirements:
 	@pip install -r py.requirements/build.txt
 
-coverage:
-	coverage run -m unittest discover -s test/
+dev_env:
+	@pip install -r py.requirements/environment.txt
+
+tox:
+	tox -e py27,py36,docs
+
+coverage: dev
+	coverage run -m unittest discover -s tests/
 	coverage xml
 	python-codacy-coverage -r coverage.xml
 

@@ -14,8 +14,13 @@
 .. image:: https://badge.fury.io/py/data-migrator.svg
     :target: https://badge.fury.io/py/data-migrator
 
+----
+
+.. image:: https://img.shields.io/pypi/pyversions/data-migrator.svg
+    :target: https://pypi.python.org/pypi/data-migrator
+
 Data-migrator is a simple data-migration package for python lovers. It is a
-declarative DSL for table drive data transformations, set up as an open and 
+declarative DSL for table drive data transformations, set up as an open and
 extensive system.
 
 Example

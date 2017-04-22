@@ -12,30 +12,30 @@ class TestFields(unittest.TestCase):
     def test_basics(self):
         '''get the basics of parsing and emitting'''
         f = models.IntField(pos=0)
-        self.assertEquals(f.default, 0)
-        self.assertEquals(f.scan(row=["10","20"]), 10)
-        self.assertEquals(f.emit(10), 10)
+        self.assertEqual(f.default, 0)
+        self.assertEqual(f.scan(row=["10","20"]), 10)
+        self.assertEqual(f.emit(10), 10)
 
     def test_replacement_string(self):
         '''replacement facility'''
         f = models.StringField(replacement='hello {}')
-        self.assertEquals(f.emit("world"), "hello world")
+        self.assertEqual(f.emit("world"), "hello world")
 
     def test_functions(self):
         '''check the functions for parsing and emitting'''
         f1 = lambda x:abs(int(x))
         f2 = lambda x:"number = %s"%x
         f = models.IntField(pos=0, parse=f1, replacement=f2)
-        self.assertEquals(f.scan(row=["-10","20"]), 10)
-        self.assertEquals(f.emit(10), 'number = 10')
-        self.assertEquals(f.emit(10, escaper=lambda x:"xx%sxx" % x), 'number = xx10xx')
+        self.assertEqual(f.scan(row=["-10","20"]), 10)
+        self.assertEqual(f.emit(10), 'number = 10')
+        self.assertEqual(f.emit(10, escaper=lambda x:"xx%sxx" % x), 'number = xx10xx')
 
     def test_default_null(self):
         '''null handling'''
         f = models.IntField(pos=0, null="NULL", default=10)
-        self.assertEquals(f.scan(row=["NULL","20"]), None)
-        self.assertEquals(f.default, 10)
-        self.assertEquals(f.emit(None), 10)
+        self.assertEqual(f.scan(row=["NULL","20"]), None)
+        self.assertEqual(f.default, 10)
+        self.assertEqual(f.emit(None), 10)
 
     def test_exception_int(self):
         '''exception generation'''
@@ -45,51 +45,51 @@ class TestFields(unittest.TestCase):
     def test_string_length(self):
         '''build in string trimming'''
         f = models.StringField(pos=0, max_length=3)
-        self.assertEquals(f.emit("blablabla"), "bla")
+        self.assertEqual(f.emit("blablabla"), "bla")
 
     def test_null_string(self):
         '''dedicated null string fields'''
         f = models.NullStringField(pos=0)
         r = f.scan(row=["NULL"])
         self.assertIsNone(r)
-        self.assertEquals(f.emit(r, escaper=sql_escape), "NULL")
+        self.assertEqual(f.emit(r, escaper=sql_escape), "NULL")
 
     def test_null_int(self):
         '''dedicated null string fields'''
         f = models.NullIntField(pos=0)
         r = f.scan(row=["NULL"])
         self.assertIsNone(r)
-        self.assertEquals(f.emit(r, escaper=sql_escape), "NULL")
+        self.assertEqual(f.emit(r, escaper=sql_escape), "NULL")
 
     def test_parse_value(self):
         '''add a parse function for a field'''
         f = models.IntField(pos=0, parse=lambda x: int(x) * 2)
-        self.assertEquals(f.scan(row=["10","20"]), 20)
+        self.assertEqual(f.scan(row=["10","20"]), 20)
 
     def test_parse_row(self):
         '''add a parse function for a field'''
         f = models.IntField(parse=lambda x: int(x[1]) * 2)
-        self.assertEquals(f.scan(row=["10","20"]), 40)
+        self.assertEqual(f.scan(row=["10","20"]), 40)
 
     def test_validation(self):
         '''validation exception generation'''
-        f = models.IntField(pos=0, validate=lambda x: x < 100)
+        f = models.IntField(pos=0, validate=lambda x: int(x) < 100)
         self.assertRaises(ValidationException, f.scan, row=["200","20"])
 
     def test_mapping_field(self):
         '''basic mapping field'''
         f = models.MappingField(pos=0, default="bad", data_map={"10": "hello", "200": "world"})
-        self.assertEquals(f.scan(row=["200","20"]), "200")
-        self.assertEquals(f.emit("10"), "hello")
-        self.assertEquals(f.emit("200"), "world")
-        self.assertEquals(f.emit("mis"), "bad")
+        self.assertEqual(f.scan(row=["200","20"]), "200")
+        self.assertEqual(f.emit("10"), "hello")
+        self.assertEqual(f.emit("200"), "world")
+        self.assertEqual(f.emit("mis"), "bad")
 
     def test_mapping_field_list(self):
         '''mapping field with lists'''
         f = models.MappingField(pos=0, default=[], data_map={"10": ["hello"], "200": ["world"]})
-        self.assertEquals(f.emit("10"), ["hello"])
-        self.assertEquals(f.emit("200"), ["world"])
-        self.assertEquals(f.emit("mis"), [])
+        self.assertEqual(f.emit("10"), ["hello"])
+        self.assertEqual(f.emit("200"), ["world"])
+        self.assertEqual(f.emit("mis"), [])
 
     def test_mapping_field_strict(self):
         '''mapping field in a strict way'''
@@ -100,13 +100,13 @@ class TestFields(unittest.TestCase):
         '''uuid field'''
         f = models.UUIDField()
         self.assertIsNone(f.default)
-        self.assertEquals(f.emit("some value"), "some value")
+        self.assertEqual(f.emit("some value"), "some value")
 
     def test_uuid_field_default(self):
         '''uuid field, trying to set default'''
         f = models.UUIDField(default='bla')
-        self.assertEquals(f.emit("some value"), "some value")
-        self.assertNotEquals(f.default, 'bla')
+        self.assertEqual(f.emit("some value"), "some value")
+        self.assertNotEqual(f.default, 'bla')
         self.assertIsNone(f.default)
 
 if __name__ == '__main__':

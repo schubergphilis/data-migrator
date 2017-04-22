@@ -4,6 +4,5 @@ machine:
   timezone:
     Europe/Amsterdam # Set the timezone
 
-  # Version of ruby to use
-  python:
-    version: 2.7
+  post:
+    - pyenv global 2.7.12 3.6.1

@@ -4,6 +4,7 @@ import csv
 import sys
 
 from data_migrator.exceptions import DefinitionException, NonUniqueDataException
+from data_migrator.utils import isstr
 
 def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_list=False, unique=False):
     '''
@@ -37,13 +38,13 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_li
     if header:
         h = next(r, None)
     try:
-        if isinstance(key, basestring):
+        if isstr(key):
             ki = h.index(key)
         elif not header:
             ki = key
         else:
             raise DefinitionException('key=%s - should be string' % key)
-        if isinstance(value, basestring):
+        if isstr(value):
             vi = h.index(value)
         elif not header:
             vi = value

@@ -6,6 +6,7 @@ import json
 from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
+from data_migrator.utils import isstr
 
 def new_exception(field, exc_class, msg, *args):
     msg = "%s[%s]: " + msg
@@ -38,7 +39,7 @@ class BaseField(object):
         self.parse = parse or getattr(self.__class__, 'parse', None)
         self.pos = int(pos)
         # replace string to use in output
-        if isinstance(replacement, basestring):
+        if isstr(replacement):
             replacement = partial(_replace, replacement)
         self.replace = getattr(self.__class__, 'replace', replacement)
         self.unique = unique
@@ -70,7 +71,7 @@ class BaseField(object):
         return self._value(v)
 
     def emit(self, v, escaper=None):
-        if self.max_length and isinstance(v, basestring):
+        if self.max_length and isstr(v):
             v = v[:self.max_length]
         v = v or self.default
         if self.validate_output and not self.validate_output(v):
@@ -99,7 +100,7 @@ class IntField(BaseField):
     '''Basic integer field handler'''
     default = 0
     def _value(self, value):
-        return int(value) if isinstance(value, basestring) else value
+        return int(value) if isstr(value) else value
 
 class NullIntField(BaseField):
     '''Null integer field handler.
@@ -108,7 +109,7 @@ class NullIntField(BaseField):
     the same as 0 (zero).
     '''
     def _value(self, value):
-        return int(value) if isinstance(value, basestring) else value
+        return int(value) if isstr(value) else value
 
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''

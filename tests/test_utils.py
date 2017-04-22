@@ -26,8 +26,8 @@ class TestFunctions(unittest.TestCase):
         '''argparse tester'''
         in_args = ['-i', 'hello', '--outdir', 'world']
         args = utils.configure_parser(in_args)
-        self.assertEquals(args.input, 'hello')
-        self.assertEquals(args.outdir, 'world')
+        self.assertEqual(args.input, 'hello')
+        self.assertEqual(args.outdir, 'world')
 
 
 if __name__ == '__main__':
