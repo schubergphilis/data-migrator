@@ -22,6 +22,8 @@ many, this is easily achieved by adding a dedicated manager:
   class ResultManager(models.Manager):
     def transform(self, row, previous, model):
       res = [model().scan(row), model().scan(row), model().scan(row)]
+      res[1].a += 'some postfix'
+      res[2].a += 'alternative postfix'
       return res
 
   class Result(models.Model):
@@ -33,3 +35,44 @@ many, this is easily achieved by adding a dedicated manager:
       manager = ResultManager
 
 This example is not really helpful, it just generates 3 records instead of one.
+
+Multi models generation
+-----------------------
+
+The manager setup is one of the big reasons to use this package instead of simple scripts.
+In our model migrations we came across steps in which we had generate second models (for
+example permissions or links to models)
+
+.. code-block:: python
+
+  from data_migrator import models
+
+  class PermissionManager(models.Manager):
+    def transform(self, row, previous, model):
+      defaults = {
+        'model_id': previous[0][0].a, # due to order permission will get a result
+        'user': row[0]
+      }
+      res = [model(right='see_result', **defaults)]
+      return res
+
+  class Permission(models.Model):
+    id       = models.IntField()
+    right    = models.StringField()
+    model_id = models.StringField()
+    user     = models.StringField()
+
+    class Meta:
+      manager = PermissionManager
+
+  class Result(models.Model):
+    id = models.IntField(pos=0) # keep id
+    a  = models.StringField(pos=1)
+    b  = models.StringField(pos=2, null=None)
+
+
+  if __name__ == "__main__":
+    transform.Transformer(models=[Result, Permission], emitter=MySQLEmitter).process()
+
+The order in the tranformer list determine the order of object creation, but this is an example
+on how one model can be used in the generation of the second one

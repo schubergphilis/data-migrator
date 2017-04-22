@@ -115,6 +115,8 @@ html_static_path = ['_static']
 html_show_sourcelink = True
 html_show_sphinx = True
 
+suppress_warnings = ['image.nonlocal_uri']
+
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.

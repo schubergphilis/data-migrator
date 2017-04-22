@@ -5,7 +5,7 @@ import unittest
 
 from data_migrator.models.options import Options
 from data_migrator.models import IntField
-
+from data_migrator.exceptions import DefinitionException
 
 class OptionsModel:
     pass
@@ -15,7 +15,6 @@ FIELDS = {
     "b": IntField(),
     "c": IntField()
 }
-
 
 class TestOptions(unittest.TestCase):
 
@@ -31,6 +30,7 @@ class TestOptions(unittest.TestCase):
         self.assertFalse(o.drop_non_unique)
         self.assertFalse(o.fail_non_unique)
         self.assertEqual(o.file_name, None)
+        self.assertEqual(str(o), 'Options: remark=remark,fail_not_validated=False,drop_non_unique=False,file_name=None,emitter=None,prefix=None,meta=test_options.MetaA,table_name=optionsmodel,max_pos=-1,fields=OrderedDict(),fail_non_unique=False,drop_if_none=[],model_name=OptionsModel,unique_fields=[],cls=test_options.OptionsModel')
 
 
     def test_init_settings(self):
@@ -49,6 +49,18 @@ class TestOptions(unittest.TestCase):
         self.assertFalse(o.drop_non_unique)
         self.assertTrue(o.fail_non_unique)
         self.assertEqual(o.file_name, 'bla_file.sql')
+
+    def test_not_proper_meta(self):
+        '''inproper meta initialization'''
+        class MetaF:
+            foo='bar'
+        self.assertRaises(DefinitionException, Options, OptionsModel, MetaF, FIELDS)
+
+    def test_not_proper_field(self):
+        '''inproper drop_if_none fields'''
+        class MetaF:
+            drop_if_none=['foo']
+        self.assertRaises(DefinitionException, Options, OptionsModel, MetaF, FIELDS)
 
 if __name__ == '__main__':
     unittest.main()

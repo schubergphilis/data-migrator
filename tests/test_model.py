@@ -32,6 +32,7 @@ class TestModel(unittest.TestCase):
         self.assertIsNone(o.empty)
         self.assertIsNotNone(o.uuid)
         self.assertNotEqual(o.uuid, '')
+        self.assertEqual(str(o), 'TrailModel object')
 
     def test_init(self):
         '''model initialization'''

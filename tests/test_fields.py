@@ -83,6 +83,7 @@ class TestFields(unittest.TestCase):
         self.assertEqual(f.emit("10"), "hello")
         self.assertEqual(f.emit("200"), "world")
         self.assertEqual(f.emit("mis"), "bad")
+        self.assertEqual(f.emit(None), "bad")
 
     def test_mapping_field_list(self):
         '''mapping field with lists'''
@@ -90,6 +91,10 @@ class TestFields(unittest.TestCase):
         self.assertEqual(f.emit("10"), ["hello"])
         self.assertEqual(f.emit("200"), ["world"])
         self.assertEqual(f.emit("mis"), [])
+        f.as_json = True
+        self.assertEqual(f.emit("10"), '["hello"]')
+        self.assertEqual(f.emit("200"), '["world"]')
+        self.assertEqual(f.emit("mis"), '[]')
 
     def test_mapping_field_strict(self):
         '''mapping field in a strict way'''
@@ -108,6 +113,19 @@ class TestFields(unittest.TestCase):
         self.assertEqual(f.emit("some value"), "some value")
         self.assertNotEqual(f.default, 'bla')
         self.assertIsNone(f.default)
+
+    def test_jsonfield(self):
+        f = models.JSONField()
+        self.assertEqual(f.emit("10"), '"10"')
+        self.assertEqual(f.emit(["200"]), '["200"]')
+        self.assertEqual(f.emit("mis"), '"mis"')
+        self.assertEqual(f.emit(None), "null")
+        f = models.JSONField(default=[])
+        self.assertEqual(f.emit(None), "[]")
+        f = models.JSONField(default="bla")
+        self.assertEqual(f.emit(None), '"bla"')
+
+
 
 if __name__ == '__main__':
     unittest.main()
