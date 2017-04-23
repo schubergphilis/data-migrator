@@ -3,12 +3,13 @@
 
 import sys
 import os
+import csv
 import logging
 
 from data_migrator import __version__
 from data_migrator.exceptions import DataException, ValidationException
 from data_migrator.utils import configure_logging
-from data_migrator.utils import configure_parser, default_reader
+from data_migrator.utils import configure_parser
 from data_migrator.emitters import MySQLEmitter
 
 class Transformer(object):
@@ -25,7 +26,7 @@ class Transformer(object):
         '''
         Args:
             models (list): list of all models to be processed in this transformer
-            reader: reference to and external reader if not <stdin>
+            reader: reference to and external reader if not default
             argparse: reference to another argument parser if not default_parser
             outdir: output directory for results, otherwise scan from argparser
             emitter: emitter to be used for this transformation
@@ -60,13 +61,18 @@ class Transformer(object):
             self.print_rows = self.args.rows
         if self.args.quiet:
             self.log.setLevel(logging.CRITICAL)
+        if self.reader:
+            self.log.debug("reading from external reader")
+            self.reader = self.reader(self.args)
+        elif self.args.input == '<stdin>':
+            self.log.debug("reading from <stdin>")
+            self.reader = csv.reader(sys.stdin, delimiter='\t')
+        else:
+            self.log.debug("reading from file: %s", self.args.input)
+            self.reader = csv.reader(open(self.args.input), delimiter='\t')
 
     def _open_input(self):
-        if self.reader:
-            self.reader, self.in_headers = self.reader(self.args)
-        else:
-            self.log.debug("reading from %s", self.args.input)
-            self.reader, self.in_headers = default_reader(infile=self.args.input)
+        self.in_headers = next(self.reader, [])
         if len(self.in_headers) <= self.max_pos:
             raise DataException('Data in has %d columns, too little for max position %d', len(self.in_headers), self.max_pos)
         self.log.debug("csv has %d columns", len(self.in_headers))

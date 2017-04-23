@@ -29,6 +29,12 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(args.input, 'hello')
         self.assertEqual(args.outdir, 'world')
 
+    def test_logging(self):
+        self.assertTrue(utils.configure_logging())
+
+    def test_parser(self):
+        self.assertTrue(utils.default_parser())
+
 
 if __name__ == '__main__':
     unittest.main()

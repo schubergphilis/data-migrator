@@ -1,3 +1,9 @@
+Data-migrator is a simple data-migration package for python lovers.
+
+.. image:: https://img.shields.io/pypi/pyversions/data-migrator.svg
+    :target: https://pypi.python.org/pypi/data-migrator
+
+----
 .. image:: https://circleci.com/gh/schubergphilis/data-migrator.svg?style=svg
     :target: https://circleci.com/gh/schubergphilis/data-migrator
 
@@ -14,14 +20,10 @@
 .. image:: https://badge.fury.io/py/data-migrator.svg
     :target: https://badge.fury.io/py/data-migrator
 
-----
 
-.. image:: https://img.shields.io/pypi/pyversions/data-migrator.svg
-    :target: https://pypi.python.org/pypi/data-migrator
 
-Data-migrator is a simple data-migration package for python lovers. It is a
-declarative DSL for table drive data transformations, set up as an open and
-extensive system.
+Data-migrator is a declarative DSL for table driven data transformations, set up as
+an open and extensive system.
 
 Example
 -------
@@ -42,7 +44,7 @@ fast, readable and extendable
   class Result(models.Model):
     id   = models.IntField(pos=0) # keep id
     uuid = models.UUIDField()     # generate new uuid4 field
-    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replace=lambda x:x.upper())
+    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replacement=lambda x:x.upper())
     b    = models.StringField(pos=2, name='my_b')
 
   if __name__ == "__main__":
@@ -51,9 +53,13 @@ fast, readable and extendable
 Installation
 ------------
 
+Execute the following command to install ```data-migrator`` with ``pip``::
+
+    pip install data-migrator
+
 See the `Installation Instructions
 <http://data-migrator.readthedocs.io/en/latest/install.html>`_ in Documentation for
-instructions on installing, upgrading, and uninstalling data-migrator.
+more instructions on installing, upgrading, and uninstalling data-migrator.
 
 The project is `maintained at GitHub <https://github.com/schubergphilis/data-migrator>`_.
 

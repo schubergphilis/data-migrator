@@ -33,6 +33,11 @@ class TestEmitterBase(unittest.TestCase):
         b = BaseEmitter(manager=EmitterModel.objects, extension='.sql')
         self.assertEqual(b.filename(), "emittermodel.sql")
 
+    def test_base_fileext_dot(self):
+        '''Base Emitter defaults'''
+        b = BaseEmitter(manager=EmitterModel.objects, extension='sql')
+        self.assertEqual(b.filename(), "emittermodel.sql")
+
 class MySQLEmitterBase(unittest.TestCase):
     def test_start(self):
         e = MySQLEmitter(manager=EmitterModel.objects)
