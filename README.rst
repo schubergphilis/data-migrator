@@ -55,7 +55,7 @@ fast, readable and extendable
 Installation
 ------------
 
-Execute the following command to install ```data-migrator`` with ``pip``::
+Execute the following command to install ``data-migrator`` with ``pip``::
 
     pip install data-migrator
 
