@@ -15,13 +15,6 @@ To update an already installed :pypi:`data-migrator` version, use::
 
     pip install -U data-migrator
 
-As an alternative,
-you can also use :pypi:`easy_install <setuptools>` to install :pypi:`data-migrator`::
-
-    easy_install data-migrator         # CASE: New installation.
-    easy_install -U data-migrator      # CASE: Upgrade existing installation.
-
-
 .. hint::
 
     See also `pip related information`_ for installing Python packages.
@@ -53,9 +46,9 @@ To install a tagged version from the `Github repository`_, use::
 
     pip install -e git+https://github.com/schubergphilis/data-migrator@<tag>
 
-where <tag> is the placeholder for an `existing tag`_. You can drop the -e and not 
-install in `editable mode`_ if you expect **not** to edit the source. Running in editable 
-mode allows to work on the code while the library is installed and available. Be sure 
+where <tag> is the placeholder for an `existing tag`_. You can drop the -e and not
+install in `editable mode`_ if you expect **not** to edit the source. Running in editable
+mode allows to work on the code while the library is installed and available. Be sure
 to make that pull-request ;-)
 
 .. _`Github repository`: https://github.com/schubergphilis/data-migrator

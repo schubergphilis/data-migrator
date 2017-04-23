@@ -22,7 +22,7 @@ In a more generic way and running the clients directly on the host, we will get:
   OPTIONS ?=-p 2 --debug
   OUT_DIR ?= results
 
-  TABLE_QRY='SELECT t.* FROM table LIMIT 0,100'
+  table.qry='SELECT t.* FROM table LIMIT 0,100'
 
   default: clean install all
 
