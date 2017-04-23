@@ -58,7 +58,7 @@ class BaseManager(object):
         except ValidationException as err:
             if self.meta.fail_not_validated:
                 raise ValidationException("%d, %s:%s" % (self.rows, self.meta.model_name, err))
-            log.debug("%d, %s: dropped, %s" % (self.rows, self.meta.model_name, exc))
+            log.debug("%d, %s: dropped, %s" % (self.rows, self.meta.model_name, err))
             self.dropped += 1
             return []
         else:
@@ -67,8 +67,6 @@ class BaseManager(object):
     def save(self, o):
         '''save object(s) to this list'''
         res = []
-        if o == []:
-            return res
         if not isinstance(o, list):
             o = [o]
         for e in o:
