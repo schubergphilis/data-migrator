@@ -3,7 +3,7 @@ Validation
 
 See the :doc:`previous <tutorial1>` tutorial.
 
-Another aspect is to have some control over the data received. Out of the box ``data-migrator``
+Another aspect is to have some control over the data received. Out of the box *data-migrator*
 offers a wide range of facilities
 
 None column test

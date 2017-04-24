@@ -102,7 +102,7 @@ In case of StringFields use this to trim string values to maximum length.
 
 .. attribute:: Field.unique
 
-If ``True``, `data-migrator` will check uniqueness of intermediate values
+If ``True``, *data-migrator* will check uniqueness of intermediate values
 (after parsing). Default is ``False``.
 
 In relationship with the default manager this will keep track of values for this

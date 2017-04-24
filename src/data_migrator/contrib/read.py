@@ -23,9 +23,9 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_li
         delimiter: Option to select another delimiter, other than `\\\\t`
         key: Name or position of the Key, if ``header`` is false, the ordinal position is expected (default first)
         value: Name or position of the Value, if ``header`` is false, the ordinal position is expected (default second)
-        as_list (boolean): If ``True``, `data-migrator` will treat add all values for ``key`` as a list. Default is ``False``.
-        unique (boolean): If ``True``, `data-migrator` will treat add all non unique values for ``key`` as a violation and raise a ``DataException``. Default is ``False``.
-        header (boolean): If ``True``, `data-migrator` will treat row as a header column. Default is ``True``
+        as_list (boolean): If ``True``, *data-migrator* will treat add all values for ``key`` as a list. Default is ``False``.
+        unique (boolean): If ``True``, *data-migrator* will treat add all non unique values for ``key`` as a violation and raise a ``DataException``. Default is ``False``.
+        header (boolean): If ``True``, *data-migrator* will treat row as a header column. Default is ``True``
 
     Returns:
         map: a key, value map from the csv

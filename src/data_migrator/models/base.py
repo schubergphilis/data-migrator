@@ -12,7 +12,7 @@ class ModelBase(type):
     """Metaclass for all models.
 
     Note:
-        the model structure is the foundation of ``data-migrator`` and
+        the model structure is the foundation of *data-migrator* and
         is taken from Django (https://github.com/django/django)
     """
     def __new__(cls, name, bases, attrs):

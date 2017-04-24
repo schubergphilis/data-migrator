@@ -32,9 +32,9 @@ There are many packages that offer parts to do this stuff, some packages we know
 
 * `ruffus <http://www.ruffus.org.uk/>`_: A nice data transformation package, however more geared to long running computational processes (DNA Sequencing) and less to frictionless table transformation.
 * `petl <https://petl.readthedocs.io/en/latest/>`_: the name says it all extract, tranform and load. You can do cool stuff with it. Basically movint table manipulation to Python. We preferred a more direct map and transform approach.
-* `tablib <https://github.com/kennethreitz/tablib>`_: very handy if you need to open various sources, a nice extension to ``data-migrator``
+* `tablib <https://github.com/kennethreitz/tablib>`_: very handy if you need to open various sources, a nice extension to *data-migrator*
 * `pandas <http://pandas.pydata.org/>`_: A big one, if you need more data analysis and less common datamigration, this could be your favorite poison.
-* Your average bulk of SQL scripts. Still a useful tool, we love the easy of repetiveness using the pipes-and-filters paradigm in ``data-migrator``.
+* Your average bulk of SQL scripts. Still a useful tool, we love the easy of repetiveness using the pipes-and-filters paradigm in *data-migrator*.
 * `R <https://www.r-project.org/>`_: R is not Python, but tremendously handy if you need large data set processing and statistics.
 
 Next step
