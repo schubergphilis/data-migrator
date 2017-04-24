@@ -20,8 +20,9 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     test_suite="tests",
+    platforms=["any"],
     classifiers = [
-        "Development Status :: 6 - Mature",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Topic :: Software Development :: Build Tools",
         "Topic :: Database",

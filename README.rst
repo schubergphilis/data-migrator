@@ -9,6 +9,10 @@ Data-migrator is a simple data-migration package for python lovers.
 
 ----
 
+.. image:: https://pyup.io/repos/github/schubergphilis/data-migrator/shield.svg
+     :target: https://pyup.io/repos/github/schubergphilis/data-migrator/
+     :alt: Updates
+
 .. image:: https://readthedocs.org/projects/data-migrator/badge/?version=latest
     :target: http://data-migrator.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
@@ -21,7 +25,6 @@ Data-migrator is a simple data-migration package for python lovers.
 
 .. image:: https://badge.fury.io/py/data-migrator.svg
     :target: https://badge.fury.io/py/data-migrator
-
 
 
 Data-migrator is a declarative DSL for table driven data transformations, set up as

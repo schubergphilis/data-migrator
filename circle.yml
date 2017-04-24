@@ -10,3 +10,20 @@ machine:
 database:
   override:
     - echo "Skipping DB section."
+
+dependencies:
+  override:
+    - pip install -rpy.requirements/environment.txt
+  post:
+    - python setup.py install
+
+test:
+  pre:
+    - py.test --junit-xml=reports/unittests.xml
+
+  override:
+    - tox
+
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;

@@ -3,7 +3,11 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.5.1] - 2017-04-22
+## [0.5.1] - 2017-04-24
+### Added
+- test metadata in circle-ci #25
+- pyup.ip added #31
+
 
 ## [0.5.0] - 2017-04-21
 ### Changed

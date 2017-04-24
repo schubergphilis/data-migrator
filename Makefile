@@ -14,7 +14,7 @@ clean:
 
 .PHONY: test dist docs show_version
 
-show_version:
+version:
 	@python -c "import data_migrator; print(data_migrator.__version__)"
 
 test:
