@@ -5,4 +5,4 @@
 
 bumpversion
 tox
-py.test
+pytest
