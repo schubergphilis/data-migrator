@@ -7,6 +7,7 @@ all: $(TARGETS)
 clean:
 	-@echo y | pip uninstall data-migrator
 	@rm -rf docs/_build
+	@rm -rf reports
 	@find . -name *.pyc -delete
 	@rm -rf build data_migrator.egg* dist
 	-@rm -f .coverage coverage.xml
