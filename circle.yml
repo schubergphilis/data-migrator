@@ -14,10 +14,14 @@ database:
 dependencies:
   pre:
     - pip install pytest
+    - pip install tox
 
 test:
   pre:
     - py.test --junit-xml=reports/unittests.xml
+
+  override:
+    - tox
 
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
