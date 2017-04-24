@@ -12,9 +12,10 @@ database:
     - echo "Skipping DB section."
 
 dependencies:
-  pre:
-    - pip install pytest
-    - pip install tox
+  override:
+    - pip install -rpy.requirements/environment.txt
+  post:
+    - python setup.py install
 
 test:
   pre:
