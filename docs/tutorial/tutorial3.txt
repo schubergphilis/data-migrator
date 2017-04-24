@@ -5,7 +5,7 @@ See the :doc:`previous <tutorial2>` tutorial.
 
 A typical case in system evolution is the growing complexity of entities into more detailed
 records. For example a system that maintains grouping can be expanding in more interlinked
-groups in the new system. This might generate more (linked) entities. ``data-migrator`` is
+groups in the new system. This might generate more (linked) entities. *data-migrator* is
 build for these kind of questions.
 
 One to many records

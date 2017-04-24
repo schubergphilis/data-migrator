@@ -55,13 +55,13 @@ fast, readable and extendable
 Installation
 ------------
 
-Execute the following command to install ``data-migrator`` with ``pip``::
+Execute the following command to install *data-migrator* with ``pip``::
 
     pip install data-migrator
 
 See the `Installation Instructions
 <http://data-migrator.readthedocs.io/en/latest/install.html>`_ in Documentation for
-more instructions on installing, upgrading, and uninstalling data-migrator.
+more instructions on installing, upgrading, and uninstalling *data-migrator*.
 
 The project is `maintained at GitHub <https://github.com/schubergphilis/data-migrator>`_.
 

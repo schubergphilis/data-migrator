@@ -21,7 +21,7 @@ The basic structure for emitting is a combination between ``manager`` and ``emit
 
 .. note::
 
-    At this moment ``data-migrator`` does not an actively take part in schema migrations of any
+    At this moment *data-migrator* does not an actively take part in schema migrations of any
     sort. It is purely about cleaning and transforming data (yet!).
 
 

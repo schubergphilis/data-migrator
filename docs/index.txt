@@ -1,7 +1,7 @@
 Welcome to data-migrator!
 ============================================
 
-data-migrator is database transformation in a pipes and filter, declarative way,
+*data-migrator* is database transformation in a pipes and filter, declarative way,
 Python/Django style.
 
 Data transformation is an important process in software development when architectures evolve

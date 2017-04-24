@@ -1,8 +1,8 @@
 Example
 =======
 
-Core of data-migrator is the unix pipe and filter paradigm to build data transformers. Source data
-is read from a database or some other source. It is piped to a filter written with data-migrator,
+Core of *data-migrator* is the unix pipe and filter paradigm to build data transformers. Source data
+is read from a database or some other source. It is piped to a filter written with *data-migrator*,
 which emits for example SQL insert statements. These can be piped to a target client.
 
 Consider the most basic datapump in mysql, which is direct pipe between source and target database:
@@ -36,7 +36,7 @@ With `my_filter.py` a basic implementation of `csv`_:
 To see the options for manipulation is left as an exercise to the reader, but do accept that
 as soon things become just a little more complex (think: splitting in two tables, column
 reverses, renaming of columns, mixing, joining, filtering, transforming), more declarative support
-is helpful. That is why we came up with `data-migrator`. One could simply replace this with:
+is helpful. That is why we came up with *data-migrator*. One could simply replace this with:
 
 .. code-block:: python
 
@@ -85,7 +85,7 @@ And have a nice self explaining transformer which will generate something like:
   INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (1, "38211712-0eb2-4433-b28f-e3fe33492e7a", "NO_NULL", "some value");
   INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (2, "a3478903-aed9-462c-8f47-7a89013bc6ea", "CHOPP", "transformed_B");
 
-If you can see the value of this package, continue with the installation of :doc:`data-migrator </install>`.
+If you can see the value of this package, continue with the :doc:`installation </install>` of *data-migrator*.
 After which there are some more pages in the :doc:`Tutorial </tutorial/tutorial0>` for you to get a grasp of this library.
 
 .. _csv: https://docs.python.org/2/library/csv.html
