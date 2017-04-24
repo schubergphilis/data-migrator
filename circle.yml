@@ -13,7 +13,7 @@ database:
 
 dependencies:
   override:
-    - pip install -rpy.requirements/environment.txt
+    - pip install -rpy.requirements/build.txt
   post:
     - python setup.py install
 
