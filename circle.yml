@@ -7,6 +7,14 @@ machine:
   post:
     - pyenv global 2.7.12 3.6.1
 
+dependencies:
+  pre:
+    - pip install pytest
+
+test:
+  pre:
+    - py.test --junit-xml=reports/unittests.xml
+
 database:
   override:
     - echo "Skipping DB section."
