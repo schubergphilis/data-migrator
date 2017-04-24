@@ -10,3 +10,15 @@ machine:
 database:
   override:
     - echo "Skipping DB section."
+
+dependencies:
+  pre:
+    - pip install pytest
+
+test:
+  pre:
+    - py.test --junit-xml=reports/unittests.xml
+
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
