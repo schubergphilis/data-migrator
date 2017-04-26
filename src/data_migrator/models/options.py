@@ -16,8 +16,10 @@ _options = {
     'remark': 'remark'
 }
 
+
 class _EmptyMeta:
     pass
+
 
 class Options(object):
     def __init__(self, cls, meta, fields):
@@ -34,11 +36,11 @@ class Options(object):
                 raise DefinitionException("%s, %s not a valid meta key" % (self.model_name, k))
 
         # store all fields, sorted
-        self.fields = OrderedDict(sorted(fields.items(), key=lambda x:x[1].creation_order))
+        self.fields = OrderedDict(sorted(fields.items(), key=lambda x: x[1].creation_order))
         # retrieve the highest column from the field definitions
         self.max_pos = max([-1]+[f.pos for f in fields.values()])
         # extract unique fields for further processing
-        self.unique_fields = [n for n,f in fields.items() if f.unique]
+        self.unique_fields = [n for n, f in fields.items() if f.unique]
 
         for k in self.drop_if_none:
             if k not in fields.keys():
@@ -52,4 +54,4 @@ class Options(object):
         return '<%s: %s>' % (self.__class__.__name__, u)
 
     def __str__(self):
-        return '%s: %s' % (self.__class__.__name__, ",".join(["%s=%s" % (k,v) for k,v in self.__dict__.items()]))
+        return '%s: %s' % (self.__class__.__name__, ",".join(["%s=%s" % (k, v) for k, v in self.__dict__.items()]))

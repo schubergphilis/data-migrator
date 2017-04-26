@@ -8,12 +8,15 @@ from functools import partial
 from data_migrator.exceptions import ValidationException, DataException
 from data_migrator.utils import isstr
 
+
 def new_exception(field, exc_class, msg, *args):
     msg = "%s[%s]: " + msg
     return exc_class(msg % ((field.__class__.__name__, field.name) + args))
 
+
 def _replace(format_str, x):
     return format_str.format(x)
+
 
 class BaseField(object):
     '''Base column definition for the transformation DSL
@@ -85,54 +88,62 @@ class BaseField(object):
         return v
 
     def _value(self, value):
-        # pylint: disable=R0201, no-self-use
         return value
+
 
 class HiddenField(BaseField):
     '''Non emitting Field for validation and checking.
 
-    a field that accepts, but does not emit. It is useful for uniqueness checked and
-    more. Combine this with a row parse and check the complete row.
+    a field that accepts, but does not emit. It is useful for uniqueness
+    checked and more. Combine this with a row parse and check the complete row.
     '''
     pass
+
 
 class IntField(BaseField):
     '''Basic integer field handler'''
     default = 0
+
     def _value(self, value):
         return int(value) if isstr(value) else value
+
 
 class NullIntField(BaseField):
     '''Null integer field handler.
 
-    a field that accepts the column to be integer and can also be None, which is not
-    the same as 0 (zero).
+    a field that accepts the column to be integer and can also be None, which
+    is not the same as 0 (zero).
     '''
     def _value(self, value):
         return int(value) if isstr(value) else value
 
+
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''
     default = ""
+
     def _value(self, value):
         return value.strip() if isinstance(value, str) else value
+
 
 class NullStringField(BaseField):
     '''Null String field handler.
 
-    a field that accepts the column to be string and can also be None, which is not
-    the same as empty string ("").
+    a field that accepts the column to be string and can also be None, which
+    is not the same as empty string ("").
     '''
     def _value(self, value):
         return value.strip() if isinstance(value, str) else value
 
+
 class BooleanField(BaseField):
     '''Boolean field handler.
 
-    a bool that takes any cased permutation of true, yes, 1 and translates this into
-    ``True`` or ``False`` otherwise.
+    a bool that takes any cased permutation of true, yes, 1 and translates this
+    into ``True`` or ``False`` otherwise.
     '''
     default = False
+
     def _value(self, value):
         try:
             return value.lower()[0] in ['y', 't', '1']
@@ -150,9 +161,11 @@ class DefaultField(BaseField):
         '''override so we can never set'''
         return self.default
 
+
 class NullField(DefaultField):
     '''NULL returning field by generating None'''
     pass
+
 
 class UUIDField(BaseField):
     '''UUID generating field.
@@ -167,9 +180,10 @@ class UUIDField(BaseField):
         '''override and automatically set'''
         return str(uuid.uuid4())
 
+
 class JSONField(BaseField):
-    '''a field that takes the values and spits out a JSON encoding string. Great for
-    maps and lists to be stored in a string like field.
+    '''a field that takes the values and spits out a JSON encoding string.
+    Great for maps and lists to be stored in a string like field.
     '''
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option"""
@@ -178,19 +192,23 @@ class JSONField(BaseField):
         v = json.dumps(v)
         return super(JSONField, self).emit(v, escaper)
 
+
 class MappingField(BaseField):
     '''Map based field translator.
 
-    a field that takes the values translates these according to a map. Great for
-    identity column replacements. If needed output can be translated as ``json``,
-    for example if the map returns lists.
+    a field that takes the values translates these according to a map. Great
+    for identity column replacements. If needed output can be translated as
+    ``json``, for example if the map returns lists.
     '''
     def __init__(self, data_map, as_json=False, strict=False, **kwargs):
         """
         Args:
-            data_map: The data_map needed to translate. Note the fields returns :attr:`~Field.default` if it is not able to map the key.
-            as_json: If ``True``, the field will be output as json encoded. Default is ``False``
-            strict: If ``True``, the value must by found in the map. Default is ``False``
+            data_map: The data_map needed to translate. Note the fields returns
+                :attr:`~Field.default` if it is not able to map the key.
+            as_json: If ``True``, the field will be output as json encoded.
+                Default is ``False``
+            strict: If ``True``, the value must by found in the map.
+                Default is ``False``
         """
         super(MappingField, self).__init__(**kwargs)
         if strict and self.default:
@@ -198,7 +216,6 @@ class MappingField(BaseField):
         self.data_map = data_map
         self.as_json = as_json
         self.strict = strict
-
 
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option"""
@@ -210,7 +227,8 @@ class MappingField(BaseField):
             except KeyError:
                 raise DataException("%s - %s not in map" % (self.name, v))
         else:
-            v = self.data_map.get(v, self.default if self.default is not None else v)
+            v = self.data_map.get(v, self.default if self.default is not None
+                else v)
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)

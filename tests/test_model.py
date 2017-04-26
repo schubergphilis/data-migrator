@@ -36,7 +36,7 @@ class TestModel(unittest.TestCase):
 
     def test_init(self):
         '''model initialization'''
-        d = {"a":"hello", "b":"World"}
+        d = {"a": "hello", "b": "World"}
         o1 = TrailModel(a="hello", b="world", empty="somevalue", uuid='bla')
         o2 = TrailModel(**d)
         self.assertEqual(o1.a, "hello")
@@ -56,7 +56,7 @@ class TestModel(unittest.TestCase):
     def test_remark(self):
         '''can set an addtional remark on this object'''
         remark = "additional remark"
-        d = {"a":"hello", "b":"World", "description":remark}
+        d = {"a": "hello", "b": "World", "description": remark}
         o1 = TrailModel(**d)
         self.assertEqual(o1.description, remark)
 

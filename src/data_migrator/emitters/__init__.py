@@ -9,5 +9,6 @@ This module contains all classes for emitters: base and actuals
 * :class:`CSVEmitter`
 """
 
-from .mysql import MySQLEmitter
-from .csv import CSVEmitter
+
+from .mysql import MySQLEmitter # noqa
+from .csv import CSVEmitter # noqa

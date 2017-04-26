@@ -12,7 +12,7 @@ clean:
 	@rm -rf build data_migrator.egg* dist
 	-@rm -f .coverage coverage.xml
 
-.PHONY: test dist docs show_version
+.PHONY: test dist docs version
 
 version:
 	@python -c "import data_migrator; print(data_migrator.__version__)"

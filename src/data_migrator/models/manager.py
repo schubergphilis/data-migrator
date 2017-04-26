@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-from data_migrator.exceptions import NonUniqueDataException, ValidationException
+from data_migrator.exceptions import NonUniqueDataException
+from data_migrator.exceptions import ValidationException
 from data_migrator.utils import default_logger
 
 log = default_logger()
@@ -32,12 +33,13 @@ class BaseManager(object):
     def transform(self, row, previous, model):
         '''defines the instantiation of objects from a row
 
-        Override this function in your own manager. Models are ordered and generated records are
-        offered in the consequtives managers too.
+        Override this function in your own manager. Models are ordered and
+        generated records are offered in the consequtives managers too.
 
         Args:
             row (list): all input data for a new row
-            previous (list): all generated objects from previous managers in chain
+            previous (list): all generated objects from previous managers
+                in chain
             model (Model): Model this manager is linked to
 
         Returns:
@@ -58,7 +60,7 @@ class BaseManager(object):
         except ValidationException as err:
             if self.meta.fail_not_validated:
                 raise ValidationException("%d, %s:%s" % (self.rows, self.meta.model_name, err))
-            log.debug("%d, %s: dropped, %s" % (self.rows, self.meta.model_name, err))
+            log.debug("%d, %s: dropped, %s", self.rows, self.meta.model_name, err)
             self.dropped += 1
             return []
         else:
@@ -97,10 +99,10 @@ class BaseManager(object):
                 violation.append(f)
         return violation
 
-    def _check_unique(self,o):
+    def _check_unique(self, o):
         violation = []
-        for k,s in self.unique_values.items():
-            v = getattr(o,k)
+        for k, s in self.unique_values.items():
+            v = getattr(o, k)
             if v in s:
                 log.debug('%s: non unique value %s=%s', self.meta.model_name, k, v)
                 violation.append(k)
@@ -126,9 +128,12 @@ class BaseManager(object):
 
 class SimpleManager(BaseManager):
     """
-    The default manager to handle models, all standard logic and generates one object per row
+    The default manager to handle models, all standard logic and generates one
+    object per row
     """
     def transform(self, row, previous, model):
-        '''specific transform implementation, instantiates one object from a row'''
+        '''specific transform implementation, instantiates one object
+        from a row
+        '''
         res = [model().scan(row)]
         return res

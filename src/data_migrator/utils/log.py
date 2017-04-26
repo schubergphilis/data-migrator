@@ -6,9 +6,12 @@ import logging.config
 from data_migrator import PACKAGE_NAME
 
 _LOG = logging.getLogger(PACKAGE_NAME)
+
+
 def default_logger():
     '''returns the default logger for this package'''
     return _LOG
+
 
 DEFAULT_LOGGING = {
     'version': 1,
@@ -32,6 +35,7 @@ DEFAULT_LOGGING = {
         },
     }
 }
+
 
 def configure_logging(config=None):
     '''configure logger

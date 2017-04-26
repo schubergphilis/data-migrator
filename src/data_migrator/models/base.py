@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 from six import with_metaclass
 
+from data_migrator.exceptions import DataException
 from .manager import SimpleManager
 from .fields import BaseField, HiddenField
 from .options import Options
-from data_migrator.exceptions import DataException
 
 
 class ModelBase(type):
@@ -15,17 +15,17 @@ class ModelBase(type):
         the model structure is the foundation of *data-migrator* and
         is taken from Django (https://github.com/django/django)
     """
-    def __new__(cls, name, bases, attrs):
-        super_new = super(ModelBase, cls).__new__
+    def __new__(mcs, name, bases, attrs):
+        super_new = super(ModelBase, mcs).__new__
 
         # Also ensure initialization is only performed for subclasses of Model
         # (excluding Model class itself).
         parents = [b for b in bases if isinstance(b, ModelBase)]
         if not parents:
-            return super_new(cls, name, bases, attrs)
+            return super_new(mcs, name, bases, attrs)
 
         module = attrs.pop('__module__')
-        new_class = super_new(cls, name, bases, {'__module__': module})
+        new_class = super_new(mcs, name, bases, {'__module__': module})
 
         # Chek if we have a meta class
         attr_meta = attrs.pop('Meta', None)
@@ -36,7 +36,7 @@ class ModelBase(type):
 
         # declare the fields
         fields = {}
-        for n,d in attrs.items():
+        for n, d in attrs.items():
             if isinstance(d, BaseField):
                 fields[n] = d
                 setattr(d, 'name', getattr(d, 'name') or n)
@@ -58,8 +58,8 @@ class Model(with_metaclass(ModelBase)):
     :class:`~data_migrator.models.Manager` instance added to it.
     Data-migrator ensures that in your model class you have  at least a
     standard ``SimpleManager`` specified. If you add your own
-    :class:`~data_migrator.models.Manager` instance attribute, the default one does
-    not appear.
+    :class:`~data_migrator.models.Manager` instance attribute, the default one
+    does not appear.
 
     Attributes:
         objects: reference to manager
@@ -72,7 +72,7 @@ class Model(with_metaclass(ModelBase)):
         # model is very strict raise those not declared
         _fields = _meta.fields
         f = list(_fields.keys())[:]
-        for k,v in kwargs.items():
+        for k, v in kwargs.items():
             if k == _meta.remark:
                 setattr(self, k, v)
             elif k in f:
@@ -80,7 +80,8 @@ class Model(with_metaclass(ModelBase)):
                 f.remove(k)
             else:
                 raise DataException("trying to set unknown field %s" % k)
-        # add missing fields, put in None values (to be replaced by default at emit)
+        # add missing fields, put in None values (to be replaced by default
+        # at emit)
         for k in f:
             _f = _fields[k]
             setattr(self, k, _f._value(_f.default))
@@ -107,7 +108,7 @@ class Model(with_metaclass(ModelBase)):
         '''
         res = {}
         _fields = self.__class__._meta.fields
-        for k,f in _fields.items():
+        for k, f in _fields.items():
             if not isinstance(f, HiddenField):
                 res[f.name] = f.emit(self.__dict__[k], escaper)
         return res
