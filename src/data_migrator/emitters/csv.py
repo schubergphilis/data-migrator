@@ -43,6 +43,6 @@ class CSVEmitter(BaseEmitter):
         headers = ", ".join(c)
         replacements = ", ".join(["%(" + x + ")s" for x in c])
         template = self.base_template % (replacements)
-        log.debug('emit template: %s' % template)
+        log.debug('emit template: %s', template)
         self._template = template
         self._headers = headers

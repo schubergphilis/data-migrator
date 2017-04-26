@@ -60,7 +60,7 @@ class BaseManager(object):
         except ValidationException as err:
             if self.meta.fail_not_validated:
                 raise ValidationException("%d, %s:%s" % (self.rows, self.meta.model_name, err))
-            log.debug("%d, %s: dropped, %s" % (self.rows, self.meta.model_name, err))
+            log.debug("%d, %s: dropped, %s", (self.rows, self.meta.model_name, err))
             self.dropped += 1
             return []
         else:

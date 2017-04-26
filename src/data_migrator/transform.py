@@ -87,7 +87,7 @@ class Transformer(object):
     def _read_input(self):
         self.rows = 0
         self.log.info(
-            "models: %s" % ", ".join([x._meta.model_name for x in self.models])
+            "models: %s", ", ".join([x._meta.model_name for x in self.models])
         )
         for x in self.models:
             if x.objects.unique_values:
@@ -100,13 +100,13 @@ class Transformer(object):
             self.log.debug("printing first %d rows of input", self.print_rows)
         for row in self.reader:
             if self.print_rows > 0:
-                self.log.debug("%d: %s" % (self.print_rows, ",".join(row)))
+                self.log.debug("%d: %s", (self.print_rows, ",".join(row)))
                 self.print_rows -= 1
             self.rows += 1
             res = []
             for o in self.models:
                 res.append(o.objects.scan_row(row=row, previous=res))
-        self.log.debug("headers of input: %s" % ",".join(self.in_headers))
+        self.log.debug("headers of input: %s", ",".join(self.in_headers))
 
     def _write_output(self):
         for m in self.models:
@@ -116,7 +116,7 @@ class Transformer(object):
             )(manager=m.objects)
             f = self._filehandle(_emitter)
             self.log.debug(
-                '%s: stats %s' % (m._meta.model_name, ", ".join(
+                '%s: stats %s', (m._meta.model_name, ", ".join(
                     ["%s=%d" % (k, v) for k, v in m.objects.stats().items()]
                 ))
             )
@@ -142,9 +142,9 @@ class Transformer(object):
         if self.outdir:
             _filename = e.filename()
             _filename = os.path.normpath(self.outdir + "/" + _filename)
-            self.log.debug('%s: opening %r' % (e.meta.model_name, _filename))
+            self.log.debug('%s: opening %r', (e.meta.model_name, _filename))
             f = open(_filename, "w")
         else:
-            self.log.debug('%s: writing to stdout' % (e._meta.model_name))
+            self.log.debug('%s: writing to stdout', (e._meta.model_name))
             f = sys.stdout
         return f

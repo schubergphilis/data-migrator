@@ -6,7 +6,7 @@ commonly used dutch support functions
 
 import re
 
-_PHONE_CHARS = re.compile('[^\+\d]+')
+_PHONE_CHARS = re.compile(r'[^\+\d]+')
 _INTERNATIONAL_ZERO_START = re.compile('^00')
 _MUNICIPALY_ZERO_START = re.compile('^0')
 

@@ -88,7 +88,6 @@ class BaseField(object):
         return v
 
     def _value(self, value):
-        # pylint: disable=R0201, no-self-use
         return value
 
 

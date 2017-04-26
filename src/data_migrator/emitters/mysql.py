@@ -59,5 +59,5 @@ class MySQLEmitter(BaseEmitter):
         columns = ", ".join(["`" + x + "`" for x in c])
         replacements = ", ".join(["%(" + x + ")s" for x in c])
         template = self.base_template % (self.meta.table_name, columns, replacements)
-        log.debug('emit template: %s' % template)
+        log.debug('emit template: %s', template)
         self._template = template
