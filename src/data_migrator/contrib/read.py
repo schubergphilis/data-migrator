@@ -3,16 +3,21 @@
 import csv
 import sys
 
-from data_migrator.exceptions import DefinitionException, NonUniqueDataException
+from data_migrator.exceptions import DefinitionException
+from data_migrator.exceptions import NonUniqueDataException
 from data_migrator.utils import isstr
 
-def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_list=False, unique=False):
+
+def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
+                      as_list=False, unique=False):
     '''
-    Generates a map from a csv and adds some validation and list parsing. A function that
-    returns a map for MappingField to use as input in its MappingField.data_map.
+    Generates a map from a csv and adds some validation and list parsing. A
+    function that returns a map for MappingField to use as input in its
+    MappingField.data_map.
 
         >>> from data_migrator.contrib.read import read_map_from_csv
-        >>> table_map = read_map_from_csv(f=open('table.csv'), delimiter=';', key='id', value='name')
+        >>> table_map = read_map_from_csv(f=open('table.csv'), delimiter=';',
+                                          key='id', value='name')
         >>> len(table_map)
         10
 
@@ -21,11 +26,17 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_li
     Args:
         f: Filehandle to read the csv from into the map
         delimiter: Option to select another delimiter, other than `\\\\t`
-        key: Name or position of the Key, if ``header`` is false, the ordinal position is expected (default first)
-        value: Name or position of the Value, if ``header`` is false, the ordinal position is expected (default second)
-        as_list (boolean): If ``True``, *data-migrator* will treat add all values for ``key`` as a list. Default is ``False``.
-        unique (boolean): If ``True``, *data-migrator* will treat add all non unique values for ``key`` as a violation and raise a ``DataException``. Default is ``False``.
-        header (boolean): If ``True``, *data-migrator* will treat row as a header column. Default is ``True``
+        key: Name or position of the Key, if ``header`` is false, the ordinal
+            position is expected (default first)
+        value: Name or position of the Value, if ``header`` is false, the
+            ordinal position is expected (default second)
+        as_list (boolean): If ``True``, *data-migrator* will treat add all
+            values for ``key`` as a list. Default is ``False``.
+        unique (boolean): If ``True``, *data-migrator* will treat add all non
+            unique values for ``key`` as a violation and raise a
+            ``DataException``. Default is ``False``.
+        header (boolean): If ``True``, *data-migrator* will treat row as a
+            header column. Default is ``True``
 
     Returns:
         map: a key, value map from the csv
@@ -58,7 +69,8 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True, as_li
         v = [l[vi]] if as_list else l[vi]
         if l[ki] in data_map:
             if unique:
-                raise NonUniqueDataException('line %d - unique constraint failed: %s' % (i, l[ki]))
+                raise NonUniqueDataException(
+                    'line %d - unique constraint failed: %s' % (i, l[ki]))
             elif as_list:
                 data_map[l[ki]] += v
             else:

@@ -6,9 +6,10 @@ commonly used dutch support functions
 
 import re
 
-_PHONE_CHARS=re.compile('[^\+\d]+')
-_INTERNATIONAL_ZERO_START=re.compile('^00')
-_MUNICIPALY_ZERO_START=re.compile('^0')
+_PHONE_CHARS = re.compile('[^\+\d]+')
+_INTERNATIONAL_ZERO_START = re.compile('^00')
+_MUNICIPALY_ZERO_START = re.compile('^0')
+
 
 def clean_phone(v):
     '''Cleans phone numbers to dutch clean format
@@ -16,8 +17,10 @@ def clean_phone(v):
     clean_phone clean phone numbers, replaces all characters and spaces
     adds dutch country code (+31) if no country code is provide
 
-        >>> [clean_phone(x) for x in ['00 31 6 - 20 20 20 20','06 20 20 20 20','020 -123 345 6','+440.203.020.23','+440a203a020a23']
-        ['+31620202020','+31620202020','+31201233456','+4402030203','+4402030203']
+        >>> [clean_phone(x) for x in ['00 31 6 - 20 20 20 20','06 20 20 20 20',
+        '020 -123 345 6','+440.203.020.23','+440a203a020a23']
+        ['+31620202020','+31620202020','+31201233456','+4402030203',
+        '+4402030203']
 
     Args:
         v (str): value to clean
@@ -32,7 +35,9 @@ def clean_phone(v):
     return v
 
 
-ZIP_CODE=re.compile('^([0-9]{4})[\t ]*([a-zA-Z]{2})$')
+ZIP_CODE = re.compile('^([0-9]{4})[\t ]*([a-zA-Z]{2})$')
+
+
 def clean_zip_code(v):
     '''Cleans a dutch zipcode
 

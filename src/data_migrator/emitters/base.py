@@ -1,11 +1,13 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+
 class BaseEmitter(object):
     '''Base for emitters of the data_migrator.
 
     Attributes:
-        manager (BaseManager): reference to the manager that is calling this emitter to export objects from that manager
+        manager (BaseManager): reference to the manager that is calling this
+            emitter to export objects from that manager
         model_class (Model): reference to the model linked to the class
         extension (str): file extension for output file of this emitter
 
@@ -13,11 +15,13 @@ class BaseEmitter(object):
     '''
 
     def __init__(self, extension=None, manager=None):
-        # reference to the manager that is calling this emitter to export objects from the manager
-        self.manager=manager
-        self.model_class=manager.model_class
-        self.meta=self.model_class._meta
-        self.extension = extension or getattr(self.__class__, 'extension', '.txt')
+        # reference to the manager that is calling this emitter to
+        # export objects from the manager
+        self.manager = manager
+        self.model_class = manager.model_class
+        self.meta = self.model_class._meta
+        self.extension = extension or getattr(self.__class__,
+                'extension', '.txt')
 
     def emit(self, o):
         '''output the result set of an object.
@@ -48,7 +52,8 @@ class BaseEmitter(object):
         '''generate a premable for the file to emit.
 
         Args:
-            headers (list): additional header to provide outside the emitter (e.g. statistics)
+            headers (list): additional header to provide outside the emitter
+                (e.g. statistics)
         Returns:
             list: preamble lines
         '''

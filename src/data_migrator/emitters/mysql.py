@@ -7,6 +7,7 @@ from data_migrator.utils import sql_escape, default_logger
 
 log = default_logger()
 
+
 class MySQLEmitter(BaseEmitter):
     '''MySQL emitter to output MySQL specific insert statements
 
@@ -36,7 +37,7 @@ class MySQLEmitter(BaseEmitter):
         h1 = [
             "transformation for %s to table %s" % (_meta.model_name, _meta.table_name),
             "input headers: %s" % ",".join(headers),
-            'stats: %s' % ",".join(["%s=%d" % (k,v) for k,v in self.manager.stats().items()]),
+            'stats: %s' % ",".join(["%s=%d" % (k, v) for k, v in self.manager.stats().items()]),
         ]
         r = []
         r += ['# %s' % l for l in h1]
@@ -54,7 +55,7 @@ class MySQLEmitter(BaseEmitter):
 
     def _prepare(self):
         # generate the base query template
-        c = [f.name for k,f in self.meta.fields.items() if not isinstance(f, HiddenField)]
+        c = [f.name for k, f in self.meta.fields.items() if not isinstance(f, HiddenField)]
         columns = ", ".join(["`" + x + "`" for x in c])
         replacements = ", ".join(["%(" + x + ")s" for x in c])
         template = self.base_template % (self.meta.table_name, columns, replacements)

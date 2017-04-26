@@ -15,13 +15,13 @@ setup(
     author_email='iheitlager@schubergphilis.com',
     maintainer='Ilja Heitlager',
     maintainer_email='iheitlager@schubergphilis.com',
-    keywords = ["datamigration", "development-tools"],
+    keywords=["datamigration", "development-tools"],
     url='https://github.com/schubergphilis/data-migrator',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     test_suite="tests",
     platforms=["any"],
-    classifiers = [
+    classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Topic :: Software Development :: Build Tools",

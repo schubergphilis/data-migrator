@@ -7,6 +7,7 @@ from data_migrator.utils import default_logger, sql_escape
 
 log = default_logger()
 
+
 class CSVEmitter(BaseEmitter):
     '''CSV emitter to output delimited data
 
@@ -17,7 +18,6 @@ class CSVEmitter(BaseEmitter):
     '''
     extension = '.csv'
     base_template = '''%s'''
-
 
     def __init__(self, *args, **kwargs):
         super(CSVEmitter, self).__init__(*args, **kwargs)
@@ -38,7 +38,8 @@ class CSVEmitter(BaseEmitter):
 
     def _prepare(self):
         # generate the base query template
-        c = [f.name for k,f in self.meta.fields.items() if not isinstance(f, HiddenField)]
+        c = [f.name for k, f in self.meta.fields.items()
+            if not isinstance(f, HiddenField)]
         headers = ", ".join(c)
         replacements = ", ".join(["%(" + x + ")s" for x in c])
         template = self.base_template % (replacements)
