@@ -145,6 +145,6 @@ class Transformer(object):
             self.log.debug('%s: opening %r', e.meta.model_name, _filename)
             f = open(_filename, "w")
         else:
-            self.log.debug('%s: writing to stdout', (e._meta.model_name))
+            self.log.debug('%s: writing to stdout', e._meta.model_name)
             f = sys.stdout
         return f
