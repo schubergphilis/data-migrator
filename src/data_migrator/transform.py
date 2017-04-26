@@ -100,7 +100,7 @@ class Transformer(object):
             self.log.debug("printing first %d rows of input", self.print_rows)
         for row in self.reader:
             if self.print_rows > 0:
-                self.log.debug("%d: %s", (self.print_rows, ",".join(row)))
+                self.log.debug("%d: %s", self.print_rows, ",".join(row))
                 self.print_rows -= 1
             self.rows += 1
             res = []
@@ -116,9 +116,9 @@ class Transformer(object):
             )(manager=m.objects)
             f = self._filehandle(_emitter)
             self.log.debug(
-                '%s: stats %s', (m._meta.model_name, ", ".join(
+                '%s: stats %s', m._meta.model_name, ", ".join(
                     ["%s=%d" % (k, v) for k, v in m.objects.stats().items()]
-                ))
+                )
             )
             for l in _emitter.preamble(headers=self.in_headers):
                 f.write(l + '\n')
@@ -142,7 +142,7 @@ class Transformer(object):
         if self.outdir:
             _filename = e.filename()
             _filename = os.path.normpath(self.outdir + "/" + _filename)
-            self.log.debug('%s: opening %r', (e.meta.model_name, _filename))
+            self.log.debug('%s: opening %r', e.meta.model_name, _filename)
             f = open(_filename, "w")
         else:
             self.log.debug('%s: writing to stdout', (e._meta.model_name))
