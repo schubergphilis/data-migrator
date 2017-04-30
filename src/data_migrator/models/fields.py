@@ -26,12 +26,15 @@ class BaseField(object):
     def __init__(self,
                  pos=-1, name="",
                  default=None, nullable="NULL",
+                 key=False, required=False,
                  replacement=None, parse=None, validate=None,
                  max_length=None, unique=False,
                  validate_output=None):
 
         # default value if null
         self.default = default if default is not None else getattr(self.__class__, 'default', default)
+        # key indicated key field
+        self.key = key
         # fixed position in the row to read
         self.max_length = max_length
         # name of this field (will be set in Model class construction)
@@ -45,6 +48,9 @@ class BaseField(object):
         if isstr(replacement):
             replacement = partial(_replace, replacement)
         self.replace = getattr(self.__class__, 'replace', replacement)
+        # required indicates must be filled in
+        self.required = required
+        # unique indicates a unique field
         self.unique = unique
         # some function to apply to value
         self.validate = validate or getattr(self.__class__, 'validate', None)

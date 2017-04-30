@@ -53,6 +53,13 @@ value. StringField only has empty string as empty value. With this field it can 
 changed to some other standard value. Consider a Country field as string and setting it
 to the home country by default.
 
+``key``
+---------------
+
+.. attribute:: Field.key
+
+If set, this indicates the field is a key field for identification of the object.
+
 ``nullable``
 --------
 
@@ -70,6 +77,13 @@ will be translated to :attr:`~Field.default`
 If set, this is a pre-emit replacement function. This could be used to insert dynamic
 replacement lookup select queries, adding more indirection into the data generation.
 Value could be either function or a string.
+
+``required``
+---------------
+
+.. attribute:: Field.required
+
+If set, this indicates the field is required to be set.
 
 ``parse``
 ---------
