@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Added
 - test metadata in circle-ci #25
 - pyup.ip added #31
+- simplified semver release to dev/final #37
 
 
 ## [0.5.0] - 2017-04-21
