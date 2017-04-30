@@ -22,6 +22,7 @@ class BaseField(object):
     '''Base column definition for the transformation DSL
     '''
     creation_order = 0
+    schema_type = 'object'
 
     def __init__(self,
                  pos=-1, name="",
@@ -80,6 +81,7 @@ class BaseField(object):
         return self._value(v)
 
     def emit(self, v, escaper=None):
+        '''helper function to export this field'''
         if self.max_length and isstr(v):
             v = v[:self.max_length]
         v = v or self.default
@@ -92,6 +94,13 @@ class BaseField(object):
         if self.replace:
             v = self.replace(v)
         return v
+
+    def json_schema(self):
+        '''generate json_schema representation of this field'''
+        t = self.schema_type
+        if 'Null' in self.__class__.__name__:
+            t = [t, "null"]
+        return {self.name: t}
 
     def _value(self, v):
         return v
@@ -109,6 +118,7 @@ class HiddenField(BaseField):
 class IntField(BaseField):
     '''Basic integer field handler'''
     default = 0
+    schema_type = 'integer'
 
     def _value(self, v):
         return int(v) if isstr(v) else v
@@ -120,6 +130,8 @@ class NullIntField(BaseField):
     a field that accepts the column to be integer and can also be None, which
     is not the same as 0 (zero).
     '''
+    schema_type = 'integer'
+
     def _value(self, v):
         return int(v) if isstr(v) else v
 
@@ -127,6 +139,7 @@ class NullIntField(BaseField):
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''
     default = ""
+    schema_type = 'string'
 
     def _value(self, v):
         return v.strip() if isinstance(v, str) else v
@@ -138,6 +151,8 @@ class NullStringField(BaseField):
     a field that accepts the column to be string and can also be None, which
     is not the same as empty string ("").
     '''
+    schema_type = 'string'
+
     def _value(self, v):
         return v.strip() if isinstance(v, str) else v
 
@@ -149,6 +164,7 @@ class BooleanField(BaseField):
     into ``True`` or ``False`` otherwise.
     '''
     default = False
+    schema_type = 'string'
 
     def _value(self, v):
         try:
@@ -170,6 +186,7 @@ class DefaultField(BaseField):
 
 class NullField(DefaultField):
     '''NULL returning field by generating None'''
+    schema_type = 'null'
     pass
 
 
@@ -178,6 +195,8 @@ class UUIDField(BaseField):
 
     a field that generates a ``str(uuid.uuid4())``
     '''
+    schema_type = 'string'
+
     def __init__(self, *args, **kwargs):
         kwargs['default'] = None
         super(UUIDField, self).__init__(*args, **kwargs)

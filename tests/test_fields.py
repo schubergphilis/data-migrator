@@ -11,17 +11,19 @@ class TestFields(unittest.TestCase):
 
     def test_basics(self):
         '''get the basics of parsing and emitting'''
-        f = models.IntField(pos=0)
+        f = models.IntField(pos=0, name='f')
         self.assertEqual(f.default, 0)
         self.assertFalse(f.key)
         self.assertFalse(f.required)
         self.assertEqual(f.scan(row=["10", "20"]), 10)
         self.assertEqual(f.emit(10), 10)
+        self.assertEqual(f.json_schema(), {'f':'integer'})
 
     def test_replacement_string(self):
         '''replacement facility'''
-        f = models.StringField(replacement='hello {}')
+        f = models.StringField(replacement='hello {}', name='f')
         self.assertEqual(f.emit("world"), "hello world")
+        self.assertEqual(f.json_schema(), {'f':'string'})
 
     def test_functions(self):
         '''check the functions for parsing and emitting'''
@@ -57,17 +59,19 @@ class TestFields(unittest.TestCase):
 
     def test_null_string(self):
         '''dedicated null string fields'''
-        f = models.NullStringField(pos=0)
+        f = models.NullStringField(pos=0, name='f')
         r = f.scan(row=["NULL"])
         self.assertIsNone(r)
         self.assertEqual(f.emit(r, escaper=sql_escape), "NULL")
+        self.assertEqual(f.json_schema(), {'f':['string', 'null']})
 
     def test_null_int(self):
         '''dedicated null string fields'''
-        f = models.NullIntField(pos=0)
+        f = models.NullIntField(pos=0, name='f')
         r = f.scan(row=["NULL"])
         self.assertIsNone(r)
         self.assertEqual(f.emit(r, escaper=sql_escape), "NULL")
+        self.assertEqual(f.json_schema(), {'f':['integer', 'null']})
 
     def test_parse_value(self):
         '''add a parse function for a field'''
@@ -111,9 +115,10 @@ class TestFields(unittest.TestCase):
 
     def test_uuid_field(self):
         '''uuid field'''
-        f = models.UUIDField()
+        f = models.UUIDField(name='f')
         self.assertIsNone(f.default)
         self.assertEqual(f.emit("some value"), "some value")
+        self.assertEqual(f.json_schema(), {'f':'string'})
 
     def test_uuid_field_default(self):
         '''uuid field, trying to set default'''
