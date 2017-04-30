@@ -53,10 +53,10 @@ value. StringField only has empty string as empty value. With this field it can 
 changed to some other standard value. Consider a Country field as string and setting it
 to the home country by default.
 
-``null``
+``nullable``
 --------
 
-.. attribute:: Field.null
+.. attribute:: Field.nullable
 
 If set it will match the source column value and consider this a ``None`` value. By
 default this attribute is set to ``None``. Note that for none Null fields ``None``

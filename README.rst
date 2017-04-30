@@ -49,7 +49,7 @@ fast, readable and extendable
   class Result(models.Model):
     id   = models.IntField(pos=0) # keep id
     uuid = models.UUIDField()     # generate new uuid4 field
-    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replacement=lambda x:x.upper())
+    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, nullable='NULL', replacement=lambda x:x.upper())
     b    = models.StringField(pos=2, name='my_b')
 
   if __name__ == "__main__":

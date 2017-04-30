@@ -32,7 +32,7 @@ class TestFields(unittest.TestCase):
 
     def test_default_null(self):
         '''null handling'''
-        f = models.IntField(pos=0, null="NULL", default=10)
+        f = models.IntField(pos=0, nullable="NULL", default=10)
         self.assertEqual(f.scan(row=["NULL","20"]), None)
         self.assertEqual(f.default, 10)
         self.assertEqual(f.emit(None), 10)

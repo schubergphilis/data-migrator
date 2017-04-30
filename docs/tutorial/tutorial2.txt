@@ -18,7 +18,7 @@ can be set on a model basis in the Meta block
   class Result(models.Model):
     id = models.IntField(pos=0) # keep id
     a  = models.StringField(pos=1)
-    b  = models.StringField(pos=2, null=None)
+    b  = models.StringField(pos=2, nullable=None)
 
     class Meta:
       drop_if_none = ['b']

@@ -24,11 +24,11 @@ class BaseField(object):
     creation_order = 0
 
     def __init__(self,
-        pos=-1, name="",
-        default=None, null="NULL",
-        replacement=None, parse=None, validate=None,
-        max_length=None, unique=False,
-        validate_output=None):
+                 pos=-1, name="",
+                 default=None, nullable="NULL",
+                 replacement=None, parse=None, validate=None,
+                 max_length=None, unique=False,
+                 validate_output=None):
 
         # default value if null
         self.default = default if default is not None else getattr(self.__class__, 'default', default)
@@ -37,7 +37,7 @@ class BaseField(object):
         # name of this field (will be set in Model class construction)
         self.name = name
         # input string that defines null -> None
-        self.null = null
+        self.nullable = nullable
         # some function to apply to value
         self.parse = parse or getattr(self.__class__, 'parse', None)
         self.pos = int(pos)
@@ -60,7 +60,7 @@ class BaseField(object):
         v = None
         if self.pos >= 0:
             # do null check if enabled
-            if self.null is not None and row[self.pos] == self.null:
+            if self.nullable is not None and row[self.pos] == self.nullable:
                 return v
             v = row[self.pos]
             if self.validate and not self.validate(v):
@@ -87,8 +87,8 @@ class BaseField(object):
             v = self.replace(v)
         return v
 
-    def _value(self, value):
-        return value
+    def _value(self, v):
+        return v
 
 
 class HiddenField(BaseField):
@@ -104,8 +104,8 @@ class IntField(BaseField):
     '''Basic integer field handler'''
     default = 0
 
-    def _value(self, value):
-        return int(value) if isstr(value) else value
+    def _value(self, v):
+        return int(v) if isstr(v) else v
 
 
 class NullIntField(BaseField):
@@ -114,16 +114,16 @@ class NullIntField(BaseField):
     a field that accepts the column to be integer and can also be None, which
     is not the same as 0 (zero).
     '''
-    def _value(self, value):
-        return int(value) if isstr(value) else value
+    def _value(self, v):
+        return int(v) if isstr(v) else v
 
 
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''
     default = ""
 
-    def _value(self, value):
-        return value.strip() if isinstance(value, str) else value
+    def _value(self, v):
+        return v.strip() if isinstance(v, str) else v
 
 
 class NullStringField(BaseField):
@@ -132,8 +132,8 @@ class NullStringField(BaseField):
     a field that accepts the column to be string and can also be None, which
     is not the same as empty string ("").
     '''
-    def _value(self, value):
-        return value.strip() if isinstance(value, str) else value
+    def _value(self, v):
+        return v.strip() if isinstance(v, str) else v
 
 
 class BooleanField(BaseField):
@@ -144,9 +144,9 @@ class BooleanField(BaseField):
     '''
     default = False
 
-    def _value(self, value):
+    def _value(self, v):
         try:
-            return value.lower()[0] in ['y', 't', '1']
+            return v.lower()[0] in ['y', 't', '1']
         except (AttributeError, IndexError):
             return False
 
@@ -228,7 +228,7 @@ class MappingField(BaseField):
                 raise DataException("%s - %s not in map" % (self.name, v))
         else:
             v = self.data_map.get(v, self.default if self.default is not None
-                else v)
+                                  else v)
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)

@@ -53,7 +53,7 @@ is helpful. That is why we came up with *data-migrator*. One could simply replac
     id   = models.IntField(pos=0) # keep id
     uuid = models.UUIDField()     # generate new uuid4 field
     # replace NULLs and trim
-    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, null='NULL', replacement=lambda x:x.upper())
+    a    = models.StringField(pos=1, default='NO_NULL', max_length=5, nullable='NULL', replacement=lambda x:x.upper())
     # parse this field
     b    = models.StringField(pos=2, parse=parse_b, name='my_b')
 
