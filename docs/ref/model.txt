@@ -5,9 +5,9 @@ Model class reference
 .. module:: data_migrator.models.base
    :synopsis: Base for model definitions
 
-.. currentmodule:: data_migrator.models
+.. currentmodule:: data_migrator.models.base
 
-This document covers features of the :class:`~data_migrator.models.Model` class.
+This document covers features of the :class:`~Model` class.
 
 
 Model

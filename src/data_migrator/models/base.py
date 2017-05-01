@@ -27,7 +27,7 @@ class ModelBase(type):
         module = attrs.pop('__module__')
         new_class = super_new(mcs, name, bases, {'__module__': module})
 
-        # Chek if we have a meta class
+        # Check if we have a meta class
         attr_meta = attrs.pop('Meta', None)
         if not attr_meta:
             meta = getattr(new_class, 'Meta', None)
@@ -40,7 +40,8 @@ class ModelBase(type):
             if isinstance(d, BaseField):
                 fields[n] = d
                 setattr(d, 'name', getattr(d, 'name') or n)
-                # fields[d.name]=d
+
+        # now prepare the meta class/options
         setattr(new_class, '_meta', Options(new_class, meta, fields=fields))
 
         # instantiate the manager
@@ -54,12 +55,12 @@ class ModelBase(type):
 class Model(with_metaclass(ModelBase)):
     """Model is foundation for every transformation
 
-    Each non-abstract :class:`~data_migrator.models.Model` class must have a
-    :class:`~data_migrator.models.Manager` instance added to it.
-    Data-migrator ensures that in your model class you have  at least a
-    standard ``SimpleManager`` specified. If you add your own
-    :class:`~data_migrator.models.Manager` instance attribute, the default one
-    does not appear.
+    Each non-abstract :class:`~.Model` class must have a
+    :class:`~.BaseManager` instance added to it. *data-migrator* ensures that
+    in your model class you have  at least a standard :class:`~.SimpleManager`
+    specified, on case you do add your own specialization of
+    :class:`~.BaseManager` through the Meta class :attr:`~.Options.manager`
+    attribute.
 
     Attributes:
         objects: reference to manager
@@ -78,8 +79,10 @@ class Model(with_metaclass(ModelBase)):
             elif k in f:
                 setattr(self, k, _fields[k]._value(v))
                 f.remove(k)
-            else:
+            elif _meta.strict:
                 raise DataException("trying to set unknown field %s" % k)
+            else:
+                setattr(self, k, v)
         # add missing fields, put in None values (to be replaced by default
         # at emit)
         for k in f:
@@ -127,9 +130,10 @@ class Model(with_metaclass(ModelBase)):
         '''generate the json schema representation of this model.
 
         Returns:
-            dict with python form of json schema representation
+            dict with python representation of json schema.
         '''
-        _fields = [f for f in cls._meta.fields.values() if not isinstance(f, HiddenField)]
+        _fields = [f for f in cls._meta.fields.values()
+                   if not isinstance(f, HiddenField)]
         _required = [x.name for x in _fields if x.required]
         _key = [x.name for x in _fields if x.key]
         _required = list(set(_required + _key))
@@ -139,6 +143,10 @@ class Model(with_metaclass(ModelBase)):
         _res = {'properties': _res, 'type': 'object'}
         if _required:
             _res['required'] = _required
+        if cls._meta.strict:
+            _res['additionalProperties'] = False
+        elif cls._meta.strict is not None:
+            _res['additionalProperties'] = True
         return _res
 
     def __repr__(self):

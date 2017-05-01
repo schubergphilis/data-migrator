@@ -54,14 +54,14 @@ changed to some other standard value. Consider a Country field as string and set
 to the home country by default.
 
 ``key``
----------------
+-------
 
 .. attribute:: Field.key
 
 If set, this indicates the field is a key field for identification of the object.
 
 ``nullable``
---------
+------------
 
 .. attribute:: Field.nullable
 
