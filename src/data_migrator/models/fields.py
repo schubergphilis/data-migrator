@@ -100,6 +100,9 @@ class BaseField(object):
         t = self.schema_type
         if 'Null' in self.__class__.__name__:
             t = [t, "null"]
+        t = {'type': t}
+        if self.key:
+            t['key'] = True
         return {self.name: t}
 
     def _value(self, v):
@@ -164,7 +167,7 @@ class BooleanField(BaseField):
     into ``True`` or ``False`` otherwise.
     '''
     default = False
-    schema_type = 'string'
+    schema_type = 'boolean'
 
     def _value(self, v):
         try:
@@ -186,8 +189,9 @@ class DefaultField(BaseField):
 
 class NullField(DefaultField):
     '''NULL returning field by generating None'''
-    schema_type = 'null'
-    pass
+    def json_schema(self):
+        '''generate json_schema representation of this field'''
+        return {self.name: {'type': 'null'}}
 
 
 class UUIDField(BaseField):

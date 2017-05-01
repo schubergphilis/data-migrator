@@ -17,13 +17,13 @@ class TestFields(unittest.TestCase):
         self.assertFalse(f.required)
         self.assertEqual(f.scan(row=["10", "20"]), 10)
         self.assertEqual(f.emit(10), 10)
-        self.assertEqual(f.json_schema(), {'f':'integer'})
+        self.assertEqual(f.json_schema(), {'f': {'type': 'integer'}})
 
     def test_replacement_string(self):
         '''replacement facility'''
         f = models.StringField(replacement='hello {}', name='f')
         self.assertEqual(f.emit("world"), "hello world")
-        self.assertEqual(f.json_schema(), {'f':'string'})
+        self.assertEqual(f.json_schema(), {'f': {'type': 'string'}})
 
     def test_functions(self):
         '''check the functions for parsing and emitting'''
@@ -63,7 +63,7 @@ class TestFields(unittest.TestCase):
         r = f.scan(row=["NULL"])
         self.assertIsNone(r)
         self.assertEqual(f.emit(r, escaper=sql_escape), "NULL")
-        self.assertEqual(f.json_schema(), {'f':['string', 'null']})
+        self.assertEqual(f.json_schema(), {'f': {'type': ['string', 'null']}})
 
     def test_null_int(self):
         '''dedicated null string fields'''
@@ -71,7 +71,7 @@ class TestFields(unittest.TestCase):
         r = f.scan(row=["NULL"])
         self.assertIsNone(r)
         self.assertEqual(f.emit(r, escaper=sql_escape), "NULL")
-        self.assertEqual(f.json_schema(), {'f':['integer', 'null']})
+        self.assertEqual(f.json_schema(), {'f': {'type': ['integer', 'null']}})
 
     def test_parse_value(self):
         '''add a parse function for a field'''
@@ -118,7 +118,7 @@ class TestFields(unittest.TestCase):
         f = models.UUIDField(name='f')
         self.assertIsNone(f.default)
         self.assertEqual(f.emit("some value"), "some value")
-        self.assertEqual(f.json_schema(), {'f':'string'})
+        self.assertEqual(f.json_schema(), {'f': {'type': 'string'}})
 
     def test_uuid_field_default(self):
         '''uuid field, trying to set default'''

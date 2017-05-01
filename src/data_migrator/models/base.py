@@ -122,6 +122,25 @@ class Model(with_metaclass(ModelBase)):
         self.objects.save(self)
         return self
 
+    @classmethod
+    def json_schema(cls):
+        '''generate the json schema representation of this model.
+
+        Returns:
+            dict with python form of json schema representation
+        '''
+        _fields = [f for f in cls._meta.fields.values() if not isinstance(f, HiddenField)]
+        _required = [x.name for x in _fields if x.required]
+        _key = [x.name for x in _fields if x.key]
+        _required = list(set(_required + _key))
+        _res = {}
+        for f in _fields:
+            _res.update(f.json_schema())
+        _res = {'properties': _res, 'type': 'object'}
+        if _required:
+            _res['required'] = _required
+        return _res
+
     def __repr__(self):
         try:
             u = str(self)
