@@ -53,7 +53,7 @@ class ModelBase(type):
 
 
 class Model(with_metaclass(ModelBase)):
-    """Model is foundation for every transformation
+    """Model is foundation for every transformation.
 
     Each non-abstract :class:`~.Model` class must have a
     :class:`~.BaseManager` instance added to it. *data-migrator* ensures that
@@ -115,6 +115,25 @@ class Model(with_metaclass(ModelBase)):
             if not isinstance(f, HiddenField):
                 res[f.name] = f.emit(self.__dict__[k], escaper)
         return res
+
+    def set(self, **kwargs):
+        '''Setter method for chaining operations.
+
+        Returns:
+            self, so that methods can be chained
+
+        Raises:
+            :class:`~.DataException`: raised if trying to set non defined field
+                and strict model.
+        '''
+        _meta = self.__class__._meta
+        _fields = self.__class__._meta.fields.keys()
+        for k, v in kwargs.items():
+            if k in _fields or not _meta.strict:
+                setattr(self, k, v)
+            else:
+                raise DataException("trying to set unknown field %s" % k)
+        return self
 
     def save(self):
         '''Save this object and add it to the list.

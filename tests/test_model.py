@@ -70,6 +70,12 @@ class TestModel(unittest.TestCase):
         o1 = TrialModel.objects.scan_row(row)
         self.assertEqual(o1[0].a, 'hello')
 
+    def test_set(self):
+        '''set values in a chain'''
+        row = ['hello', 'world']
+        o1 = TrialModel().scan(row).set(a='hallo')
+        self.assertEqual(o1.a, 'hallo')
+
     def test_default_emit(self):
         '''default values are returned on emit'''
         o = TrialModel()

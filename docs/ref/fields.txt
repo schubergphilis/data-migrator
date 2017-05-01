@@ -7,15 +7,15 @@ Model field reference
 
 .. currentmodule: data_migrator.models
 
-This document contains all API references of BaseClass :class:`~.fields.BaseField`
+This document contains all API references of BaseClass :class:`~.BaseField`
 including the `field options`_ and `field types`_ data_migrator offers.
 
 .. note::
 
-    Technically, these models are defined in :mod:`data_migrator.models.fields`, but
-    for convenience they're imported into :mod:`data_migrator.models`, the standard
-    convention is to use ``from data_migrator import models`` and refer to fields as
-    ``models.<Foo>Field``
+    Technically, these models are defined in :mod:`data_migrator.models.fields`
+    , but for convenience they're imported into :mod:`data_migrator.models`,
+    the standard convention is to use ``from data_migrator import models`` and
+    refer to fields as ``models.<Foo>Field``
 
 Field options
 =============

@@ -62,7 +62,19 @@ class BaseField(object):
         BaseField.creation_order += 1
 
     def scan(self, row):
-        '''scan row and harvest distinct value'''
+        '''scan row and harvest distinct value.
+
+        Takes a row of data and parses the required fields out of this.
+
+        Args:
+            row (list): array of source data
+
+        Returns:
+            parsed and process value.
+        Raises:
+            :class:`~.ValidationException`: raised if explicit validation
+                fails.            
+        '''
         # see if we want to read a column in the row
         v = None
         if self.pos >= 0:

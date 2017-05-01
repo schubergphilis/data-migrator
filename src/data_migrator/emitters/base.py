@@ -36,8 +36,8 @@ class BaseEmitter(object):
     def filename(self):
         '''generate filename for this emitter.
 
-        generates a filename bases on :attr:`BaseEmitter.extension` and either
-        :attr:`~.Meta.file_name` or :attr:`~.Meta.table_name`
+        generates a filename bases on :attr:`~.BaseEmitter.extension` and
+        either :attr:`~.Options.file_name` or :attr:`~.Options.table_name`
 
         Returns:
             str: filename
