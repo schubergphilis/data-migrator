@@ -52,10 +52,10 @@ class TestModel(unittest.TestCase):
         '''don't except extra fields'''
         d = {"a":"hello", "b":"World", "c":"fail"}
         self.assertTrue(TrialModel(**d))
-        TrialModel._meta.strict = True
+        t, TrialModel._meta.strict = TrialModel._meta.strict, True
         self.assertRaises(DataException, TrialModel, a="hello", b="world", c="fail")
         self.assertRaises(DataException, TrialModel, **d)
-        TrialModel._meta.strict = None
+        TrialModel._meta.strict = t
 
     def test_remark(self):
         '''can set an addtional remark on this object'''
@@ -73,8 +73,16 @@ class TestModel(unittest.TestCase):
     def test_set(self):
         '''set values in a chain'''
         row = ['hello', 'world']
-        o1 = TrialModel().scan(row).set(a='hallo')
+        o1 = TrialModel().scan(row).update(a='hallo')
         self.assertEqual(o1.a, 'hallo')
+
+    def test_set_fail(self):
+        '''set values in a chain'''
+        row = ['hello', 'world']
+        o1 = TrialModel().scan(row).update(a='hallo')
+        t, TrialModel._meta.strict = TrialModel._meta.strict, True
+        self.assertRaises(DataException, o1.update, d='hallo')
+        TrialModel._meta.strict = t
 
     def test_default_emit(self):
         '''default values are returned on emit'''
@@ -94,9 +102,10 @@ class TestModel(unittest.TestCase):
         d = {"a":"hello", "b":"World", "c":"fail"}
         m = TrialModel(**d)
         self.assertTrue(m)
-        TrialModel._meta.strict = True
+        t, TrialModel._meta.strict = TrialModel._meta.strict, True
         print(TrialModel.json_schema())
         print(m.json_schema())
+        TrialModel._meta.strict = t
 
 if __name__ == '__main__':
     unittest.main()

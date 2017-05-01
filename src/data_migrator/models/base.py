@@ -116,8 +116,8 @@ class Model(with_metaclass(ModelBase)):
                 res[f.name] = f.emit(self.__dict__[k], escaper)
         return res
 
-    def set(self, **kwargs):
-        '''Setter method for chaining operations.
+    def update(self, **kwargs):
+        '''Update method for chaining operations.
 
         Returns:
             self, so that methods can be chained

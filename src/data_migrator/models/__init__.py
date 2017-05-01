@@ -10,7 +10,7 @@ This module contains all classes for models, managers and fields
 """
 
 from .base import Model  # noqa
-from .manager import SimpleManager  # noqa
+from .manager import BaseManager, SimpleManager  # noqa
 from .fields import (IntField, NullIntField, StringField, NullField,  # noqa
                     NullStringField, BooleanField, UUIDField,  # noqa
                     JSONField, MappingField, HiddenField)  # noqa
