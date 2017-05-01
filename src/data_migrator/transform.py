@@ -131,6 +131,8 @@ class Transformer(object):
                 except AssertionError as err:
                     raise ValidationException("object: %d, %s" % (lineno, err))
                 lineno += 1
+            for l in _emitter.postamble():
+                f.write(l + '\n')
             if f != sys.stdout:
                 f.close()
             self.log.info(

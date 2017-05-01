@@ -12,3 +12,4 @@ This module contains all classes for emitters: base and actuals
 
 from .mysql import MySQLEmitter # noqa
 from .csv import CSVEmitter # noqa
+from .singer import SingerEmitter # noqa
