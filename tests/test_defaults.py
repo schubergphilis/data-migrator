@@ -50,7 +50,7 @@ class TestDefaultModel(unittest.TestCase):
         m = DefaultModel._meta
         f = m.fields
         self.assertEqual(f['a'].json_schema(), {'a': {'type': 'object'}})
-        self.assertEqual(f['b'].json_schema(), {'b': {'type': 'integer'}})
+        self.assertEqual(f['b'].json_schema(), {'b': {'type': 'integer', 'key': True}})
         self.assertEqual(f['c'].json_schema(), {'c': {'type': ['integer', 'null']}})
         self.assertEqual(f['d'].json_schema(), {'d': {'type': 'string'}})
         self.assertEqual(f['e'].json_schema(), {'e': {'type': ['string', 'null']}})
