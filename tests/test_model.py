@@ -99,7 +99,7 @@ class TestModel(unittest.TestCase):
         self.assertEqual(e['b'], '')
 
     def test_json_schema(self):
-        d = {"a":"hello", "b":"World", "c":"fail"}
+        d = {"a": "hello", "b": "World", "c": "fail"}
         m = TrialModel(**d)
         self.assertTrue(m)
         t, TrialModel._meta.strict = TrialModel._meta.strict, True

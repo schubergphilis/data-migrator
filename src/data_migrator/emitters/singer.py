@@ -3,7 +3,6 @@
 import json
 
 from data_migrator.emitters.base import BaseEmitter
-from data_migrator.models.fields import HiddenField
 from data_migrator.utils import default_logger
 
 log = default_logger()

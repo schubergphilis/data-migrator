@@ -59,18 +59,6 @@ class BaseEmitter(object):
         '''
         raise NotImplementedError
 
-    def preamble(self, headers):
-        '''generate a premable for the file to emit.
-
-        Args:
-            headers (list): additional header to provide outside the emitter
-                (e.g. statistics)
-        Returns:
-            list: preamble lines
-        '''
-        raise NotImplementedError
-
-
     def postamble(self):
         '''generate a postamble for the file to emit.
 

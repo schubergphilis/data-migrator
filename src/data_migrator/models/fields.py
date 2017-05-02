@@ -117,7 +117,7 @@ class BaseField(object):
             t['key'] = True
         return {self.name: t}
 
-    def _value(self, v):
+    def _value(self, v):  # pylint: disable=R0201
         return v
 
 
