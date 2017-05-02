@@ -30,6 +30,8 @@ dev_requirements:
 	@pip install -r py.requirements/build.txt
 
 dev_env:
+	@pip install -r py.requirements/docs.txt
+	@pip install -r py.requirements/build.txt
 	@pip install -r py.requirements/environment.txt
 
 tox:

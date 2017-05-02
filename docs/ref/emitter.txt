@@ -4,25 +4,7 @@ Emitter class reference
 
 .. currentmodule:: data_migrator.emitters
 
-This document covers features of the :class:`~data_migrator.emitter.BaseEmitter` class. Currently the
-system has two emitters: ``CSVEmitter`` and ``MySQLEmitter`` implemented, of which the last is the
-default emitter. An emitter provides the export format for the scanned and cleaned datasets. It also
-provides preambles in the output files, for example to clean the target table before loading it.
-
-The basic structure for emitting is a combination between ``manager`` and ``emitter``:
-
-.. code-block:: python
-
-  e = Emitter(manager=Model.objects)
-  print e.preamble(header=[..my header lines to add..])
-  for l in Model.objects.all():
-    print e.emit(l)  # emit is returning a list of strings!
-
-
-.. note::
-
-    At this moment *data-migrator* does not an actively take part in schema migrations of any
-    sort. It is purely about cleaning and transforming data (yet!).
+.. automodule::  data_migrator.emitters
 
 
 MySQLEmitter

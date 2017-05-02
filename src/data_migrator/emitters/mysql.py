@@ -15,7 +15,7 @@ class MySQLEmitter(BaseEmitter):
         base_template: base template to output the object
         extension (str): file extension for output file of this emitter
     '''
-    base_template = '''INSERT INTO `%s` (%s) VALUES (%s);'''
+    base_template = '''INSERT %sINTO `%s` (%s) VALUES (%s);'''
     extension = '.sql'
 
     def __init__(self, *args, **kwargs):
@@ -58,6 +58,7 @@ class MySQLEmitter(BaseEmitter):
         c = [f.name for k, f in self.meta.fields.items() if not isinstance(f, HiddenField)]
         columns = ", ".join(["`" + x + "`" for x in c])
         replacements = ", ".join(["%(" + x + ")s" for x in c])
-        template = self.base_template % (self.meta.table_name, columns, replacements)
+        _ignore = 'IGNORE ' if self.meta.drop_non_unique else ''
+        template = self.base_template % (_ignore, self.meta.table_name, columns, replacements)
         log.debug('emit template: %s', template)
         self._template = template

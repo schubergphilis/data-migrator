@@ -4,113 +4,31 @@ Meta class reference
 
 .. currentmodule:: data_migrator.models
 
-This document covers features of the :class:`~data_migrator.models.Meta` class. The meta class
-defines model specific settings.
+This document covers features of the *Meta* class.
+The meta class defines model specific settings and is used as an inner class
+in the model:
+
+.. code-block:: python
+
+  from data_migrator import models
+
+  class SampleModel(models.Model):
+    a = models.IntField(pos=1)
+
+    class Meta:
+      drop_if_none = True
+
+Every model can have its own meta class to define model specific options.
 
 .. note::
 
     Technically, Meta is just a container and forwarded to :class:`~.Options`
 
-Field options
-=============
 
-The following arguments are available to all field types. All are optional.
-
-``drop_if_none``
-----------------
-
-.. attribute:: Meta.drop_if_none
-
-Is a list of field names as defined. If set *data-migrator* will check if fields are not None
-and drop if one of the columns is.
-
-Any field listed in this attribute is checked after scanning and just before save-ing.
+.. autoclass::  data_migrator.models.options.Options
+  :members:
 
 .. note::
 
-    Note that only NullXXXFields actually can be ``None`` after scanning and parsing. Non
-    Null fields are set to their default value.
-
-
-``drop_non_unique``
--------------------
-
-.. attribute:: Meta.drop_non_unique
-
-If ``True``, *data-migrator* will drop values if the column uniqueness check fails
-(after parsing). Default is ``False``.
-
-Any field can be defined as a unique column. Any field set so, is checked after
-scanning and just before save-ing.
-
-``emitter``
------------
-
-.. attribute:: Meta.emitter
-
-If set, *data-migrator* will use this emitter instead of the default emitter.
-
-``fail_non_unique``
--------------------
-
-.. attribute:: Meta.fail_non_unique
-
-If ``True``, *data-migrator* will fail as a whole if the column uniqueness check fails
-(after parsing). Default is ``False``.
-
-Any field can be defined as a unique column. Any field set so, is checked after
-scanning and just before save-ing.
-
-``fail_non_validated``
-----------------------
-
-.. attribute:: Meta.fail_non_validated
-
-If ``True``, *data-migrator* will fail as a whole if the column validation check fails
-(after parsing). Default is ``False``.
-
-Any field can have its own validator, this is a rough method to prevent bad data from
-being transformed and loaded.
-
-``file_name``
--------------
-
-.. attribute:: Meta.file_name
-
-If set, *data-migrator* will use this as file_name for the emitter instead of the default
-filename based on table_name.
-
-
-``table_name``
---------------
-
-.. attribute:: Meta.table_name
-
-If set, *data-migrator* will use this as table_name for the emitter instead of the default
-tablename based on model_name.
-
-
-``prefix``
-----------
-
-.. attribute:: Meta.prefix
-
-If set, *data-migrator* will use this list of statements as a preamble in the generation of
-the output statements. By default an emitter uses this to clear the old records.
-
-
-``remark``
-----------
-
-.. attribute:: Meta.remark
-
-If set, *data-migrator* will use this as the remark attribute in the Model, default='remark'.
-Use this for example if you have a ``remark`` field in your model and need to free the keyword.
-
-``manager``
------------
-
-.. attribute:: Meta.manager
-
-If set, *data-migrator* will use this as the manager for this model. This is useful if
-the ``transform`` method needs to be overridden.
+    Note that only NullXXXFields actually can be ``None`` after scanning and
+    parsing. Non Null fields are set to their default value.

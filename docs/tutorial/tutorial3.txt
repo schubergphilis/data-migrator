@@ -29,7 +29,7 @@ many, this is easily achieved by adding a dedicated manager:
   class Result(models.Model):
     id = models.IntField(pos=0) # keep id
     a  = models.StringField(pos=1)
-    b  = models.StringField(pos=2, null=None)
+    b  = models.StringField(pos=2, nullable=None)
 
     class Meta:
       manager = ResultManager
@@ -68,7 +68,7 @@ example permissions or links to models)
   class Result(models.Model):
     id = models.IntField(pos=0) # keep id
     a  = models.StringField(pos=1)
-    b  = models.StringField(pos=2, null=None)
+    b  = models.StringField(pos=2, nullable=None)
 
 
   if __name__ == "__main__":

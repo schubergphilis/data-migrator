@@ -7,15 +7,15 @@ Model field reference
 
 .. currentmodule: data_migrator.models
 
-This document contains all API references of BaseClass :class:`~.fields.BaseField`
+This document contains all API references of BaseClass :class:`~.BaseField`
 including the `field options`_ and `field types`_ data_migrator offers.
 
 .. note::
 
-    Technically, these models are defined in :mod:`data_migrator.models.fields`, but
-    for convenience they're imported into :mod:`data_migrator.models`, the standard
-    convention is to use ``from data_migrator import models`` and refer to fields as
-    ``models.<Foo>Field``
+    Technically, these models are defined in :mod:`data_migrator.models.fields`
+    , but for convenience they're imported into :mod:`data_migrator.models`,
+    the standard convention is to use ``from data_migrator import models`` and
+    refer to fields as ``models.<Foo>Field``
 
 Field options
 =============
@@ -53,10 +53,17 @@ value. StringField only has empty string as empty value. With this field it can 
 changed to some other standard value. Consider a Country field as string and setting it
 to the home country by default.
 
-``null``
---------
+``key``
+-------
 
-.. attribute:: Field.null
+.. attribute:: Field.key
+
+If set, this indicates the field is a key field for identification of the object.
+
+``nullable``
+------------
+
+.. attribute:: Field.nullable
 
 If set it will match the source column value and consider this a ``None`` value. By
 default this attribute is set to ``None``. Note that for none Null fields ``None``
@@ -70,6 +77,13 @@ will be translated to :attr:`~Field.default`
 If set, this is a pre-emit replacement function. This could be used to insert dynamic
 replacement lookup select queries, adding more indirection into the data generation.
 Value could be either function or a string.
+
+``required``
+---------------
+
+.. attribute:: Field.required
+
+If set, this indicates the field is required to be set.
 
 ``parse``
 ---------

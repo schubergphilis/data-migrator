@@ -14,7 +14,6 @@ class CSVEmitter(BaseEmitter):
     Attributes:
         base_template: base template to output the object
         extension (str): file extension for output file of this emitter
-
     '''
     extension = '.csv'
     base_template = '''%s'''

@@ -12,7 +12,7 @@ transformer will read stdin and send every CSV row to the model for scanning. Ou
 the fields define a scan loop:
 
 #. **select** the specified column from the row.
-#. **null** test if not allowed and replace by default.
+#. **nullable** test if not allowed and replace by None.
 #. **validate** the input (if validator is provided).
 #. **parse** the input (if parser is provided).
 #. **store** as native python value (aka NULL=>None).

@@ -12,11 +12,11 @@ class TestDutch(unittest.TestCase):
     def test_phone(self):
         '''test phone cleaner'''
         l = [
-            ('00 31 6 - 20 20 20 20','+31620202020'),
-            ('06 20 20 20 20','+31620202020'),
-            ('020 -123 345 6','+31201233456'),
-            ('+440.203.020.23','+44020302023'),
-            ('+440 ada 203.020 // 23','+44020302023'),
+            ('00 31 6 - 20 20 20 20', '+31620202020'),
+            ('06 20 20 20 20', '+31620202020'),
+            ('020 -123 345 6', '+31201233456'),
+            ('+440.203.020.23', '+44020302023'),
+            ('+440 ada 203.020 // 23', '+44020302023'),
         ]
         for i, o in l:
             self.assertEqual(o, clean_phone(i))
@@ -62,12 +62,12 @@ class TestRead(unittest.TestCase):
 
     def test_reader_fail(self):
         o = [
-            ('bla', 'value', u'key,value\nhello,world\nhappy,camper\n',',',False,DefinitionException),
-            ('key', 'bla', u'key,value\nhello,world\nhappy,camper\n',',',False,DefinitionException),
-            (0, 'value', u'key,value\nhello,world\nhappy,camper\n',',',False,DefinitionException),
-            ('key', 0, u'key,value\nhello,world\nhappy,camper\n',',',False,DefinitionException),
-            ('key', 'value', u'key,value\nhello,world\nhello,camper\n',',',False,DefinitionException),
-            ('key', 'value', u'key,value\nhello,world\nhello,camper\n',',',True,NonUniqueDataException),
+            ('bla', 'value', u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
+            ('key', 'bla', u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
+            (0, 'value', u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
+            ('key', 0, u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
+            ('key', 'value', u'key,value\nhello,world\nhello,camper\n', ',', False, DefinitionException),
+            ('key', 'value', u'key,value\nhello,world\nhello,camper\n', ',', True, NonUniqueDataException),
         ]
         for k,v,f,d,u,exc in o:
             f = StringIO(f)

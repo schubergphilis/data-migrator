@@ -22,22 +22,26 @@ class BaseField(object):
     '''Base column definition for the transformation DSL
     '''
     creation_order = 0
+    schema_type = 'object'
 
     def __init__(self,
-        pos=-1, name="",
-        default=None, null="NULL",
-        replacement=None, parse=None, validate=None,
-        max_length=None, unique=False,
-        validate_output=None):
+                 pos=-1, name="",
+                 default=None, nullable="NULL",
+                 key=False, required=False,
+                 replacement=None, parse=None, validate=None,
+                 max_length=None, unique=False,
+                 validate_output=None):
 
         # default value if null
         self.default = default if default is not None else getattr(self.__class__, 'default', default)
+        # key indicated key field
+        self.key = key
         # fixed position in the row to read
         self.max_length = max_length
         # name of this field (will be set in Model class construction)
         self.name = name
         # input string that defines null -> None
-        self.null = null
+        self.nullable = nullable
         # some function to apply to value
         self.parse = parse or getattr(self.__class__, 'parse', None)
         self.pos = int(pos)
@@ -45,6 +49,9 @@ class BaseField(object):
         if isstr(replacement):
             replacement = partial(_replace, replacement)
         self.replace = getattr(self.__class__, 'replace', replacement)
+        # required indicates must be filled in
+        self.required = required
+        # unique indicates a unique field
         self.unique = unique
         # some function to apply to value
         self.validate = validate or getattr(self.__class__, 'validate', None)
@@ -55,12 +62,24 @@ class BaseField(object):
         BaseField.creation_order += 1
 
     def scan(self, row):
-        '''scan row and harvest distinct value'''
+        '''scan row and harvest distinct value.
+
+        Takes a row of data and parses the required fields out of this.
+
+        Args:
+            row (list): array of source data
+
+        Returns:
+            parsed and process value.
+        Raises:
+            :class:`~.ValidationException`: raised if explicit validation
+                fails.
+        '''
         # see if we want to read a column in the row
         v = None
         if self.pos >= 0:
             # do null check if enabled
-            if self.null is not None and row[self.pos] == self.null:
+            if self.nullable is not None and row[self.pos] == self.nullable:
                 return v
             v = row[self.pos]
             if self.validate and not self.validate(v):
@@ -74,21 +93,32 @@ class BaseField(object):
         return self._value(v)
 
     def emit(self, v, escaper=None):
+        '''helper function to export this field'''
         if self.max_length and isstr(v):
             v = v[:self.max_length]
         v = v or self.default
         if self.validate_output and not self.validate_output(v):
             raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
-        if escaper:
-            v = escaper(v)
         # check if we have a replacement string to take into account
         if self.replace:
             v = self.replace(v)
+        elif escaper:
+            v = escaper(v)
         return v
 
-    def _value(self, value):
-        return value
+    def json_schema(self):
+        '''generate json_schema representation of this field'''
+        t = self.schema_type
+        if 'Null' in self.__class__.__name__:
+            t = [t, "null"]
+        t = {'type': t}
+        if self.key:
+            t['key'] = True
+        return {self.name: t}
+
+    def _value(self, v):  # pylint: disable=R0201
+        return v
 
 
 class HiddenField(BaseField):
@@ -103,9 +133,10 @@ class HiddenField(BaseField):
 class IntField(BaseField):
     '''Basic integer field handler'''
     default = 0
+    schema_type = 'integer'
 
-    def _value(self, value):
-        return int(value) if isstr(value) else value
+    def _value(self, v):
+        return int(v) if isstr(v) else v
 
 
 class NullIntField(BaseField):
@@ -114,16 +145,19 @@ class NullIntField(BaseField):
     a field that accepts the column to be integer and can also be None, which
     is not the same as 0 (zero).
     '''
-    def _value(self, value):
-        return int(value) if isstr(value) else value
+    schema_type = 'integer'
+
+    def _value(self, v):
+        return int(v) if isstr(v) else v
 
 
 class StringField(BaseField):
     '''String field handler, a field that accepts the column to be string.'''
     default = ""
+    schema_type = 'string'
 
-    def _value(self, value):
-        return value.strip() if isinstance(value, str) else value
+    def _value(self, v):
+        return v.strip() if isinstance(v, str) else v
 
 
 class NullStringField(BaseField):
@@ -132,8 +166,10 @@ class NullStringField(BaseField):
     a field that accepts the column to be string and can also be None, which
     is not the same as empty string ("").
     '''
-    def _value(self, value):
-        return value.strip() if isinstance(value, str) else value
+    schema_type = 'string'
+
+    def _value(self, v):
+        return v.strip() if isinstance(v, str) else v
 
 
 class BooleanField(BaseField):
@@ -143,10 +179,11 @@ class BooleanField(BaseField):
     into ``True`` or ``False`` otherwise.
     '''
     default = False
+    schema_type = 'boolean'
 
-    def _value(self, value):
+    def _value(self, v):
         try:
-            return value.lower()[0] in ['y', 't', '1']
+            return v.lower()[0] in ['y', 't', '1']
         except (AttributeError, IndexError):
             return False
 
@@ -164,7 +201,9 @@ class DefaultField(BaseField):
 
 class NullField(DefaultField):
     '''NULL returning field by generating None'''
-    pass
+    def json_schema(self):
+        '''generate json_schema representation of this field'''
+        return {self.name: {'type': 'null'}}
 
 
 class UUIDField(BaseField):
@@ -172,6 +211,8 @@ class UUIDField(BaseField):
 
     a field that generates a ``str(uuid.uuid4())``
     '''
+    schema_type = 'string'
+
     def __init__(self, *args, **kwargs):
         kwargs['default'] = None
         super(UUIDField, self).__init__(*args, **kwargs)
@@ -228,7 +269,7 @@ class MappingField(BaseField):
                 raise DataException("%s - %s not in map" % (self.name, v))
         else:
             v = self.data_map.get(v, self.default if self.default is not None
-                else v)
+                                  else v)
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)

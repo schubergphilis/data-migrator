@@ -30,6 +30,7 @@ class TestOptions(unittest.TestCase):
         self.assertFalse(o.drop_non_unique)
         self.assertFalse(o.fail_non_unique)
         self.assertEqual(o.file_name, None)
+        self.assertEqual(o.strict, None)
         self.assertTrue(str(o).startswith('Options:'))
 
 
