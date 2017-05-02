@@ -73,7 +73,7 @@ class BaseField(object):
             parsed and process value.
         Raises:
             :class:`~.ValidationException`: raised if explicit validation
-                fails.            
+                fails.
         '''
         # see if we want to read a column in the row
         v = None
@@ -100,11 +100,11 @@ class BaseField(object):
         if self.validate_output and not self.validate_output(v):
             raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
-        if escaper:
-            v = escaper(v)
         # check if we have a replacement string to take into account
         if self.replace:
             v = self.replace(v)
+        elif escaper:
+            v = escaper(v)
         return v
 
     def json_schema(self):

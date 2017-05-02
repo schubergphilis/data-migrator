@@ -103,8 +103,8 @@ class TestModel(unittest.TestCase):
         m = TrialModel(**d)
         self.assertTrue(m)
         t, TrialModel._meta.strict = TrialModel._meta.strict, True
-        print(TrialModel.json_schema())
-        print(m.json_schema())
+        # print(TrialModel.json_schema())
+        # print(m.json_schema())
         TrialModel._meta.strict = t
 
 if __name__ == '__main__':

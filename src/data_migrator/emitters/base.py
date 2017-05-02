@@ -71,7 +71,7 @@ class BaseEmitter(object):
         raise NotImplementedError
 
 
-    def poostamble(self):
+    def postamble(self):
         '''generate a postamble for the file to emit.
 
         Returns:

@@ -25,6 +25,13 @@ class TestFields(unittest.TestCase):
         self.assertEqual(f.emit("world"), "hello world")
         self.assertEqual(f.json_schema(), {'f': {'type': 'string'}})
 
+    def test_replacement_escape_string(self):
+        '''replacement precedence'''
+        f = models.StringField(replacement='hello {}', name='f')
+        self.assertEqual(f.emit("world", escaper=lambda x: "xx%sxx" % x),
+                         "hello world")
+        self.assertEqual(f.json_schema(), {'f': {'type': 'string'}})
+
     def test_functions(self):
         '''check the functions for parsing and emitting'''
         f1 = lambda x: abs(int(x))
@@ -32,7 +39,13 @@ class TestFields(unittest.TestCase):
         f = models.IntField(pos=0, parse=f1, replacement=f2)
         self.assertEqual(f.scan(row=["-10", "20"]), 10)
         self.assertEqual(f.emit(10), 'number = 10')
-        self.assertEqual(f.emit(10, escaper=lambda x: "xx%sxx" % x), 'number = xx10xx')
+        self.assertEqual(f.emit(10, escaper=lambda x: "xx%sxx" % x),
+                         'number = 10')
+        f3 = models.IntField(pos=0, parse=f1, replacement="number = {}")
+        self.assertEqual(f3.scan(row=["-10", "20"]), 10)
+        self.assertEqual(f3.emit(10), 'number = 10')
+        self.assertEqual(f3.emit(10, escaper=lambda x: "xx%sxx" % x),
+                         'number = 10')
 
     def test_default_null(self):
         '''null handling'''
