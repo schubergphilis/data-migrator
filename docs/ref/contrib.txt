@@ -8,6 +8,7 @@ Contrib reference
 .. currentmodule: data_migrator.contrib
 
 .. automodule:: data_migrator.contrib
+   :members:
 
 contrib.read
 =============

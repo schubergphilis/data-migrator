@@ -123,7 +123,7 @@ class Model(with_metaclass(ModelBase)):
             self, so that methods can be chained
 
         Raises:
-            :class:`~.DataException`: raised if trying to set non defined field
+            :exc:`~.DataException`: raised if trying to set non defined field
                 and strict model.
         '''
         _meta = self.__class__._meta

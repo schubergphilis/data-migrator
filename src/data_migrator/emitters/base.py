@@ -3,7 +3,7 @@
 
 
 class BaseEmitter(object):
-    '''Base for emitters of the data_migrator.
+    '''Base for emitters of the *data-migrator*.
 
     Attributes:
         manager (BaseManager): reference to the manager that is calling this
@@ -11,7 +11,7 @@ class BaseEmitter(object):
         model_class (Model): reference to the model linked to the class
         extension (str): file extension for output file of this emitter
 
-    note: ``model_class`` and ``manager`` are linked together
+    note: :attr:`~.model_class` and :attr:`~.manager` are linked together
     '''
 
     def __init__(self, extension=None, manager=None):

@@ -10,8 +10,7 @@ from data_migrator.utils import isstr
 
 def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
                       as_list=False, unique=False):
-    '''
-    Generates a map from a csv and adds some validation and list parsing. A
+    '''Generates a map from a csv and adds some validation and list parsing. A
     function that returns a map for MappingField to use as input in its
     MappingField.data_map.
 
@@ -34,12 +33,18 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
             values for ``key`` as a list. Default is ``False``.
         unique (boolean): If ``True``, *data-migrator* will treat add all non
             unique values for ``key`` as a violation and raise a
-            ``DataException``. Default is ``False``.
+            :exc:`~.NonUniqueDataException`. Default is ``False``.
         header (boolean): If ``True``, *data-migrator* will treat row as a
             header column. Default is ``True``
 
     Returns:
         map: a key, value map from the csv
+
+    Raises:
+        :exc:`~.DefinitionException`: if key, value does not match or as_list
+            not set.
+        :exc:`~.NonUniqueDataException`: if data is not unique on the key.
+
     '''
     data_map = {}
     if not f:
@@ -74,7 +79,7 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
             elif as_list:
                 data_map[l[ki]] += v
             else:
-                raise DefinitionException('line %d - unqiue contraint failed, expecting as_list for %s:%s' % (i, l[ki], data_map[l[ki]]))
+                raise DefinitionException('line %d - unique contraint failed, expecting as_list for %s:%s' % (i, l[ki], data_map[l[ki]]))
         else:
             data_map[l[ki]] = v
     if f != sys.stdin:
