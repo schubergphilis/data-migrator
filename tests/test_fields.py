@@ -65,10 +65,16 @@ class TestFields(unittest.TestCase):
         f = models.IntField(pos=0)
         self.assertRaises(ValueError, f.scan, row=["BLA", "20"])
 
+    def test_max_length_notset(self):
+        f = models.StringField(pos=0, max_length='something wrong')
+        self.assertEqual(f.emit("blablabla"), "blablabla")
+        self.assertFalse(f.max_length, None)
+
     def test_string_length(self):
         '''build in string trimming'''
-        f = models.StringField(pos=0, max_length=3)
+        f = models.StringField(pos=0, max_length=3, name='f')
         self.assertEqual(f.emit("blablabla"), "bla")
+        self.assertEqual(f.json_schema(), {'f': {'type': 'string', 'maxLength': 3}})
 
     def test_null_string(self):
         '''dedicated null string fields'''

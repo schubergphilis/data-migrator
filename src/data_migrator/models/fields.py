@@ -37,7 +37,7 @@ class BaseField(object):
         # key indicated key field
         self.key = key
         # fixed position in the row to read
-        self.max_length = max_length
+        self.max_length = max_length if isinstance(max_length, int) else None
         # name of this field (will be set in Model class construction)
         self.name = name
         # input string that defines null -> None
@@ -115,6 +115,8 @@ class BaseField(object):
         t = {'type': t}
         if self.key:
             t['key'] = True
+        if self.max_length:
+            t['maxLength'] = self.max_length
         return {self.name: t}
 
     def _value(self, v):  # pylint: disable=R0201
