@@ -51,8 +51,12 @@ ZIP_CODE = re.compile('^([0-9]{4})[\t ]*([a-zA-Z]{2})$')
 def clean_zip_code(v):
     '''Cleans a dutch zipcode
 
-        >>> [clean_zip_code(x) for x in ['1234 aa', '1234AB', '1234   Ba']]
-        ['1234AA', '1234AB', '1234BA']
+        >>> clean_zip_code('1234 aa')
+        '1234AA'
+        >>> clean_zip_code('1234AB')
+        '1234AB'
+        >>> clean_zip_code('1234   Ba')
+        '1234BA'
 
     Args:
         v (str): zipcode to clean

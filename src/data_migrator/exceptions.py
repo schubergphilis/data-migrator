@@ -25,7 +25,7 @@ class DataException(Exception):
 
 
 class NonUniqueDataException(Exception):
-    """Non unique data exception"""
+    """Non unique data based on key found"""
     pass
 
 
