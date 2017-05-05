@@ -24,9 +24,11 @@ def clean_phone(v):
         >>> clean_phone('020 -123 345 6')
         '+31201233456'
         >>> clean_phone('+440.203.020.23')
-        '+4402030203'
+        '+44020302023'
         >>> clean_phone('+440a203a020a23')
-        '+4402030203'
+        '+44020302023'
+        >>> clean_phone('+440 ada 203.020 // 23')
+        '+44020302023'
         >>> clean_phone('31 (6) - 20 20 20 20')
         '+31620202020'
 
@@ -57,6 +59,10 @@ def clean_zip_code(v):
         '1234AB'
         >>> clean_zip_code('1234   Ba')
         '1234BA'
+        >>> clean_zip_code('1 2 3 4 A B')
+        '1 2 3 4 A B'
+        >>> clean_zip_code('blabla')
+        'blabla'
 
     Args:
         v (str): zipcode to clean

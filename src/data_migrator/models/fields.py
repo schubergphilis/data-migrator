@@ -20,6 +20,59 @@ def _replace(format_str, x):
 
 class BaseField(object):
     '''Base column definition for the transformation DSL
+
+    The following arguments are available to all field types. All are optional.
+
+    Arguments:
+        pos (int): If positive or zero this denotes the column in the source
+            data to select and store in this field. If not set (or negative)
+            the fields is interpreted as not selecting just a column from the
+            source but to take the full row in the parse function
+        name (str): The name of this field. By default this is the name
+            provided in the model declaration. This attribute is to replace
+            that name by the final column name.
+        default: The default value to use if the source column is found to be
+            a ``null`` field or if the parse function returns None. This
+            attribute has default values for Fields that are not
+            Null<xxx>Fields. For example NullStringField has both NULL and
+            empty string as empty value. :class:`~.StringField` only has empty
+            string as empty value. With this field it can be changed to some
+            other standard value. Consider a Country field as string and
+            setting it to the home country by default.
+        key (boolean): If set, this indicates the field is a key field for
+            identification of the object.
+        nullable (str): If set it will match the source column value and
+            consider this a ``None`` value. By default this attribute is set
+            to ``None``. Note that for none Null fields ``None`` will be
+            translated to :attr:`~.default`.
+        replacement: If set, this is a pre-emit replacement function. This
+            could be used to insert dynamic replacement lookup select queries,
+            adding more indirection into the data generation.
+            Value could be either function or a string.
+        required (boolean): If set, this indicates the field is required to be
+            set.
+        parse: If set this is the parsing function to replace the read value
+            into something to use further down the data migration. Use this for
+            example to clean phone numbers, translate country definitions into
+            alpha3 codes, or to translate ID's into values based on a
+            separately loaded lookup table.
+        validate: Expects a function that returns a boolean, and used to
+            validate the input data. Expecting data within a range or a
+            specific format, add a column validator here. Raises
+            :exc:`~.ValidationException` if set and false.
+        max_length (int): In case of :class:`~.StringField` use this to trim
+            string values to maximum length.
+        unique (boolean): If ``True``, *data-migrator* will check uniqueness of
+            intermediate values (after parsing). Default is ``False``.
+
+            In relationship with the default manager this will keep track of
+            values for this field. The manager can raise exceptions if
+            uniqueness is violated. Note that it is up to the manager to either
+            fail or drop the record if the exception is raised.
+        validate_output: A pre-emit validator used to scan the bare output and
+            raise exceptions if output is not as expected.
+        creation_order: An automatically generated attribute used to determine
+            order of specification, and used in the emitting of dataset.
     '''
     creation_order = 0
     schema_type = 'object'
@@ -71,6 +124,7 @@ class BaseField(object):
 
         Returns:
             parsed and process value.
+
         Raises:
             :class:`~.ValidationException`: raised if explicit validation
                 fails.
@@ -93,10 +147,24 @@ class BaseField(object):
         return self._value(v)
 
     def emit(self, v, escaper=None):
-        '''helper function to export this field'''
+        '''helper function to export this field.
+
+        Expects a value from the model to be emitted
+
+        Args:
+            v: value to emit
+            escaper: escaper function to apply on value
+
+        Returns:
+            emitted value.
+
+        Raises:
+            :class:`~.ValidationException`: raised if explicit validation
+                fails.'''
         if self.max_length and isstr(v):
             v = v[:self.max_length]
-        v = v or self.default
+        if v is None:
+            v = self.default if self.default is not None else v
         if self.validate_output and not self.validate_output(v):
             raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
@@ -229,7 +297,7 @@ class JSONField(BaseField):
     Great for maps and lists to be stored in a string like field.
     '''
     def emit(self, v, escaper=None):
-        """Emit is overwritten to add the to_json option"""
+        """Emit is overwritten to add the to_json option."""
         if v is None:
             v = self.default if self.default is not None else v
         v = json.dumps(v)

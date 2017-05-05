@@ -70,7 +70,7 @@ class Model(with_metaclass(ModelBase)):
     def __init__(self, **kwargs):
         _meta = self.__class__._meta
         # set value fields from kwargs if declared
-        # model is very strict raise those not declared
+        # if strict raise those not declared
         _fields = _meta.fields
         f = list(_fields.keys())[:]
         for k, v in kwargs.items():
@@ -83,8 +83,7 @@ class Model(with_metaclass(ModelBase)):
                 raise DataException("trying to set unknown field %s" % k)
             else:
                 setattr(self, k, v)
-        # add missing fields, put in None values (to be replaced by default
-        # at emit)
+        # add missing fields
         for k in f:
             _f = _fields[k]
             setattr(self, k, _f._value(_f.default))

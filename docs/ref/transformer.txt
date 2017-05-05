@@ -8,7 +8,7 @@ This document covers features of the :class:`~data_migrator.transform.Transforme
 
 
 ``Transformer``
----------------
+===============
 
 .. autoclass:: data_migrator.transform.Transformer
    :members: process
