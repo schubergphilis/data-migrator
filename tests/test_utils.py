@@ -2,25 +2,16 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
+import doctest
 
 from data_migrator import utils
 
+
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(utils.sql))
+    return tests
+
 class TestFunctions(unittest.TestCase):
-
-    def test_sql_escape(self):
-        v = [
-            (None, "NULL"),
-            ("hello", '"hello"'),
-            ('["hello"]', '"[""hello""]"'),
-            ('{"hello":"world"}', '"{""hello"":""world""}"'),
-            ({"hello":"world"}, '"{""hello"": ""world""}"'),
-            (0, "0"),
-            ("0", '"0"'),
-            ('0', '"0"'),
-        ]
-
-        for i,o in v:
-            self.assertEqual(utils.sql_escape(i), o)
 
     def test_argparse(self):
         in_args = ['-i', 'hello', '--outdir', 'world']
