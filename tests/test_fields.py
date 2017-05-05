@@ -139,7 +139,17 @@ class TestFields(unittest.TestCase):
         f = models.JSONField(default="bla")
         self.assertEqual(f.emit(None), '"bla"')
 
+    def test_arrayfield(self):
+        f = models.ArrayField(name='f')
+        self.assertEqual(f.json_schema(), {'f': {'type': 'array'}})
+        f2 = models.ListField(name='f', key=True)
+        self.assertEqual(f2.json_schema(), {'f': {'type': 'array', 'key': True}})
 
+    def test_objectfield(self):
+        f = models.DictField(name='f', key=True)
+        self.assertEqual(f.json_schema(), {'f': {'type': 'object', 'key': True}})
+        f2 = models.ObjectField(name='f')
+        self.assertEqual(f2.json_schema(), {'f': {'type': 'object'}})
 
 if __name__ == '__main__':
     unittest.main()
