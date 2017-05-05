@@ -291,6 +291,17 @@ class UUIDField(BaseField):
         '''override and automatically set'''
         return str(uuid.uuid4())
 
+class ObjectField(BaseField):
+    default = {}
+    schema_type = 'object'
+
+DictField = ObjectField
+
+class ArrayField(BaseField):
+    default = []
+    schema_type = 'array'
+
+ListField = ArrayField
 
 class JSONField(BaseField):
     '''a field that takes the values and spits out a JSON encoding string.
