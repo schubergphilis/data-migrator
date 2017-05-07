@@ -111,6 +111,7 @@ class BaseField(object):
         # output validator
         self.validate_output = validate_output
 
+        # creation_order is required for orderdict to retain order of fields
         self.creation_order = BaseField.creation_order
         BaseField.creation_order += 1
 
@@ -123,7 +124,7 @@ class BaseField(object):
             row (list): array of source data
 
         Returns:
-            parsed and process value.
+            parsed and processed value.
 
         Raises:
             :class:`~.ValidationException`: raised if explicit validation
