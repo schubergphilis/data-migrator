@@ -282,9 +282,9 @@ class DefaultField(BaseField):
 
 class NullField(DefaultField):
     '''NULL returning field by generating None'''
-    def json_schema(self, **kwargs):
+    def json_schema(self, name=None):
         '''generate json_schema representation of this field'''
-        return {self.name: {'type': 'null'}}
+        return {name or self.name: {'type': 'null'}}
 
 
 class UUIDField(BaseField):
@@ -384,8 +384,9 @@ class ModelField(BaseField):
         self.strict = strict
         self.fields = fields
 
-    def json_schema(self, **kwargs):
-        _res = super(ModelField, self).json_schema()[self.name]
+    def json_schema(self, name=None):
+        name = name or self.name
+        _res = super(ModelField, self).json_schema()[name]
         _p = {}
         if isinstance(self.fields, list):
             for i in self.fields:
@@ -398,7 +399,7 @@ class ModelField(BaseField):
         _res['properties'] = _p
         if self.strict is not None:
             _res['additionalProperties'] = not self.strict
-        return {self.name: _res}
+        return {name: _res}
 
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option"""
