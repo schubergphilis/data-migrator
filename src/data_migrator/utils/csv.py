@@ -8,7 +8,7 @@ def flatten(d, parent_key='', sep='__'):
         if isinstance(v, collections.MutableMapping):
             items.extend(flatten(v, new_key, sep=sep).items())
         else:
-            items.append((new_key, str(v) if type(v) is list else v))
+            items.append((new_key, str(v) if isinstance(v, list) else v))
     return dict(items)
 
 
