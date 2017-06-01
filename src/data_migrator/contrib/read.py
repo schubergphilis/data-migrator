@@ -68,6 +68,7 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
             raise DefinitionException("value=%s - should be string" % value)
     except ValueError as err:
         raise DefinitionException(err)
+        
     i = 0
     for l in r:
         i += 1

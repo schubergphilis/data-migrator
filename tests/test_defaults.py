@@ -61,4 +61,19 @@ class TestDefaultModel(unittest.TestCase):
         self.assertEqual(f['j'].json_schema(), {'j': {'type': 'object'}})
 
     def test_json_schema(self):
-        self.assertEqual(DefaultModel.json_schema(), {'properties': {'b': {'type': 'integer', 'key': True}, 'c': {'type': ['integer', 'null']}, 'd': {'type': 'string'}, 'e': {'type': ['string', 'null']}, 'f': {'type': 'boolean'}, 'g': {'type': 'null'}, 'h': {'type': 'string'}, 'i': {'type': 'object'}, 'j': {'type': 'object'}}, 'type': 'object', 'required': ['b']})
+        self.assertEqual(DefaultModel.json_schema(),
+                        {
+                            '$schema': 'http://json-schema.org/draft-04/schema',
+                            'properties': {
+                                'b': {'type': 'integer', 'key': True},
+                                'c': {'type': ['integer', 'null']},
+                                'd': {'type': 'string'},
+                                'e': {'type': ['string', 'null']},
+                                'f': {'type': 'boolean'},
+                                'g': {'type': 'null'},
+                                'h': {'type': 'string'},
+                                'i': {'type': 'object'},
+                                'j': {'type': 'object'}},
+                            'type': 'object',
+                            'required': ['b']
+                        })

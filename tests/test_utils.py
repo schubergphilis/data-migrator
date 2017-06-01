@@ -25,5 +25,11 @@ class TestFunctions(unittest.TestCase):
     def test_parser(self):
         self.assertTrue(utils.default_parser())
 
+class TestCSV(unittest.TestCase):
+    def test_unflatten(self):
+        a = {'hello__world': 1, 'hallo': 2, 'hi': 3, 'hello__welt': 4}
+        b = utils.unflatten(a)
+        self.assertEqual(b, {'hello': {'world': 1, 'welt': 4}, 'hallo': 2, 'hi': 3})
+
 if __name__ == '__main__':
     unittest.main()

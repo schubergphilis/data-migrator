@@ -53,7 +53,15 @@ class BaseManager(object):
             self.scan_row(row)
 
     def scan_row(self, row, previous=None):
-        '''scan one row and save to list'''
+        '''scan one row and save to list
+
+        Args:
+            row: current row to scan
+            previous (list): list of list of previous objects in this scan
+
+        Returns:
+            list of saved objects
+        '''
         self.rows += 1
         try:
             res = self.transform(row, previous, self.model_class)

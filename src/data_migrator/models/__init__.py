@@ -13,5 +13,6 @@ from .base import Model  # noqa
 from .manager import BaseManager, SimpleManager  # noqa
 from .fields import (IntField, NullIntField, StringField, NullField,  # noqa
                      NullStringField, BooleanField, UUIDField,  # noqa
-                     JSONField, MappingField, HiddenField,
-                     ArrayField, ListField, DictField, ObjectField)  # noqa
+                     JSONField, MappingField, HiddenField,  # noqa
+                     ArrayField, ListField, DictField, ObjectField,  #noqa
+                     ModelField)  # noqa

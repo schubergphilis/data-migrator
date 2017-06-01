@@ -5,26 +5,16 @@ Contrib reference
 .. module: data_migrator.contrib
    :synopsis: Generally usable extensions
 
-.. currentmodule: data_migrator.contrib
-
 .. automodule:: data_migrator.contrib
-   :members:
 
 contrib.read
 =============
 
-``read_map_from_csv``
----------------------
-.. autofunction:: data_migrator.contrib.read.read_map_from_csv
-
+.. automodule:: data_migrator.contrib.read
+   :members:
 
 contrib.dutch
 =============
 
-``clean_phone``
----------------
-.. autofunction:: data_migrator.contrib.dutch.clean_phone
-
-``clean_zip_code``
-------------------
-.. autofunction:: data_migrator.contrib.dutch.clean_zip_code
+.. automodule:: data_migrator.contrib.dutch
+   :members:

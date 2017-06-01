@@ -6,6 +6,7 @@ import json
 from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
+from data_migrator.exceptions import DefinitionException
 from data_migrator.utils import isstr
 
 
@@ -90,6 +91,8 @@ class BaseField(object):
         # key indicated key field
         self.key = key
         # fixed position in the row to read
+        if max_length and self.schema_type != "string":
+            raise DefinitionException("Cannot set max_length on on string")
         self.max_length = max_length if isinstance(max_length, int) else None
         # name of this field (will be set in Model class construction)
         self.name = name
@@ -176,17 +179,24 @@ class BaseField(object):
             v = escaper(v)
         return v
 
-    def json_schema(self):
-        '''generate json_schema representation of this field'''
+    def json_schema(self, name=None):
+        '''generate json_schema representation of this field
+
+        Args:
+            name: name if not taken from this field
+
+        Returns:
+            python representation of json schema
+        '''
         t = self.schema_type
         if 'Null' in self.__class__.__name__:
             t = [t, "null"]
         t = {'type': t}
         if self.key:
             t['key'] = True
-        if self.max_length:
+        if self.max_length and self.schema_type == "string":
             t['maxLength'] = self.max_length
-        return {self.name: t}
+        return {name or self.name: t}
 
     def _value(self, v):  # pylint: disable=R0201
         return v
@@ -293,12 +303,14 @@ class UUIDField(BaseField):
         return str(uuid.uuid4())
 
 class ObjectField(BaseField):
+    '''JSON object field'''
     default = {}
     schema_type = 'object'
 
 DictField = ObjectField
 
 class ArrayField(BaseField):
+    '''JSON array field'''
     default = []
     schema_type = 'array'
 
@@ -306,7 +318,7 @@ ListField = ArrayField
 
 class JSONField(BaseField):
     '''a field that takes the values and spits out a JSON encoding string.
-    Great for maps and lists to be stored in a string like field.
+    Great for maps and lists to be stored in a string like db field.
     '''
     def emit(self, v, escaper=None):
         """Emit is overwritten to add the to_json option."""
@@ -355,3 +367,43 @@ class MappingField(BaseField):
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)
+
+
+class ModelField(BaseField):
+    '''Model relation for hierarchical structures.
+
+    a field that takes another model to build hierarchical structures.
+    '''
+    def __init__(self, fields, strict=None, **kwargs):
+        """
+        Args:
+            fields: relationship to another model.
+            strict (boolean): model is considered strict.
+        """
+        super(ModelField, self).__init__(**kwargs)
+        self.strict = strict
+        self.fields = fields
+
+    def json_schema(self):
+        _res = super(ModelField, self).json_schema()[self.name]
+        _p = {}
+        if isinstance(self.fields, list):
+            for i in self.fields:
+                _p.update(i.json_schema())
+        elif isinstance(self.fields, dict):
+            for k, v in self.fields.items():
+                _p.update(v.json_schema(name=k))
+        else:
+            _p.update(self.fields.json_schema(name=self.fields.name))
+        _res['properties'] = _p
+        if self.strict is not None:
+            _res['additionalProperties'] = not self.strict
+        return {self.name: _res}
+
+    def emit(self, v, escaper=None):
+        """Emit is overwritten to add the to_json option"""
+        if v is None:
+            v = self.default if self.default is not None else v
+        else:
+            v = model.emit(v, escaper)
+        return v

@@ -6,6 +6,7 @@ import unittest
 from data_migrator import models
 from data_migrator.utils import sql_escape
 from data_migrator.exceptions import ValidationException, DataException
+from data_migrator.exceptions import DefinitionException
 
 class TestFields(unittest.TestCase):
 
@@ -62,6 +63,10 @@ class TestFields(unittest.TestCase):
         f = models.StringField(pos=0, max_length='something wrong')
         self.assertEqual(f.emit("blablabla"), "blablabla")
         self.assertFalse(f.max_length, None)
+
+    def test_max_length_fail(self):
+        self.assertRaises(DefinitionException, models.IntField,
+                          pos=0, max_length=10)
 
     def test_string_length(self):
         f = models.StringField(pos=0, max_length=3, name='f')
@@ -127,29 +132,6 @@ class TestFields(unittest.TestCase):
         self.assertEqual(f.emit("some value"), "some value")
         self.assertNotEqual(f.default, 'bla')
         self.assertIsNone(f.default)
-
-    def test_jsonfield(self):
-        f = models.JSONField()
-        self.assertEqual(f.emit("10"), '"10"')
-        self.assertEqual(f.emit(["200"]), '["200"]')
-        self.assertEqual(f.emit("mis"), '"mis"')
-        self.assertEqual(f.emit(None), "null")
-        f = models.JSONField(default=[])
-        self.assertEqual(f.emit(None), "[]")
-        f = models.JSONField(default="bla")
-        self.assertEqual(f.emit(None), '"bla"')
-
-    def test_arrayfield(self):
-        f = models.ArrayField(name='f')
-        self.assertEqual(f.json_schema(), {'f': {'type': 'array'}})
-        f2 = models.ListField(name='f', key=True)
-        self.assertEqual(f2.json_schema(), {'f': {'type': 'array', 'key': True}})
-
-    def test_objectfield(self):
-        f = models.DictField(name='f', key=True)
-        self.assertEqual(f.json_schema(), {'f': {'type': 'object', 'key': True}})
-        f2 = models.ObjectField(name='f')
-        self.assertEqual(f2.json_schema(), {'f': {'type': 'object'}})
 
 if __name__ == '__main__':
     unittest.main()

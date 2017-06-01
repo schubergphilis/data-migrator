@@ -158,7 +158,11 @@ class Model(with_metaclass(ModelBase)):
         _res = {}
         for f in _fields:
             _res.update(f.json_schema())
-        _res = {'properties': _res, 'type': 'object'}
+        _res = {
+            "$schema": "http://json-schema.org/draft-04/schema",
+            'properties': _res,
+            'type': 'object'
+        }
         if _required:
             _res['required'] = _required
         if cls._meta.strict:

@@ -17,6 +17,8 @@ including the `field options`_ and `field types`_ data_migrator offers.
     the standard convention is to use ``from data_migrator import models`` and
     refer to fields as ``models.<Foo>Field``
 
+.. _field-options:
+
 Field options
 =============
 
@@ -26,61 +28,14 @@ Field options
 .. note::
 
     Use this with HiddenField and a row parse function if some combination of
-    fields (aka a compound key) is expected to be unique and not to be violated.
+    fields (aka a compound key) is expected to be unique and not to be
+    violated.
 
 .. _field-types:
 
 Field types
 ===========
 
-.. currentmodule:: data_migrator.models.fields
-
-``BooleanField``
-----------------
-.. autoclass::  data_migrator.models.fields.BooleanField
-
-
-``IntField``
-----------------
-.. autoclass::  data_migrator.models.fields.IntField
-
-
-``NullIntField``
-----------------
-.. autoclass::  data_migrator.models.fields.NullIntField
-
-
-``HiddenField``
-----------------
-.. autoclass::  data_migrator.models.fields.HiddenField
-
-
-``StringField``
-----------------
-.. autoclass::  data_migrator.models.fields.StringField
-
-
-``NullStringField``
--------------------
-.. autoclass::  data_migrator.models.fields.NullStringField
-
-
-``UUIDField``
-----------------
-.. autoclass::  data_migrator.models.fields.UUIDField
-
-
-``NullField``
-----------------
-.. autoclass::  data_migrator.models.fields.NullField
-
-
-``JSONField``
-----------------
-.. autoclass::  data_migrator.models.fields.JSONField
-
-
-``MappingField``
-----------------
-.. autoclass::  data_migrator.models.fields.MappingField
+.. automodule:: data_migrator.models.fields
    :members:
+   :exclude-members: BaseField, DefaultField
