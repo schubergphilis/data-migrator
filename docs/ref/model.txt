@@ -7,8 +7,7 @@ Model class reference
 
 .. currentmodule:: data_migrator.models.base
 
-This document covers features of the :class:`~Model` class.
-
+This document covers features of the :class:`~.Model` class.
 
 Model
 =====

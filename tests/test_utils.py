@@ -2,28 +2,18 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
+import doctest
 
 from data_migrator import utils
 
+
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(utils.sql))
+    return tests
+
 class TestFunctions(unittest.TestCase):
 
-    def test_sql_escape(self):
-        '''sql_escape tester'''
-        v = [
-            (None, "NULL"),
-            ("hello", '"hello"'),
-            ('["hello"]', '"[""hello""]"'),
-            ('{"hello":"world"}', '"{""hello"":""world""}"'),
-            (0, "0"),
-            ("0", '"0"'),
-            ('0', '"0"'),
-        ]
-
-        for i,o in v:
-            self.assertEqual(utils.sql_escape(i), o)
-
     def test_argparse(self):
-        '''argparse tester'''
         in_args = ['-i', 'hello', '--outdir', 'world']
         args = utils.configure_parser(in_args)
         self.assertEqual(args.input, 'hello')
@@ -35,6 +25,11 @@ class TestFunctions(unittest.TestCase):
     def test_parser(self):
         self.assertTrue(utils.default_parser())
 
+class TestCSV(unittest.TestCase):
+    def test_unflatten(self):
+        a = {'hello__world': 1, 'hallo': 2, 'hi': 3, 'hello__welt': 4}
+        b = utils.unflatten(a)
+        self.assertEqual(b, {'hello': {'world': 1, 'welt': 4}, 'hallo': 2, 'hi': 3})
 
 if __name__ == '__main__':
     unittest.main()

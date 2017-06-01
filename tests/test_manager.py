@@ -51,8 +51,8 @@ class TestFields(unittest.TestCase):
 
     def test_drop_if_none(self):
         a = [
-            ["hello", "world"],
-            ["goodbye", "NULL"],
+          ["hello", "world"],
+          ["goodbye", "NULL"],
         ]
         l = len(ManagerModel.objects)
         ManagerModel.objects.scan_rows(a)
@@ -64,8 +64,8 @@ class TestFields(unittest.TestCase):
 
     def test_fail_unique(self):
         a = [
-            ["foo", "bar"],
-            ["foo", "bar"],
+          ["foo", "bar"],
+          ["foo", "bar"],
         ]
         self.assertRaises(NonUniqueDataException, ManagerModel.objects.scan_rows, a)
         ManagerModel._meta.fail_non_unique = False
@@ -73,7 +73,7 @@ class TestFields(unittest.TestCase):
 
     def test_fail_validation(self):
         a = [
-            ["foo", "foo_and_bar_and_more"],
+          ["foo", "foo_and_bar_and_more"],
         ]
         self.assertRaises(ValidationException, ManagerModel.objects.scan_rows, a)
         ManagerModel._meta.fail_not_validated = False
