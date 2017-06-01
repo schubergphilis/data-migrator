@@ -6,6 +6,7 @@ import json
 from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
+from data_migrator.exceptions import DefinitionException
 from data_migrator.utils import isstr
 
 
@@ -20,6 +21,59 @@ def _replace(format_str, x):
 
 class BaseField(object):
     '''Base column definition for the transformation DSL
+
+    The following arguments are available to all field types. All are optional.
+
+    Arguments:
+        pos (int): If positive or zero this denotes the column in the source
+            data to select and store in this field. If not set (or negative)
+            the fields is interpreted as not selecting just a column from the
+            source but to take the full row in the parse function
+        name (str): The name of this field. By default this is the name
+            provided in the model declaration. This attribute is to replace
+            that name by the final column name.
+        default: The default value to use if the source column is found to be
+            a ``null`` field or if the parse function returns None. This
+            attribute has default values for Fields that are not
+            Null<xxx>Fields. For example NullStringField has both NULL and
+            empty string as empty value. :class:`~.StringField` only has empty
+            string as empty value. With this field it can be changed to some
+            other standard value. Consider a Country field as string and
+            setting it to the home country by default.
+        key (boolean): If set, this indicates the field is a key field for
+            identification of the object.
+        nullable (str): If set it will match the source column value and
+            consider this a ``None`` value. By default this attribute is set
+            to ``None``. Note that for none Null fields ``None`` will be
+            translated to :attr:`~.default`.
+        replacement: If set, this is a pre-emit replacement function. This
+            could be used to insert dynamic replacement lookup select queries,
+            adding more indirection into the data generation.
+            Value could be either function or a string.
+        required (boolean): If set, this indicates the field is required to be
+            set.
+        parse: If set this is the parsing function to replace the read value
+            into something to use further down the data migration. Use this for
+            example to clean phone numbers, translate country definitions into
+            alpha3 codes, or to translate ID's into values based on a
+            separately loaded lookup table.
+        validate: Expects a function that returns a boolean, and used to
+            validate the input data. Expecting data within a range or a
+            specific format, add a column validator here. Raises
+            :exc:`~.ValidationException` if set and false.
+        max_length (int): In case of :class:`~.StringField` use this to trim
+            string values to maximum length.
+        unique (boolean): If ``True``, *data-migrator* will check uniqueness of
+            intermediate values (after parsing). Default is ``False``.
+
+            In relationship with the default manager this will keep track of
+            values for this field. The manager can raise exceptions if
+            uniqueness is violated. Note that it is up to the manager to either
+            fail or drop the record if the exception is raised.
+        validate_output: A pre-emit validator used to scan the bare output and
+            raise exceptions if output is not as expected.
+        creation_order: An automatically generated attribute used to determine
+            order of specification, and used in the emitting of dataset.
     '''
     creation_order = 0
     schema_type = 'object'
@@ -37,6 +91,8 @@ class BaseField(object):
         # key indicated key field
         self.key = key
         # fixed position in the row to read
+        if max_length and self.schema_type != "string":
+            raise DefinitionException("Cannot set max_length on on string")
         self.max_length = max_length if isinstance(max_length, int) else None
         # name of this field (will be set in Model class construction)
         self.name = name
@@ -58,6 +114,7 @@ class BaseField(object):
         # output validator
         self.validate_output = validate_output
 
+        # creation_order is required for orderdict to retain order of fields
         self.creation_order = BaseField.creation_order
         BaseField.creation_order += 1
 
@@ -70,7 +127,8 @@ class BaseField(object):
             row (list): array of source data
 
         Returns:
-            parsed and process value.
+            parsed and processed value.
+
         Raises:
             :class:`~.ValidationException`: raised if explicit validation
                 fails.
@@ -93,10 +151,24 @@ class BaseField(object):
         return self._value(v)
 
     def emit(self, v, escaper=None):
-        '''helper function to export this field'''
+        '''helper function to export this field.
+
+        Expects a value from the model to be emitted
+
+        Args:
+            v: value to emit
+            escaper: escaper function to apply on value
+
+        Returns:
+            emitted value.
+
+        Raises:
+            :class:`~.ValidationException`: raised if explicit validation
+                fails.'''
         if self.max_length and isstr(v):
             v = v[:self.max_length]
-        v = v or self.default
+        if v is None:
+            v = self.default if self.default is not None else v
         if self.validate_output and not self.validate_output(v):
             raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
@@ -107,17 +179,24 @@ class BaseField(object):
             v = escaper(v)
         return v
 
-    def json_schema(self):
-        '''generate json_schema representation of this field'''
+    def json_schema(self, name=None):
+        '''generate json_schema representation of this field
+
+        Args:
+            name: name if not taken from this field
+
+        Returns:
+            python representation of json schema
+        '''
         t = self.schema_type
         if 'Null' in self.__class__.__name__:
             t = [t, "null"]
         t = {'type': t}
         if self.key:
             t['key'] = True
-        if self.max_length:
+        if self.max_length and self.schema_type == "string":
             t['maxLength'] = self.max_length
-        return {self.name: t}
+        return {name or self.name: t}
 
     def _value(self, v):  # pylint: disable=R0201
         return v
@@ -203,9 +282,9 @@ class DefaultField(BaseField):
 
 class NullField(DefaultField):
     '''NULL returning field by generating None'''
-    def json_schema(self):
+    def json_schema(self, name=None):
         '''generate json_schema representation of this field'''
-        return {self.name: {'type': 'null'}}
+        return {name or self.name: {'type': 'null'}}
 
 
 class UUIDField(BaseField):
@@ -223,13 +302,26 @@ class UUIDField(BaseField):
         '''override and automatically set'''
         return str(uuid.uuid4())
 
+class ObjectField(BaseField):
+    '''JSON object field'''
+    default = {}
+    schema_type = 'object'
+
+DictField = ObjectField
+
+class ArrayField(BaseField):
+    '''JSON array field'''
+    default = []
+    schema_type = 'array'
+
+ListField = ArrayField
 
 class JSONField(BaseField):
     '''a field that takes the values and spits out a JSON encoding string.
-    Great for maps and lists to be stored in a string like field.
+    Great for maps and lists to be stored in a string like db field.
     '''
     def emit(self, v, escaper=None):
-        """Emit is overwritten to add the to_json option"""
+        """Emit is overwritten to add the to_json option."""
         if v is None:
             v = self.default if self.default is not None else v
         v = json.dumps(v)
@@ -275,3 +367,44 @@ class MappingField(BaseField):
         if self.as_json:
             v = json.dumps(v)
         return super(MappingField, self).emit(v, escaper)
+
+
+class ModelField(BaseField):
+    '''Model relation for hierarchical structures.
+
+    a field that takes another model to build hierarchical structures.
+    '''
+    def __init__(self, fields, strict=None, **kwargs):
+        """
+        Args:
+            fields: relationship to another model.
+            strict (boolean): model is considered strict.
+        """
+        super(ModelField, self).__init__(**kwargs)
+        self.strict = strict
+        self.fields = fields
+
+    def json_schema(self, name=None):
+        name = name or self.name
+        _res = super(ModelField, self).json_schema()[name]
+        _p = {}
+        if isinstance(self.fields, list):
+            for i in self.fields:
+                _p.update(i.json_schema())
+        elif isinstance(self.fields, dict):
+            for k, v in self.fields.items():
+                _p.update(v.json_schema(name=k))
+        else:
+            _p.update(self.fields.json_schema(name=self.fields.name))
+        _res['properties'] = _p
+        if self.strict is not None:
+            _res['additionalProperties'] = not self.strict
+        return {name: _res}
+
+    def emit(self, v, escaper=None):
+        """Emit is overwritten to add the to_json option"""
+        if v is None:
+            v = self.default if self.default is not None else v
+        else:
+            v = model.emit(v, escaper)
+        return v

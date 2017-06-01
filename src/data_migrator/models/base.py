@@ -70,7 +70,7 @@ class Model(with_metaclass(ModelBase)):
     def __init__(self, **kwargs):
         _meta = self.__class__._meta
         # set value fields from kwargs if declared
-        # model is very strict raise those not declared
+        # if strict raise those not declared
         _fields = _meta.fields
         f = list(_fields.keys())[:]
         for k, v in kwargs.items():
@@ -83,8 +83,7 @@ class Model(with_metaclass(ModelBase)):
                 raise DataException("trying to set unknown field %s" % k)
             else:
                 setattr(self, k, v)
-        # add missing fields, put in None values (to be replaced by default
-        # at emit)
+        # add missing fields
         for k in f:
             _f = _fields[k]
             setattr(self, k, _f._value(_f.default))
@@ -159,7 +158,11 @@ class Model(with_metaclass(ModelBase)):
         _res = {}
         for f in _fields:
             _res.update(f.json_schema())
-        _res = {'properties': _res, 'type': 'object'}
+        _res = {
+            "$schema": "http://json-schema.org/draft-04/schema",
+            'properties': _res,
+            'type': 'object'
+        }
         if _required:
             _res['required'] = _required
         if cls._meta.strict:
