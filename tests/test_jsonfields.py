@@ -4,7 +4,6 @@
 import unittest
 
 from data_migrator import models
-from data_migrator.exceptions import DataException
 
 class TestFields(unittest.TestCase):
 

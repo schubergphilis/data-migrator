@@ -282,7 +282,7 @@ class DefaultField(BaseField):
 
 class NullField(DefaultField):
     '''NULL returning field by generating None'''
-    def json_schema(self):
+    def json_schema(self, **kwargs):
         '''generate json_schema representation of this field'''
         return {self.name: {'type': 'null'}}
 
@@ -384,7 +384,7 @@ class ModelField(BaseField):
         self.strict = strict
         self.fields = fields
 
-    def json_schema(self):
+    def json_schema(self, **kwargs):
         _res = super(ModelField, self).json_schema()[self.name]
         _p = {}
         if isinstance(self.fields, list):
