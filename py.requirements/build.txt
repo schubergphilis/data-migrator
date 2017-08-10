@@ -8,5 +8,5 @@ six==1.10.0
 coverage==4.4.1
 codacy-coverage==1.3.6
 tox==2.7.0
-pytest==3.1.3
+pytest==3.2.1
 flake8==3.3.0
