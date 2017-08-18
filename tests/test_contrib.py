@@ -3,7 +3,6 @@
 
 import unittest
 import doctest
-import random
 from io import StringIO
 
 from data_migrator.contrib.read import read_map_from_csv

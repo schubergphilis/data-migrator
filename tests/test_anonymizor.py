@@ -11,8 +11,7 @@ from data_migrator.anonymizors import SimpleStringAnonymizor
 from data_migrator.anonymizors import TextAnonymizor
 from data_migrator.anonymizors import ChoiceAnonymizor
 
-from data_migrator.models import Model, StringField, NullField, UUIDField
-from data_migrator.exceptions import DataException
+from data_migrator.models import Model, StringField, UUIDField
 
 class TrialModel(Model):
     a = StringField(pos=0, key=True, anonymize=TextAnonymizor)

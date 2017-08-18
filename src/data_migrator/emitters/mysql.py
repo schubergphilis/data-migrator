@@ -47,7 +47,7 @@ class MySQLEmitter(BaseEmitter):
         else:
             r += [
                 "SET SQL_SAFE_UPDATES = 0; -- you need this to delete without WHERE clause",
-                "DELETE FROM `%s`;" % _meta.table_name,
+                "DELETE FROM `%s`;" % _meta.table_name,   #nosec
                 "ALTER TABLE `%s` AUTO_INCREMENT = 1;" % _meta.table_name,
             ]
         r += [""]

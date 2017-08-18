@@ -5,7 +5,6 @@ commonly used dutch support functions for cleaning and anonymization
 '''
 
 import re
-import random
 import string
 
 from data_migrator.anonymizors.base import BaseAnonymizor

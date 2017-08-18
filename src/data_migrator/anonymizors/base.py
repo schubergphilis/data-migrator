@@ -3,9 +3,7 @@
 
 import random
 import bisect as _bisect
-import itertools as _itertools
 from functools import reduce
-
 
 
 class BaseAnonymizor(object):
