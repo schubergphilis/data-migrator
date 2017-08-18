@@ -24,7 +24,7 @@ test:
 	@python -m unittest discover -s tests
 
 dist:
-	@python setup.py sdist --formats=gztar,zip bdist_wheel
+	@python setup.py sdist --formats=gztar bdist_wheel
 
 dev: ## install for development
 	@pip install -e .
@@ -55,9 +55,6 @@ register_test:
 	python setup.py register -r pypitest
 
 upload:
-	# python setup.py register -r pypi
-	# twine upload -s dist/data_migrator-0.4*
-	for i in dist/*; do twine register $$i; done
 	twine upload dist/*
 
 drop:
