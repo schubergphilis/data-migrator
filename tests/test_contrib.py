@@ -11,8 +11,6 @@ from data_migrator.exceptions import DefinitionException, NonUniqueDataException
 from data_migrator.contrib import dutch
 
 def load_tests(loader, tests, ignore):
-    random.seed(a='for unittesting') # make sure we get the same results
-
     tests.addTests(doctest.DocTestSuite(dutch))
     return tests
 

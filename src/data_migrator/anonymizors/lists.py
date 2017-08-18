@@ -20,7 +20,7 @@ class ChoiceAnonymizor(BaseAnonymizor):
         self.weights = weights
 
     def __call__(self, v):
-        return random.choices(self.choices, self.weights)[0]
+        return self._choices(self.choices, self.weights)[0]
 
 
 class Alpha3Anonymizor(BaseAnonymizor):

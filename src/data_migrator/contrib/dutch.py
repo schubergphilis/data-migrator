@@ -84,25 +84,25 @@ def clean_zip_code(v):
 
 
 class PhoneAnonymizor(BaseAnonymizor):
-    '''PhoneAnonymizor generates a random dutch phonenumber
+    '''PhoneAnonymizor generates a random dutch phonenumber, like +3142097272
 
-        >>> PhoneAnonymizor()('020-1234583')
-        '+3138096227'
-        >>> PhoneAnonymizor()('06-12345678')
-        '+3140332969'
+        >>> len(PhoneAnonymizor()('020-1234583'))
+        11
+        >>> len(PhoneAnonymizor()('06-12345678'))
+        11
     '''
 
     def __call__(self, v):
-        return "+31" + "".join(random.choices(string.digits, k=8))
+        return "+31" + "".join(self._choices(string.digits, k=8))
 
 
 class ZipCodeAnonymizor(BaseAnonymizor):
-    '''ZipCodeAnonymizor generates a random dutch zipcode
+    '''ZipCodeAnonymizor generates a random dutch zipcode, like '4897 LD'
 
-        >>> ZipCodeAnonymizor()('1234 aa')
-        '9945 TG'
+        >>> len(ZipCodeAnonymizor()('1234 aa'))
+        7
     '''
 
     def __call__(self, v):
-        return "".join(random.choices(string.digits, k=4) + [" "] +
-            random.choices(string.ascii_uppercase, k=2) )
+        return "".join(self._choices(string.digits, k=4) + [" "] +
+            self._choices(string.ascii_uppercase, k=2) )

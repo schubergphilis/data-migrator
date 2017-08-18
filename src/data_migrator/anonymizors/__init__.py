@@ -12,6 +12,6 @@ This module contains all classes for anonymizers:
 """
 
 
-from .string import SimpleStringAnonymizor # noqa
-from .string import TextAnonymizor # noqa
+from .strings import SimpleStringAnonymizor # noqa
+from .strings import TextAnonymizor # noqa
 from .lists import ChoiceAnonymizor # noqa

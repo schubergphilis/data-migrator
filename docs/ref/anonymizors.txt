@@ -13,12 +13,12 @@ Anonymizor class reference
 
 SimpleStringAnonymizor
 ======================
-.. autoclass::  data_migrator.anonymizors.string.SimpleStringAnonymizor
+.. autoclass::  data_migrator.anonymizors.strings.SimpleStringAnonymizor
   :members:
 
 TextAnonymizor
 ==============
-.. autoclass::  data_migrator.anonymizors.string.TextAnonymizor
+.. autoclass::  data_migrator.anonymizors.strings.TextAnonymizor
   :members:
 
 ChoiceAnonymizor
