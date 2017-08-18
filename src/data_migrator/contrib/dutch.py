@@ -8,6 +8,7 @@ import re
 import string
 
 from data_migrator.anonymizors.base import BaseAnonymizor
+from data_migrator.utils.compat import choices
 
 _PHONE_CHARS = re.compile(r'[^\+\d]+')
 _INTERNATIONAL_ZERO_START = re.compile('^00')
@@ -92,7 +93,7 @@ class PhoneAnonymizor(BaseAnonymizor):
     '''
 
     def __call__(self, v):
-        return "+31" + "".join(self._choices(string.digits, k=8))
+        return "+31" + "".join(choices(string.digits, k=8))
 
 
 class ZipCodeAnonymizor(BaseAnonymizor):
@@ -103,5 +104,5 @@ class ZipCodeAnonymizor(BaseAnonymizor):
     '''
 
     def __call__(self, v):
-        return "".join(self._choices(string.digits, k=4) + [" "] +
-            self._choices(string.ascii_uppercase, k=2) )
+        return "".join(choices(string.digits, k=4) + [" "] +
+            choices(string.ascii_uppercase, k=2))

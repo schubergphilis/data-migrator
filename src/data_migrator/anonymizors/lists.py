@@ -3,6 +3,7 @@
 import random
 
 from data_migrator.anonymizors.base import BaseAnonymizor
+from data_migrator.utils.compat import choices as _choices
 
 class ChoiceAnonymizor(BaseAnonymizor):
     '''ChoiceAnonymizor returns some choices with optional probabilities
@@ -20,7 +21,7 @@ class ChoiceAnonymizor(BaseAnonymizor):
         self.weights = weights
 
     def __call__(self, v):
-        return self._choices(self.choices, self.weights)[0]
+        return _choices(self.choices, self.weights)[0]
 
 
 class Alpha3Anonymizor(BaseAnonymizor):
