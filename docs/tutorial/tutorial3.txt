@@ -39,9 +39,9 @@ This example is not really helpful, it just generates 3 records instead of one.
 Multi models generation
 -----------------------
 
-The manager setup is one of the big reasons to use this package instead of simple scripts.
-In our model migrations we came across steps in which we had generate second models (for
-example permissions or links to models)
+The manager setup is one of the big reasons to use this package instead of
+simple scripts. In our model migrations we came across steps in which we had
+to generate second models (for example permissions or links between models).
 
 .. code-block:: python
 
@@ -74,5 +74,6 @@ example permissions or links to models)
   if __name__ == "__main__":
     transform.Transformer(models=[Result, Permission], emitter=MySQLEmitter).process()
 
-The order in the tranformer list determine the order of object creation, but this is an example
-on how one model can be used in the generation of the second one
+The order in the transformer list determine the order of object creation, but
+this is an example on how one model can be used in the generation of the
+second one.

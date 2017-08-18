@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 '''
-commonly used dutch support functions
+commonly used dutch support functions for cleaning and anonymization
 '''
 
 import re
+import random
+import string
+
+from data_migrator.anonymizors.base import BaseAnonymizor
 
 _PHONE_CHARS = re.compile(r'[^\+\d]+')
 _INTERNATIONAL_ZERO_START = re.compile('^00')
@@ -77,3 +81,28 @@ def clean_zip_code(v):
     except AttributeError:
         r = v
     return r
+
+
+class PhoneAnonymizor(BaseAnonymizor):
+    '''PhoneAnonymizor generates a random dutch phonenumber
+
+        >>> PhoneAnonymizor()('020-1234583')
+        '+3138096227'
+        >>> PhoneAnonymizor()('06-12345678')
+        '+3140332969'
+    '''
+
+    def __call__(self, v):
+        return "+31" + "".join(random.choices(string.digits, k=8))
+
+
+class ZipCodeAnonymizor(BaseAnonymizor):
+    '''ZipCodeAnonymizor generates a random dutch zipcode
+
+        >>> ZipCodeAnonymizor()('1234 aa')
+        '9945 TG'
+    '''
+
+    def __call__(self, v):
+        return "".join(random.choices(string.digits, k=4) + [" "] +
+            random.choices(string.ascii_uppercase, k=2) )

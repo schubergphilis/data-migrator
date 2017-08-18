@@ -3,6 +3,7 @@
 
 import unittest
 import doctest
+import random
 from io import StringIO
 
 from data_migrator.contrib.read import read_map_from_csv
@@ -10,6 +11,8 @@ from data_migrator.exceptions import DefinitionException, NonUniqueDataException
 from data_migrator.contrib import dutch
 
 def load_tests(loader, tests, ignore):
+    random.seed(a='for unittesting') # make sure we get the same results
+
     tests.addTests(doctest.DocTestSuite(dutch))
     return tests
 
