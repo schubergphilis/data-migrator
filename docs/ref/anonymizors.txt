@@ -1,0 +1,32 @@
+==========================
+Anonymizor class reference
+==========================
+
+.. currentmodule:: data_migrator.anonymizors
+
+.. automodule::  data_migrator.anonymizors
+
+.. note::
+
+    Also check the :mod:`data_migrator.contrib` module for some country
+    specific anonymizers
+
+SimpleStringAnonymizor
+======================
+.. autoclass::  data_migrator.anonymizors.strings.SimpleStringAnonymizor
+  :members:
+
+TextAnonymizor
+==============
+.. autoclass::  data_migrator.anonymizors.strings.TextAnonymizor
+  :members:
+
+ChoiceAnonymizor
+================
+.. autoclass::  data_migrator.anonymizors.lists.ChoiceAnonymizor
+  :members:
+
+BaseAnonymizor
+==============
+.. autoclass::  data_migrator.anonymizors.base.BaseAnonymizor
+   :members: __call__

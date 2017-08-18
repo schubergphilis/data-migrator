@@ -15,5 +15,6 @@ on how to use the various parts of this library.
    fields
    manager
    emitter
+   anonymizors
    contrib
    exceptions

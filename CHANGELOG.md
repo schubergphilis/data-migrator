@@ -3,13 +3,14 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [unreleased]
+## [0.6.0] - 2017-08-18
 ### Changed
 - pep 263 make shebang virtualenv aware #36
 - edit schema's more inline with json_schema #35
 - simplify semver to final/dev #37
 
 ### Added
+- anonymization features #59
 - test metadata in circle-ci #25
 - pyup.ip added #31
 - add strict flag #41

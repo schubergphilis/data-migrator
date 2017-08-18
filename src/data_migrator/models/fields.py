@@ -70,6 +70,8 @@ class BaseField(object):
             values for this field. The manager can raise exceptions if
             uniqueness is violated. Note that it is up to the manager to either
             fail or drop the record if the exception is raised.
+        anonymizer: Add an additional function that will be called at emit to
+            anonymize the data
         validate_output: A pre-emit validator used to scan the bare output and
             raise exceptions if output is not as expected.
         creation_order: An automatically generated attribute used to determine
@@ -83,6 +85,7 @@ class BaseField(object):
                  default=None, nullable="NULL",
                  key=False, required=False,
                  replacement=None, parse=None, validate=None,
+                 anonymize=None,
                  max_length=None, unique=False,
                  validate_output=None):
 
@@ -109,6 +112,9 @@ class BaseField(object):
         self.required = required
         # unique indicates a unique field
         self.unique = unique
+        # anonymize is the anonymization function
+        self.anonymize = anonymize() if isinstance(anonymize, type) \
+            else anonymize
         # some function to apply to value
         self.validate = validate or getattr(self.__class__, 'validate', None)
         # output validator
@@ -172,6 +178,9 @@ class BaseField(object):
         if self.validate_output and not self.validate_output(v):
             raise ValidationException("not able to validate %s=%s" % (self.name, v))
         # allow external function (e.g. SQL escape)
+        # anonymize this data
+        if self.anonymize:
+            v = self.anonymize(v)
         # check if we have a replacement string to take into account
         if self.replace:
             v = self.replace(v)
@@ -406,5 +415,8 @@ class ModelField(BaseField):
         if v is None:
             v = self.default if self.default is not None else v
         else:
-            v = model.emit(v, escaper)
+            v = model.emit(v, escaper) ###FIXME: not sure this is correct
+        # anonymize this data
+        if self.anonymize:
+            v = self.anonymize(v)
         return v
