@@ -3,6 +3,7 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+<<<<<<< HEAD
 ## [unreleased] - 2017-08-14
 ### Added
 - Kinesis extension #69
@@ -10,6 +11,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 
 ## [0.6.0] - 2017-08-18
+=======
+## [0.6.1] - 2017-08-18
+>>>>>>> Bump version: 0.6.0 → 0.6.1.dev0
 ### Changed
 - pep 263 make shebang virtualenv aware #36
 - edit schema's more inline with json_schema #35
