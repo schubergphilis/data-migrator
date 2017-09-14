@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
+import json
 
 from data_migrator.emitters.base import BaseEmitter
 from data_migrator.emitters import CSVEmitter, JSONEmitter
@@ -76,8 +77,8 @@ class JSONEmitterBase(unittest.TestCase):
     def test_emit(self):
         e = JSONEmitter(manager=EmitterHeaderModel.objects)
         o = EmitterModel.objects.all()
-        self.assertEqual(e.emit(o[0]), ['{"a": "hello", "b": "world"}'])
-        self.assertEqual(e.emit(o[1]), ['{"a": "goodbye", "b": "cruel world"}'])
+        self.assertDictEqual(json.loads(e.emit(o[0])[0]), {"a": "hello", "b": "world"})
+        self.assertDictEqual(json.loads(e.emit(o[1])[0]), {"a": "goodbye", "b": "cruel world"})
 
 
 class UpdateEmitterBase(unittest.TestCase):
