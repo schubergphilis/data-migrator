@@ -12,7 +12,8 @@ class SingerEmitter(BaseEmitter):
     '''Singer.IO emitter to output transformations into singer format
 
     Attributes:
-        extension (str): file extension for output file of this emitter
+        extension (str): file extension for output file of this emitter.
+            Defaults to .sng
     '''
     extension = '.sng'
 

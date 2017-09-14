@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-import sys
 import argparse
 
 _PARSER = None
@@ -14,8 +13,8 @@ def configure_parser(args=None, description=None):
     global _PARSER
     if not _PARSER:
         description = description or 'Basic Transformer parser'
-        args = args or sys.argv[1:]
         _PARSER = argparse.ArgumentParser(description=description)
+
     _PARSER.add_argument('-o', '--outdir', default='results',
             help='output directory')
     _PARSER.add_argument('-i', '--input', default='<stdin>',
@@ -26,4 +25,4 @@ def configure_parser(args=None, description=None):
             help='quiet mode, no output')
     _PARSER.add_argument('-p', '--rows', default=0, type=int,
             help='input rows to print')
-    return _PARSER.parse_args(args)
+    return _PARSER
