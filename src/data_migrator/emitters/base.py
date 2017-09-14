@@ -23,11 +23,11 @@ class BaseEmitter(object):
         self.extension = extension or getattr(self.__class__,
                 'extension', '.txt')
 
-    def emit(self, o):
+    def emit(self, l):
         '''output the result set of an object.
 
         Args:
-            o (Model): object to transform
+            l (Model): object to transform
         Returns:
             list: generated strings
         '''

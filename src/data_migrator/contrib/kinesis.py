@@ -6,7 +6,6 @@ import os
 import csv
 import logging
 import boto3
-import json
 import time
 
 from data_migrator import __version__
@@ -214,7 +213,7 @@ class KinesisTransformer(object):
 
     def _stream_client(self, e):
         session = boto3.Session(profile_name=self.profile_name)
-        self.client = boto3.client('kinesis')
+        self.client = session.client('kinesis')
         return self.stream_name
 
     def _filehandle(self, e):
