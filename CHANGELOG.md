@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Added
 - Kinesis extension #69
 - Added help instruction to makefile
+- Added MySQL Update Statement emitter #72
 
 
 ## [0.6.0] - 2017-08-18

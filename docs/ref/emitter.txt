@@ -24,6 +24,11 @@ JSONEmitter
 .. autoclass::  data_migrator.emitters.json.JSONEmitter
   :members:
 
+UpdateEmitter
+=============
+.. autoclass::  data_migrator.emitters.update.UpdateEmitter
+  :members:
+
 
 BaseEmitter
 ===========
