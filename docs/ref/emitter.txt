@@ -21,7 +21,7 @@ CSVEmitter
 
 JSONEmitter
 ===========
-.. autoclass::  data_migrator.emitters.json.JSONEmitter
+.. autoclass::  data_migrator.emitters.json_emit.JSONEmitter
   :members:
 
 UpdateEmitter
