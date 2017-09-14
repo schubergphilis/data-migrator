@@ -2,13 +2,16 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
+import json
 
 from data_migrator.emitters.base import BaseEmitter
-from data_migrator.emitters import MySQLEmitter, CSVEmitter
+from data_migrator.emitters import CSVEmitter, JSONEmitter
+from data_migrator.emitters import MySQLEmitter, UpdateEmitter
 from data_migrator.models import Model, StringField
+from data_migrator.exceptions import DefinitionException
 
 class EmitterModel(Model):
-    a = StringField(pos=0)
+    a = StringField(pos=0, key=True)
     b = StringField(pos=1)
 
 o1 = EmitterModel(a="hello", b="world").save()
@@ -68,6 +71,25 @@ class CSVEmitterBase(unittest.TestCase):
         o = EmitterModel.objects.all()
         self.assertEqual(e.emit(o[0]), ['"world", "hello"'])
         self.assertEqual(e.emit(o[1]), ['"cruel world", "goodbye"'])
+
+class JSONEmitterBase(unittest.TestCase):
+
+    def test_emit(self):
+        e = JSONEmitter(manager=EmitterHeaderModel.objects)
+        o = EmitterModel.objects.all()
+        self.assertDictEqual(json.loads(e.emit(o[0])[0]), {"a": "hello", "b": "world"})
+        self.assertDictEqual(json.loads(e.emit(o[1])[0]), {"a": "goodbye", "b": "cruel world"})
+
+
+class UpdateEmitterBase(unittest.TestCase):
+    def test_emit(self):
+        e = UpdateEmitter(manager=EmitterModel.objects)
+        o = EmitterModel.objects.all()
+        self.assertEqual(e.emit(o[0]), ['UPDATE `emittermodel` SET `b` = "world" WHERE `a` = "hello";'])
+        self.assertEqual(e.emit(o[1]), ['UPDATE `emittermodel` SET `b` = "cruel world" WHERE `a` = "goodbye";'])
+
+    def test_fail(self):
+        self.assertRaises(DefinitionException, UpdateEmitter, manager=EmitterHeaderModel.objects)
 
 if __name__ == '__main__':
     unittest.main()

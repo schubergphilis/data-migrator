@@ -15,6 +15,7 @@ The following classes are defined in this module:
 * :class:`~.MySQLEmitter`
 * :class:`~.CSVEmitter`
 * :class:`~.JSONEmitter`
+* :class:`~.UpdateEmitter`
 
 The basic structure for emitting is a combination between
 :class:`~.BaseManager` and :class:`~.BaseEmitter`:
@@ -34,7 +35,8 @@ The basic structure for emitting is a combination between
 """
 
 
+from .update import UpdateEmitter # noqa
 from .mysql import MySQLEmitter # noqa
 from .csv import CSVEmitter # noqa
-from .json import JSONEmitter # noqa
+from .json_emit import JSONEmitter # noqa
 from .singer import SingerEmitter # noqa

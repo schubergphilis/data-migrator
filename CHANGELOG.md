@@ -3,10 +3,11 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [unreleased] - 2017-08-14
+## [unreleased] - 2017-09-14
 ### Added
 - Kinesis extension #69
 - Added help instruction to makefile
+- Added MySQL Update Statement emitter #72
 
 
 ## [0.6.0] - 2017-08-18
