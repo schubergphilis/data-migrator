@@ -37,6 +37,7 @@ setup(
     ],
     install_requires=[
         'six',
+        'boto',
     ],
     zip_safe=True,
 )

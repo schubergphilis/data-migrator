@@ -13,7 +13,8 @@ class MySQLEmitter(BaseEmitter):
 
     Attributes:
         base_template: base template to output the object
-        extension (str): file extension for output file of this emitter
+        extension (str): file extension for output file of this emitter.
+            Defaults to .sql
     '''
     base_template = '''INSERT %sINTO `%s` (%s) VALUES (%s);'''
     extension = '.sql'

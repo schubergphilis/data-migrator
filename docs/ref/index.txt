@@ -2,8 +2,8 @@
 API Reference
 =============
 
-These pages contain the api reference of ``data-migrate`` and is mostly generated
-automatically from source. See the `tutorial </tutorial/index` for more instruction
+These pages contain the api reference of *data-migrator* and is mostly generated
+automatically from source. See the :doc:`tutorial </tutorial/index>` for more instruction
 on how to use the various parts of this library.
 
 .. toctree::

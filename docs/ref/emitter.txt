@@ -19,7 +19,13 @@ CSVEmitter
   :members:
 
 
+JSONEmitter
+===========
+.. autoclass::  data_migrator.emitters.json.JSONEmitter
+  :members:
+
+
 BaseEmitter
 ===========
 .. autoclass::  data_migrator.emitters.base.BaseEmitter
-   :members:
+   :members: __init__
