@@ -28,7 +28,9 @@ Data-migrator is a simple data-migration package for python lovers.
 
 
 Data-migrator is a declarative DSL for table driven data transformations, set up as
-an open and extensive system.
+an open and extensive system. Use this to create data transformations for
+changing databases as a result of changing code, initial loads to datalakes
+(it contains a Kinesis provider)and more.
 
 Example
 -------

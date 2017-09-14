@@ -12,6 +12,10 @@ log = default_logger()
 class JSONEmitter(BaseEmitter):
     '''JSON emitter to output as JSON Messages
 
+
+    Attributes:
+        extension (str): file extension for output file of this emitter.
+            Defaults to .json
     '''
     extension = '.json'
 
