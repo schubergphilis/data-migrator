@@ -3,11 +3,12 @@ Getting Started
 
 Obviously first, install :doc:`data-migrator </install>`.
 
-Now create a new directory with your migration scripts. Your milage may very, but
-we assume you have client access to source data. Some like we discussed in the
-:doc:`example </example>`. A client like ``mysql`` spitting out csv's in some
-form and also expect you have client access to the target database. To automate
-and make it repetitive, just use ``make``. We add some Makefile-foo here but do not worry.
+Next create a directory for your migration scripts. Your milage may very, but
+we assume you have client access to source data. Same like we discussed in the
+:doc:`example </example>`, we assume you have client like ``mysql`` spitting
+out CSV's in some form and also expect you have client access to the
+target database. To automate and make it repetitive, just use ``make``. We
+add some Makefile-foo here, but do not worry.
 Basically what we want to execute is something like this:
 
 .. code-block:: bash
@@ -46,14 +47,17 @@ In a more generic way and running the clients directly on the host, we will get:
   upload:
   	ssh [TARGET_HOST] "sudo mysql [TARGET_DB]" < $(OUT_DIR)/table.sql
 
-See that we use a simple query and extract the first 100 lines. The rest of the magic of the ``Makefile`` is to
-separate the extraction from the loading, and allow to easily extend the script with more tables and source.
-Note that in this case, we are defining the extract query in the makefile, and we are using sudo rights to
-extract and upload the data. You might want to have an opinion about that.
+See that we use a simple query and extract the first 100 lines. The rest of the
+magic of the ``Makefile`` is to separate the extraction from the loading, and
+allow to easily extend the script with more tables and source.
+Note that in this case, we are defining the extract query in the makefile, and
+we are using sudo rights to extract and upload the data. You might want to have
+an opinion about that.
 
-We now have the ground work for extracting a table, transforming it and loading it. Next step is to build the filter
-and transform the data into something the target database can accept. Like in the :doc:`example </example>` we can
-build a simple transformer:
+We now have the ground work for extracting a table, transforming it and
+loading it. Next step is to build the filter and transform the data into
+something the target database can accept. Like in the :doc:`example </example>`
+we can build a simple transformer:
 
 .. code-block:: python
 
@@ -74,11 +78,11 @@ build a simple transformer:
     # parse this field
     b    = models.StringField(pos=2, parse=parse_b, name='my_b')
 
-  class Meta:
-  table_name = 'new_table_name'
+    class Meta:
+      table_name = 'new_table_name'
 
   # django-esc like creating and saving (to a manager)
-  Result(a='my a', b='my b').save()
+  Result(a='my a', b='my b').objects.save()
 
   if __name__ == "__main__":
     transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
@@ -110,10 +114,11 @@ There you are, you have setup your first pipeline. Execute this by running:
   $ make table  # extract the data from the database, transform it
   $ make upload # load it into the database
 
-You can lookup the intermediate result by viewing the generated sql ``results/new_table_name.sql``. data-migrator does not
-focus on the database schema (yet!) so the table is expected to exist in the target system. But by default the system
-(or actually the :doc:`emitter </ref/emitter>`)
-is wiping the data, not recreating the table. If you have issues with the python libraries, run ``make install`` do
-install the library from this makefile.
+You can lookup the intermediate result by viewing the generated sql
+``results/new_table_name.sql``. data-migrator does not focus on the database
+schema (yet!) so the table is expected to exist in the target system. But by
+default the system (or actually the :doc:`emitter </ref/emitter>`)
+is wiping the data, not recreating the table. If you have issues with the
+Python libraries, run ``make install`` do install the library from this makefile.
 
 Now go ahead and add :doc:`more fields <tutorial1>`. See :doc:`fields reference </ref/fields>` for more details about the options of the fields.

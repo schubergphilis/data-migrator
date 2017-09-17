@@ -3,7 +3,7 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [unreleased] - 2017-09-14
+## [0.6.1] - 2017-09-17
 ### Added
 - Kinesis extension #69
 - Added help instruction to makefile

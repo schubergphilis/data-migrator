@@ -3,8 +3,8 @@ Validation
 
 See the :doc:`previous <tutorial1>` tutorial.
 
-Another aspect is to have some control over the data received. Out of the box *data-migrator*
-offers a wide range of facilities
+Another aspect is to have some control over the data received. Out of the
+box *data-migrator* offers a wide range of facilities
 
 None column test
 ----------------
@@ -28,8 +28,8 @@ The moment records are saved they are validated and records are dropped if b tur
 Unique columns
 --------------
 
-Another common pattern is to drop non unique values (last to be dropped), for example when scanning
-unique emailaddresses. This functionality is also out of the box:
+A common pattern is to drop non unique values (last to be dropped), for example
+when scanning unique email addresses. This functionality is also out of the box:
 
 .. code-block:: python
 
@@ -40,16 +40,17 @@ unique emailaddresses. This functionality is also out of the box:
     class Meta:
       drop_non_unique = True
 
-This is checked at the parsing of the input, before any records are written. Use ``fail_non_unique``
-if you do not want to drop, but completely fail the transformation.
+Uniqueness is checked at the parsing of the input, before any records are
+written. Use ``fail_non_unique`` if you do not want to drop, but completely
+fail the transformation.
 
 
 Complex Unique columns
 ----------------------
 
-A more complex situation when a combination of (input) columns need to be checked. Consider
-for example the de-duplication of membership records. This is a solved by using a parse function and
-a hidden column:
+A more complex situation is when a combination of (input) columns needs to be
+checked. Consider for example the de-duplication of membership records. This
+is a solved by using a parse function and a hidden column:
 
 .. code-block:: python
 
@@ -64,4 +65,5 @@ a hidden column:
     class Meta:
       drop_non_unique = True
 
-In this example key is set to check uniqueness but not output in the end result.
+In this example key is set to check uniqueness but not used as output in the
+end result.

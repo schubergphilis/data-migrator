@@ -3,11 +3,12 @@ Datalake loads and Kinesis
 
 See the :doc:`previous <tutorial4>` tutorial.
 
-Another use case is the initialization of data-lakes. In those cases, systems,
+A new use case is the initialization of data-lakes. In those cases, systems,
 applications and microservices are extended with event message emitters to be
-put on busses like Kafka and Kinesis. Sometimes one if better of to control
+put on busses like Kafka and Kinesis. Sometimes one is better of to control
 the initial load of such systems by emitting the current database as
-messages. A first use case for *data-migrator* was implemented with AWS Kinesis.
+messages. A first use case for *data-migrator* was implemented with
+AWS Kinesis.
 
 Controlling Kinesis
 -------------------

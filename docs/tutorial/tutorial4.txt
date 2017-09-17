@@ -3,7 +3,7 @@ Anonymization
 
 See the :doc:`previous <tutorial3>` tutorial.
 
-With the ongoing improving focus on privacy and GDPR becoming enforceable,
+With the ongoing  focus on privacy and GDPR becoming enforceable,
 more emphasis will be put on anonymization of data. For this *data-migrator*
 is also quite useful.
 
@@ -22,14 +22,14 @@ Anonymization is just a simple as adding a definition to a field:
     a  = models.StringField(pos=1, anonymize=SimpleStringAnonymizor)
     b  = models.StringField(pos=2, nullable=None)
 
-It does not get more complex than this, the string is replaced by a garbled
-string with the same length
+It does not get more complex than this. The string is replaced by a garbled
+string with the same length.
 
 Option Anonymization
 --------------------
 
 Lets now assume you have some field that denotes gender and you want to garble
-it too, but also want to be true to some distribution.
+it too, but also want to be true to some distribution:
 
 .. code-block:: python
 
@@ -37,11 +37,11 @@ it too, but also want to be true to some distribution.
   from data_migrator.anonymizors import ChoiceAnonymizor
 
   class Result(models.Model):
-    id = models.IntField(pos=0) # keep id
+    id     = models.IntField(pos=0) # keep id
     gender = models.StringField(pos=1, anonymize=ChoiceAnonymizor(['M','F',None], weights=[0.2,0.5,0.3]))
-    b  = models.StringField(pos=2, nullable=None)
+    b      = models.StringField(pos=2, nullable=None)
 
-Now the field wil be filled with a random choice according to a specific
+Now the field will be filled with a random choice according to a specific
 distribution.
 
 For more details see the :mod:`data_migrator.anonymizors`

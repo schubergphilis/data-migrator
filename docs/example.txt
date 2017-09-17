@@ -1,21 +1,26 @@
 Example
 =======
 
-Core of *data-migrator* is the unix pipe and filter paradigm to build data transformers. Source data
-is read from a database or some other source. It is piped to a filter written with *data-migrator*,
-which emits for example SQL insert statements. These can be piped to a target client.
+Core of *data-migrator* is the unix pipe and filter paradigm to build data
+transformers. Source data is read from a database or some other source. It is
+piped to a filter written with *data-migrator*, which emits for example SQL
+INSERT statements. These can be piped to a target client and thereby loaded
+into the target database.
 
-Consider the most basic datapump in mysql, which is direct pipe between source and target database:
+Consider the most basic datapump in mysql, which is direct pipe between source
+and target database:
 
 .. code-block:: bash
 
   $ mysqldump -u [uname] -p[pass] source_db table  | mysql target_db
 
-In this example ``mysqldump`` will export the table as SQL statements and the new database will process
-them. Now if you want to do something extra and repeatable with respect to the data, you could
-use all kinds of unix filtering with sed, awk, or another favorite poison. It is not very hard to
-imagine what Pythonista's would do especially if extra transformations or simplifications are needed.
-The basic packages are quite expressive and one would easily setup something like:
+In this example ``mysqldump`` will export the table as SQL statements and the
+new database will process them. Now if you want to do something extra and
+repeatable with respect to the data, you could use all kinds of unix filtering
+with sed, awk, or your favorite scripting. It is not very hard to imagine what
+Pythonista's would do especially if extra transformations or simplifications
+are needed. The basic packages are quite expressive and one would easily setup
+something like:
 
 .. code-block:: bash
 
@@ -33,10 +38,12 @@ With `my_filter.py` a basic implementation of `csv`_:
     print 'INSERT INTO `table` (a,b) VALUES ("%(a)s", %(b)s)' % row
 
 
-To see the options for manipulation is left as an exercise to the reader, but do accept that
-as soon things become just a little more complex (think: splitting in two tables, column
-reverses, renaming of columns, mixing, joining, filtering, transforming), more declarative support
-is helpful. That is why we came up with *data-migrator*. One could simply replace this with:
+To see the options for manipulation is left as an exercise to the reader, but
+do accept that as soon things become just a little more complex (think:
+splitting in two tables, column reverses, renaming of columns, mixing, joining,
+filtering, transforming), a more declarative support is helpful. That is why
+we came up with *data-migrator*. One could simply replace the transformation
+with:
 
 .. code-block:: python
 
@@ -57,11 +64,11 @@ is helpful. That is why we came up with *data-migrator*. One could simply replac
     # parse this field
     b    = models.StringField(pos=2, parse=parse_b, name='my_b')
 
-  class Meta:
-    table_name = 'new_table_name'
+    class Meta:
+      table_name = 'new_table_name'
 
-  # django-esc like creating and saving (to a manager)
-  Result(a='my a', b='my b').save()
+  # django-esc like creating and saving of additional records (to a manager)
+  Result(a='my a', b='my b').object.save()
 
   if __name__ == "__main__":
     transform.Transformer(models=[Result], emitter=MySQLEmitter).process()
@@ -69,7 +76,8 @@ is helpful. That is why we came up with *data-migrator*. One could simply replac
     assert(len(Result.objects) > 1)
 
 
-And have a nice self explaining transformer which will generate something like:
+Hereby write a nice self explaining transformer, which will generate something
+like:
 
 .. code-block:: sql
 
@@ -84,6 +92,7 @@ And have a nice self explaining transformer which will generate something like:
   INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (0, "ac7100b9-c9ad-4069-8ca5-8db1ebd36fa3", "MY A", "my b");
   INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (1, "38211712-0eb2-4433-b28f-e3fe33492e7a", "NO_NULL", "some value");
   INSERT INTO `new_table_name` (`id`, `uuid`, `a`, `my_b`) VALUES (2, "a3478903-aed9-462c-8f47-7a89013bc6ea", "CHOPP", "transformed_B");
+  ...
 
 If you can see the value of this package, continue with the :doc:`installation </install>` of *data-migrator*.
 After which there are some more pages in the :doc:`Tutorial </tutorial/tutorial0>` for you to get a grasp of this library.
