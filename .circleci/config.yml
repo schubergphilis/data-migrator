@@ -12,16 +12,16 @@ jobs:
               key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
           - run:
               command: |
-                python3 -m venv venv
-                . venv/bin/activate
+                python3 -m venv venv36
+                . venv36/bin/activate
                 pip install -r py.requirements/build.txt
           - save_cache:
               key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
               paths:
-                - "venv"
+                - "venv36"
           - run:
               command: |
-                . venv/bin/activate
+                . venv36/bin/activate
                 pip install -e .
                 py.test --junit-xml=reports/unittests.xml
           - store_artifacts:
@@ -41,16 +41,16 @@ jobs:
               key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
           - run:
               command: |
-                python -m venv venv
-                . venv/bin/activate
+                virtualenv venv27
+                . venv27/bin/activate
                 pip install -r py.requirements/build.txt
           - save_cache:
               key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
               paths:
-                - "venv"
+                - "venv27"
           - run:
               command: |
-                . venv/bin/activate
+                . venv27/bin/activate
                 pip install -e .
                 py.test --junit-xml=reports/unittests.xml
           - store_artifacts:
