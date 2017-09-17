@@ -1,4 +1,5 @@
-version: 2
+version: 2.0
+
 jobs:
   build_36:
     docker:
@@ -58,9 +59,8 @@ jobs:
           - store_test_results:
               path: reports/
 
-
 workflows:
-  version 2
+  version: 2
   test_all:
     jobs:
       - build_36
