@@ -38,14 +38,14 @@ jobs:
     steps:
           - checkout
           - restore_cache:
-              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
           - run:
               command: |
                 virtualenv venv27
                 . venv27/bin/activate
                 pip install -r py.requirements/build.txt
           - save_cache:
-              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
               paths:
                 - "venv27"
           - run:
@@ -67,14 +67,14 @@ jobs:
     steps:
           - checkout
           - restore_cache:
-              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+              key: deps3-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
           - run:
               command: |
                 python3 -m venv doc36
                 . doc36/bin/activate
                 pip install -r py.requirements/docs.txt
           - save_cache:
-              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+              key: deps3-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
               paths:
                 - "doc36"
           - run:
@@ -94,3 +94,6 @@ workflows:
       - build_36
       - build_27
       - docs
+        requires:
+          - build_36
+          - build_27
