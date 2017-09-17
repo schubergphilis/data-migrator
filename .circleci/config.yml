@@ -86,7 +86,6 @@ jobs:
               path: docs/_build/html
               destination: docs
 
-
 workflows:
   version: 2
   test_all:
@@ -94,6 +93,6 @@ workflows:
       - build_36
       - build_27
       - docs
-        requires:
-          - build_36
-          - build_27
+          requires:
+            - build_36
+            - build_27
