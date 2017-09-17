@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_36:
     docker:
       - image: circleci/python:3.6.2
     environment:
@@ -25,6 +25,43 @@ jobs:
                 py.test --junit-xml=reports/unittests.xml
           - store_artifacts:
               path: reports/
-              destination: tr1
+              destination: tr36
           - store_test_results:
               path: reports/
+
+  build_27:
+    docker:
+      - image: circleci/python:2.7.13
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    steps:
+          - checkout
+          - restore_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+          - run:
+              command: |
+                python -m venv venv
+                . venv/bin/activate
+                pip install -r py.requirements/build.txt
+          - save_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              paths:
+                - "venv"
+          - run:
+              command: |
+                . venv/bin/activate
+                pip install -e .
+                py.test --junit-xml=reports/unittests.xml
+          - store_artifacts:
+              path: reports/
+              destination: tr27
+          - store_test_results:
+              path: reports/
+
+
+workflows:
+  version 2
+  test_all:
+    jobs:
+      - build_36
+      - build_27
