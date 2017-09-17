@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.2
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    steps:
+          - checkout
+          - restore_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+          - run:
+              command: |
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r py.requirements/build.txt
+          - save_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              paths:
+                - "venv"
+          - run:
+              command: |
+                . venv/bin/activate
+                py.test --junit-xml=reports/unittests.xml
+          - store_artifacts:
+              path: reports/
+              destination: tr1
+          - store_test_results:
+              path: reports/
