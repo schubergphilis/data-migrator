@@ -59,9 +59,38 @@ jobs:
           - store_test_results:
               path: reports/
 
+  docs:
+    docker:
+      - image: circleci/python:3.6.2
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    steps:
+          - checkout
+          - restore_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+          - run:
+              command: |
+                python3 -m venv doc36
+                . doc36/bin/activate
+                pip install -r py.requirements/docs.txt
+          - save_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+              paths:
+                - "doc36"
+          - run:
+              command: |
+                . doc36/bin/activate
+                pip install -e .
+                cd docs && make html
+          - store_artifacts:
+              path: docs/_build/html
+              destination: docs
+
+
 workflows:
   version: 2
   test_all:
     jobs:
       - build_36
       - build_27
+      - docs
