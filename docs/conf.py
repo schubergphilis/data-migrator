@@ -63,7 +63,7 @@ author = u'Ilja Heitlager'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = "0.6.1.dev0"
+release = "0.6.1"
 # The short X.Y version.
 version = ".".join(release.split(".")[0:2])
 
