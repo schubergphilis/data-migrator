@@ -86,13 +86,14 @@ jobs:
               path: docs/_build/html
               destination: docs
 
+
 workflows:
   version: 2
   test_all:
     jobs:
       - build_36
       - build_27
-      - docs
+      - docs:
           requires:
             - build_36
             - build_27
