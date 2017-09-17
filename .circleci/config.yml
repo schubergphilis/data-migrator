@@ -1,0 +1,96 @@
+version: 2.0
+
+jobs:
+  build_36:
+    docker:
+      - image: circleci/python:3.6.2
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    steps:
+          - checkout
+          - restore_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+          - run:
+              command: |
+                python3 -m venv venv36
+                . venv36/bin/activate
+                pip install -r py.requirements/build.txt
+          - save_cache:
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              paths:
+                - "venv36"
+          - run:
+              command: |
+                . venv36/bin/activate
+                pip install -e .
+                py.test --junit-xml=reports/unittests.xml
+          - store_artifacts:
+              path: reports/
+              destination: tr36
+          - store_test_results:
+              path: reports/
+
+  build_27:
+    docker:
+      - image: circleci/python:2.7.13
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    steps:
+          - checkout
+          - restore_cache:
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+          - run:
+              command: |
+                virtualenv venv27
+                . venv27/bin/activate
+                pip install -r py.requirements/build.txt
+          - save_cache:
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              paths:
+                - "venv27"
+          - run:
+              command: |
+                . venv27/bin/activate
+                pip install -e .
+                py.test --junit-xml=reports/unittests.xml
+          - store_artifacts:
+              path: reports/
+              destination: tr27
+          - store_test_results:
+              path: reports/
+
+  docs:
+    docker:
+      - image: circleci/python:3.6.2
+    environment:
+      TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    steps:
+          - checkout
+          - restore_cache:
+              key: deps3-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+          - run:
+              command: |
+                python3 -m venv doc36
+                . doc36/bin/activate
+                pip install -r py.requirements/docs.txt
+          - save_cache:
+              key: deps3-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+              paths:
+                - "doc36"
+          - run:
+              command: |
+                . doc36/bin/activate
+                pip install -e .
+                cd docs && make html
+          - store_artifacts:
+              path: docs/_build/html
+              destination: docs
+
+
+workflows:
+  version: 2
+  test_all:
+    jobs:
+      - build_36
+      - build_27
+      - docs
