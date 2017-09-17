@@ -5,8 +5,8 @@ See the :doc:`previous <tutorial2>` tutorial.
 
 A typical case in system evolution is the growing complexity of entities into more detailed
 records. For example a system that maintains grouping can be expanding in more interlinked
-groups in the new system. This might generate more (linked) entities. *data-migrator* is
-build for these kind of questions.
+entities in the new system. This might generate more (linked) entities. *data-migrator* is
+build for these kind of situations.
 
 One to many records
 -------------------
@@ -21,7 +21,12 @@ many, this is easily achieved by adding a dedicated manager:
 
   class ResultManager(models.Manager):
     def transform(self, row, previous, model):
-      res = [model().scan(row), model().scan(row), model().scan(row)]
+      defaults = {'c':'default value'}
+      res = [
+        model(**defaults).scan(row),
+        model(**defaults).scan(row),
+        model(**defaults).scan(row)
+      ]
       res[1].a += 'some postfix'
       res[2].a += 'alternative postfix'
       return res
@@ -30,18 +35,19 @@ many, this is easily achieved by adding a dedicated manager:
     id = models.IntField(pos=0) # keep id
     a  = models.StringField(pos=1)
     b  = models.StringField(pos=2, nullable=None)
+    c  = models.StringField()
 
     class Meta:
       manager = ResultManager
 
-This example is not really helpful, it just generates 3 records instead of one.
+This example is not really useful, it just generates 3 records instead of one.
 
 Multi models generation
 -----------------------
 
 The manager setup is one of the big reasons to use this package instead of
-simple scripts. In our model migrations we came across steps in which we had
-to generate second models (for example permissions or links between models).
+simple scripts. In our model migrations we came across, steps in which we had
+to generate secondary models (for example permissions or links between models).
 
 .. code-block:: python
 
@@ -53,7 +59,11 @@ to generate second models (for example permissions or links between models).
         'model_id': previous[0][0].a, # due to order permission will get a result
         'user': row[0]
       }
-      res = [model(right='see_result', **defaults)]
+      res = [
+        model(right='read_result', **defaults),
+        model(right='update_result', **defaults),
+        model(right='delete_result', **defaults)
+      ]
       return res
 
   class Permission(models.Model):
@@ -74,6 +84,6 @@ to generate second models (for example permissions or links between models).
   if __name__ == "__main__":
     transform.Transformer(models=[Result, Permission], emitter=MySQLEmitter).process()
 
-The order in the transformer list determine the order of object creation, but
-this is an example on how one model can be used in the generation of the
-second one.
+The order in the transformer ``models`` list is important and determines the
+order of object creation. This is an example on how one model can be used in
+the generation of the second one.

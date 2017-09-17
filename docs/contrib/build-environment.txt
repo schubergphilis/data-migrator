@@ -4,7 +4,7 @@
 Build Environment
 =================
 
-*data-migrator* uses the following tools as its build environment:
+*data-migrator* uses the following tools for its build environment:
 
 +-------------------------+-----------------------------+---------------------------------------------------------+
 | Function                |  Tool                       | Location                                                |

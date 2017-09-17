@@ -1,29 +1,30 @@
 About
 =====
 
-Data transformation is a classic problem in compute, but underestimated in
-modern software development. Everybody working with persistent data will be
-involved somehow in restructuring existing data in databases or files when
-systems and architectures evolve. A wide range of practices exist ranging from
+Data transformation is a classic problem in compute, but often underestimated
+in modern software development. Everybody working with persistent data will be
+involved somehow in restructuring existing data in databases or files, when
+systems and architectures evolve. A wide range of practices exist, ranging from
 ad-hoc scripts to sophisticated ETL processes.
-We were upgraded existing codebases at `Schuberg Philis`_, moving from a
+We were upgrading existing codebases at `Schuberg Philis`_, moving from a
 mono-lithical application to a microservice architecture. At that moment we
-found ourselves in a position to write some ad-hoc python data migration
-scripts. Table by table the transformation was done, simply by exporting
-existing in csv's and with some simple python scripts - a single read/print
-loop - generate new INSERT statements.
+found ourselves writing ad-hoc python data migration scripts.
+Table by table the transformation was done, simply by exporting existing data
+in CSV's. With some simple python scripts - a single read/print
+loop - new INSERT statements for the target database were generated.
 
-How hard can it be? Just some basic processing and statement emitting, but soon
-we found ourselves cleaning/fixing data, generating multiple records out of
-single rows. The scripts became larger, more exceptions: unreadable and hard to
-maintain. That is when we came up with the idea of applying a more declarative
-approach. Being pretty charmed by the Django model approach, we adopted the
-declarative approach. Soon after, a standardized system based on a declarative
+How hard can it be? Just some basic processing and INSERT statement emitting,
+but soon we had to cleaning/fixing data, generating multiple records out of
+single rows, combine columns, lookup data from other sources. The scripts
+became larger, more exceptions: unreadable and hard to maintain.
+That was the moment when we came up with the idea of applying a more
+declarative approach. Being pretty charmed by the Django model, we adopted
+that as a base. Soon after, a standardized system based on a declarative
 definitions originated.
 
 This package is a simple alternative to doing ad-hoc scripts. It is easy to
 learn, easy to extend and highly expressive in building somewhat more complex
-transformation. Think of for example:
+transformations. Think of for example:
 
 * renaming, reordering columns
 * changing types
@@ -46,7 +47,7 @@ know:
 * `tablib <https://github.com/kennethreitz/tablib>`_: very handy if you need to
   open various sources, a nice extension to *data-migrator*
 * `pandas <http://pandas.pydata.org/>`_: A big one, if you need more data
-  analysis and less common to datamigration, this could be your favorite
+  analysis and less of datamigration, this could be your favorite
   poison.
 * Your average bulk of SQL scripts. Still a useful tool, we love the ease of
   repetiveness using the pipes-and-filters paradigm in *data-migrator*.
