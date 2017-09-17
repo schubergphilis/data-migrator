@@ -21,6 +21,7 @@ jobs:
           - run:
               command: |
                 . venv/bin/activate
+                pip install -e .
                 py.test --junit-xml=reports/unittests.xml
           - store_artifacts:
               path: reports/
