@@ -53,7 +53,7 @@ jobs:
           - run:
               name: py.test
               command: |
-                . venv36/bin/activate
+                . venv27/bin/activate
                 pip install -e .
                 circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename| xargs -n 1 py.test --junit-xml=reports/unitests.xml $test
           - store_artifacts:
