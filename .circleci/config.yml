@@ -25,7 +25,11 @@ jobs:
                 . venv36/bin/activate
                 pip install -e .
                 py.test --junit-xml=reports/unittests.xml tests/__init__.py
-                circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename | xargs -n 1 py.test --junit-xml=reports/
+                n=0
+                for test in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename) ;do
+                  py.test --junit-xml=reports/unittest_$n.xml $test
+                  n=n+1
+                done
           - store_artifacts:
               path: reports/
               destination: tr36
