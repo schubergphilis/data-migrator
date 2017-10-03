@@ -6,6 +6,7 @@ jobs:
       - image: circleci/python:3.6.2
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    parallelism: 4
     steps:
           - checkout
           - restore_cache:
@@ -20,10 +21,13 @@ jobs:
               paths:
                 - "venv36"
           - run:
+              name: py.test
               command: |
                 . venv36/bin/activate
                 pip install -e .
-                py.test --junit-xml=reports/unittests.xml
+                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
+                  py.test --junit-xml=reports/$t.xml $t
+                done
           - store_artifacts:
               path: reports/
               destination: tr36
@@ -35,6 +39,7 @@ jobs:
       - image: circleci/python:2.7.13
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    parallelism: 4
     steps:
           - checkout
           - restore_cache:
@@ -49,10 +54,13 @@ jobs:
               paths:
                 - "venv27"
           - run:
+              name: py.test
               command: |
                 . venv27/bin/activate
                 pip install -e .
-                py.test --junit-xml=reports/unittests.xml
+                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
+                  py.test --junit-xml=reports/$t.xml $t
+                done
           - store_artifacts:
               path: reports/
               destination: tr27
