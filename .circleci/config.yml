@@ -21,6 +21,7 @@ jobs:
               paths:
                 - "venv36"
           - run:
+              name: py.test
               command: |
                 . venv36/bin/activate
                 pip install -e .
@@ -50,10 +51,11 @@ jobs:
               paths:
                 - "venv27"
           - run:
+              name: py.test
               command: |
-                . venv27/bin/activate
+                . venv36/bin/activate
                 pip install -e .
-                py.test --junit-xml=reports/unittests.xml
+                circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename| xargs -n 1 py.test --junit-xml=reports/unitests.xml $test
           - store_artifacts:
               path: reports/
               destination: tr27
