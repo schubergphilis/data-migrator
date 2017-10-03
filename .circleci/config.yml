@@ -24,7 +24,7 @@ jobs:
               command: |
                 . venv36/bin/activate
                 pip install -e .
-                circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename| xargs -n 1 py.test --junit-xml=reports/ $test
+                circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename| xargs -n 1 py.test --junit-xml=reports/unitests.xml $test
           - store_artifacts:
               path: reports/
               destination: tr36
