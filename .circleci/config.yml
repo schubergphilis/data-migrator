@@ -37,6 +37,7 @@ jobs:
       - image: circleci/python:2.7.13
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
+    parallelism: 4
     steps:
           - checkout
           - restore_cache:
