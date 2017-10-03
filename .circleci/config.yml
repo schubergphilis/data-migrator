@@ -25,7 +25,9 @@ jobs:
               command: |
                 . venv36/bin/activate
                 pip install -e .
-                circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename| xargs -n 1 py.test --junit-xml=reports/unitests.xml $test
+                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
+                  py.test --junit-xml=reports/$t.xml $t
+                done
           - store_artifacts:
               path: reports/
               destination: tr36
@@ -56,7 +58,9 @@ jobs:
               command: |
                 . venv27/bin/activate
                 pip install -e .
-                circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename| xargs -n 1 py.test --junit-xml=reports/unitests.xml $test
+                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
+                  py.test --junit-xml=reports/$t.xml $t
+                done
           - store_artifacts:
               path: reports/
               destination: tr27
