@@ -26,6 +26,9 @@ jobs:
                 pip install -e .
                 py.test --junit-xml=reports/unittests.xml
                 bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
+                coverage run -m unittest discover -s tests/
+                coverage xml
+                python-codacy-coverage -r coverage.xml
           - store_artifacts:
               path: reports/
               destination: tr36
