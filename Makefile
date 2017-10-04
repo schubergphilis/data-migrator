@@ -19,7 +19,11 @@ clean: ## Clean all build files
 version: ## Show current version
 	@python -c "import data_migrator; print(data_migrator.__version__)"
 
+<<<<<<< HEAD
 bandit: | $(REPORTS) ## Do bandit security check
+=======
+bandit: | $(REPORTS)
+>>>>>>> adding bandit path
 	@bandit --ini ./.bandit -r ./src --format json -o $(REPORTS)/bandit.json
 
 test: ## Run all tests
@@ -44,7 +48,11 @@ tox: ## Run tox
 
 coverage: | $(REPORTS) ## Check test coverage
 	coverage run -m unittest discover -s tests/
+<<<<<<< HEAD
 	coverage xml -o $(REPORTS)/coverage.xml
+=======
+	coverage xml
+>>>>>>> adding bandit path
 	python-codacy-coverage -r $(REPORTS)/coverage.xml
 
 docs: ## Run documentation
