@@ -24,19 +24,8 @@ jobs:
               command: |
                 . venv36/bin/activate
                 pip install -e .
-<<<<<<< HEAD
                 py.test --junit-xml=reports/unittests.xml
                 bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
-=======
-                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
-                  py.test --junit-xml=reports/$t.xml $t
-                done
-<<<<<<< HEAD
-                bandit --format json --ini ./.bandit -o reports/bandit.json
->>>>>>> add bandit
-=======
-                bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
->>>>>>> adding bandit path
           - store_artifacts:
               path: reports/
               destination: tr36
@@ -66,19 +55,8 @@ jobs:
               command: |
                 . venv27/bin/activate
                 pip install -e .
-<<<<<<< HEAD
                 py.test --junit-xml=reports/unittests.xml
                 bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
-=======
-                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
-                  py.test --junit-xml=reports/$t.xml $t
-                done
-<<<<<<< HEAD
-                bandit --format json --ini ./.bandit -o reports/bandit.json
->>>>>>> add bandit
-=======
-                bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
->>>>>>> adding bandit path
           - store_artifacts:
               path: reports/
               destination: tr27
