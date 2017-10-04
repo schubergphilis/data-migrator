@@ -1,4 +1,6 @@
 VIRTUALENV ?= ~/.virtualenv
+REPORTS ?= reports
+DOCS ?= docs
 
 default: clean test
 
@@ -6,19 +8,19 @@ all: $(TARGETS)
 
 clean: ## Clean all build files
 	-@echo y | pip uninstall data-migrator
-	@rm -rf docs/_build
-	@rm -rf reports
+	@rm -rf $(DOCS)/_build
+	@rm -rf $(REPORTS)
 	@find . -name *.pyc -delete
 	@rm -rf build data_migrator.egg* dist
-	-@rm -f .coverage coverage.xml
+	-@rm -f .coverage
 
 .PHONY: test dist docs version help
 
 version: ## Show current version
 	@python -c "import data_migrator; print(data_migrator.__version__)"
 
-bandit:
-	@bandit --ini ./.bandit -r ./src
+bandit: | $(REPORTS)
+	@bandit --ini ./.bandit -r ./src --format json -o $(REPORTS)/bandit.json
 
 test: ## Run all tests
 	@python -m unittest discover -s tests
@@ -43,10 +45,10 @@ tox: ## Run tox
 coverage: dev ## Check test coverage
 	coverage run -m unittest discover -s tests/
 	coverage xml
-	python-codacy-coverage -r coverage.xml
+	python-codacy-coverage -r $(REPORTS)/coverage.xml
 
 docs: ## Run documentation
-	cd docs && make html
+	cd $(DOCS) && make html
 
 virtualenv: $(VIRTUALENV)/dm/bin/activate
 	virtualenv $(VIRTUALENV)/dm
@@ -57,6 +59,8 @@ upload: ## Upload latest release to pypi
 drop:
 	bumpversion drop --commit
 
+$(REPORTS):
+		mkdir -p $@
 
 help: ## Shows help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'
