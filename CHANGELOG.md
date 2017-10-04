@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Changed
 - Update transformer with tablib.dataset #82
+- Add bandit check
 
 
 ## [0.6.2] - 2017-09-17
