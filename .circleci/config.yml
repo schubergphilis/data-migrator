@@ -22,7 +22,9 @@ jobs:
           - run:
               name: py.test
               command: |
+                echo $CODACY_PROJECT_TOKEN
                 . venv36/bin/activate
+                echo $CODACY_PROJECT_TOKEN
                 pip install -e .
                 py.test --junit-xml=reports/unittests.xml
                 bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
