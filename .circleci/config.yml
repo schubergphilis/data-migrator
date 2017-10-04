@@ -28,6 +28,7 @@ jobs:
                 for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
                   py.test --junit-xml=reports/$t.xml $t
                 done
+                bandit --format json --ini ./.bandit -o reports/bandit.json
           - store_artifacts:
               path: reports/
               destination: tr36
@@ -61,6 +62,7 @@ jobs:
                 for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
                   py.test --junit-xml=reports/$t.xml $t
                 done
+                bandit --format json --ini ./.bandit -o reports/bandit.json
           - store_artifacts:
               path: reports/
               destination: tr27
