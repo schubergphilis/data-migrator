@@ -2,7 +2,6 @@ version: 2.0
 
 jobs:
   build_36:
-    context: org-global
     docker:
       - image: circleci/python:3.6.2
     environment:
@@ -23,10 +22,7 @@ jobs:
           - run:
               name: py.test
               command: |
-                export CODACY_PROJECT_TOKEN=$CODACY_DATA_MIGRATOR
-                echo $CODACY_DATA_MIGRATOR	
                 . venv36/bin/activate
-                echo $CODACY_PROJECT_TOKEN
                 pip install -e .
                 py.test --junit-xml=reports/unittests.xml
                 bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
