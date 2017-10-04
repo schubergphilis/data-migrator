@@ -14,6 +14,6 @@ from .manager import BaseManager, SimpleManager  # noqa
 from .fields import (IntField, NullIntField, StringField, NullField,  # noqa
                      NullStringField, BooleanField, UUIDField,  # noqa
                      JSONField, MappingField, HiddenField,  # noqa
-                     DateTimeField, # noqa
+                     DateTimeField, UTCNowField, # noqa
                      ArrayField, ListField, DictField, ObjectField,  #noqa
                      ModelField)  # noqa

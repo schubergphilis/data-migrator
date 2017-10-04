@@ -236,20 +236,29 @@ class DateTimeField(BaseField):
     schema_type = 'string'
     schema_format = 'date-time'
 
-    def __init__(self, format="%Y-%m-%dT%H:%M:%SZ", **kwargs):
+    def __init__(self, f=None, **kwargs):
         """
         Args:
-            format: format of the datetime
-                Default is ``%Y-%m-%dT%H:%M:%SZ``
+            f: format of the datetime
+                Default is ``%Y-%m-%dT%H:%M:%SZ`` (RFC3999)
         """
-        self.format = format
+        self.f = f or "%Y-%m-%dT%H:%M:%SZ"
         super(DateTimeField, self).__init__(**kwargs)
 
     def emit(self, v, escaper=None):
         if v is not None and isinstance(v, datetime.datetime):
-            v = v.strftime(self.format)
+            v = v.strftime(self.f)
         return super(DateTimeField, self).emit(v, escaper)
 
+
+class UTCNowField(DateTimeField):
+    '''UTCNow generating field.
+
+    a field that generates a ``UTCNow``
+    '''
+    def _value(self, v):
+        '''override and automatically set'''
+        return datetime.datetime.utcnow()
 
 class NullIntField(BaseField):
     '''Null integer field handler.

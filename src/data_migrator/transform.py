@@ -57,6 +57,7 @@ class Transformer(object):
         self._interpret_cmdline()
         self.log.info("data_migrator pipeline starting")
         self.log.debug("version: %s", __version__)
+        self._get_header()
         self._open_input()
         self._read_input()
         self._write_output()
@@ -86,17 +87,20 @@ class Transformer(object):
             self.log.debug("reading from file: %s", self.args.input)
             self.reader = csv.reader(open(self.args.input), delimiter='\t')
 
-    def _open_input(self):
+
+    def _get_header(self):
         try:
             self.in_headers = self.reader.headers
-        except:
+        except AttributeError:
             self.in_headers = next(self.reader, [])
+
+    def _open_input(self):
         if len(self.in_headers) <= self.max_pos:
             raise DataException(
                 'Data in has %d columns, too little for max position %d',
                 len(self.in_headers), self.max_pos
             )
-        self.log.debug("datastruct has %d columns", len(self.in_headers))
+        self.log.debug("input has %d columns", len(self.in_headers))
 
     def _read_input(self):
         self.rows = 0
