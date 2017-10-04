@@ -19,7 +19,7 @@ clean: ## Clean all build files
 version: ## Show current version
 	@python -c "import data_migrator; print(data_migrator.__version__)"
 
-bandit: | $(REPORTS)
+bandit: | $(REPORTS) ## Do bandit security check
 	@bandit --ini ./.bandit -r ./src --format json -o $(REPORTS)/bandit.json
 
 test: ## Run all tests
@@ -42,9 +42,9 @@ dev_env: ## Install the dev env
 tox: ## Run tox
 	tox -e py27,py36,docs
 
-coverage: dev ## Check test coverage
+coverage: | $(REPORTS) ## Check test coverage
 	coverage run -m unittest discover -s tests/
-	coverage xml
+	coverage xml -o $(REPORTS)/coverage.xml
 	python-codacy-coverage -r $(REPORTS)/coverage.xml
 
 docs: ## Run documentation
