@@ -6,7 +6,6 @@ jobs:
       - image: circleci/python:3.6.2
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
-    parallelism: 4
     steps:
           - checkout
           - restore_cache:
@@ -25,9 +24,8 @@ jobs:
               command: |
                 . venv36/bin/activate
                 pip install -e .
-                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
-                  py.test --junit-xml=reports/$t.xml $t
-                done
+                py.test --junit-xml=reports/unittests.xml
+                bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
           - store_artifacts:
               path: reports/
               destination: tr36
@@ -36,10 +34,9 @@ jobs:
 
   build_27:
     docker:
-      - image: circleci/python:2.7.13
+      - image: circleci/python:2.7.14
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
-    parallelism: 4
     steps:
           - checkout
           - restore_cache:
@@ -58,9 +55,8 @@ jobs:
               command: |
                 . venv27/bin/activate
                 pip install -e .
-                for t in $(circleci tests glob tests/test_* | circleci tests split --split-by=timings --timings-type=filename); do
-                  py.test --junit-xml=reports/$t.xml $t
-                done
+                py.test --junit-xml=reports/unittests.xml
+                bandit --format json --ini ./.bandit -o reports/bandit.json -r ./src
           - store_artifacts:
               path: reports/
               destination: tr27

@@ -23,13 +23,15 @@ class Transformer(object):
         >>>    t.process()
 
     '''
-    def __init__(self, models=None, reader=None, argparser=None, outdir=None,
+    def __init__(self, models=None, reader=None, dataset=None,
+                 argparser=None, outdir=None,
                  emitter=MySQLEmitter):
         '''
         Args:
             models (list): list of all models to be processed in this
                 transformer
             reader: reference to and external reader if not default
+            dataset: a tablib dataset to read from
             argparse: reference to another argument parser if not
                 default_parser
             outdir: output directory for results, otherwise scan from argparser
@@ -41,6 +43,7 @@ class Transformer(object):
         self.outdir = outdir
         self.models = models or []
         self.emitter = emitter
+        self.dataset = dataset
         self.print_rows = 0
         self.argparser = argparser
         self.reader = reader
@@ -54,6 +57,7 @@ class Transformer(object):
         self._interpret_cmdline()
         self.log.info("data_migrator pipeline starting")
         self.log.debug("version: %s", __version__)
+        self._get_header()
         self._open_input()
         self._read_input()
         self._write_output()
@@ -70,7 +74,10 @@ class Transformer(object):
             self.print_rows = self.args.rows
         if self.args.quiet:
             self.log.setLevel(logging.CRITICAL)
-        if self.reader:
+        if self.dataset:
+            self.log.debug("reading from dataset")
+            self.reader = self.dataset
+        elif self.reader:
             self.log.debug("reading from external reader")
             self.reader = self.reader(self.args)
         elif self.args.input == '<stdin>':
@@ -80,14 +87,20 @@ class Transformer(object):
             self.log.debug("reading from file: %s", self.args.input)
             self.reader = csv.reader(open(self.args.input), delimiter='\t')
 
+
+    def _get_header(self):
+        try:
+            self.in_headers = self.reader.headers
+        except AttributeError:
+            self.in_headers = next(self.reader, [])
+
     def _open_input(self):
-        self.in_headers = next(self.reader, [])
         if len(self.in_headers) <= self.max_pos:
             raise DataException(
                 'Data in has %d columns, too little for max position %d',
                 len(self.in_headers), self.max_pos
             )
-        self.log.debug("csv has %d columns", len(self.in_headers))
+        self.log.debug("input has %d columns", len(self.in_headers))
 
     def _read_input(self):
         self.rows = 0

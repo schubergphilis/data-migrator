@@ -3,7 +3,16 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.6.1] - 2017-09-17
+## [Unreleased]
+### Added
+- First datetime field #71
+
+### Changed
+- Update transformer with tablib.dataset #82
+- Add bandit check
+
+
+## [0.6.2] - 2017-09-17
 ### Added
 - Kinesis extension #69
 - Added help instruction to makefile

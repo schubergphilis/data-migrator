@@ -3,6 +3,7 @@
 
 import uuid
 import json
+import datetime
 from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
@@ -205,6 +206,8 @@ class BaseField(object):
             t['key'] = True
         if self.max_length and self.schema_type == "string":
             t['maxLength'] = self.max_length
+        if hasattr(self, 'schema_format'):
+            t['format'] = self.schema_format
         return {name or self.name: t}
 
     def _value(self, v):  # pylint: disable=R0201
@@ -228,6 +231,34 @@ class IntField(BaseField):
     def _value(self, v):
         return int(v) if isstr(v) else v
 
+class DateTimeField(BaseField):
+    '''Basic datetime field handler'''
+    schema_type = 'string'
+    schema_format = 'date-time'
+
+    def __init__(self, f=None, **kwargs):
+        """
+        Args:
+            f: format of the datetime
+                Default is ``%Y-%m-%dT%H:%M:%SZ`` (RFC3999)
+        """
+        self.f = f or "%Y-%m-%dT%H:%M:%SZ"
+        super(DateTimeField, self).__init__(**kwargs)
+
+    def emit(self, v, escaper=None):
+        if v is not None and isinstance(v, datetime.datetime):
+            v = v.strftime(self.f)
+        return super(DateTimeField, self).emit(v, escaper)
+
+
+class UTCNowField(DateTimeField):
+    '''UTCNow generating field.
+
+    a field that generates a ``UTCNow``
+    '''
+    def _value(self, v):
+        '''override and automatically set'''
+        return datetime.datetime.utcnow()
 
 class NullIntField(BaseField):
     '''Null integer field handler.
