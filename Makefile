@@ -22,8 +22,11 @@ version: ## Show current version
 bandit: | $(REPORTS) ## Do bandit security check
 	@bandit --ini ./.bandit -r ./src --format json -o $(REPORTS)/bandit.json
 
-test: ## Run all tests
+test: test_circleci ## Run all tests
 	@python -m unittest discover -s tests
+
+test_circleci: ./.circleci/config.yml
+	@python -c "import yaml;yaml.load(open('./.circleci/config.yml'))" 2>/dev/null || echo "\033[0;31mERROR in circle-ci config file\033[0m"
 
 dist: ## Create a distribution
 	@python setup.py sdist --formats=gztar bdist_wheel
