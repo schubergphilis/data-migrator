@@ -41,13 +41,21 @@ class TestRead(unittest.TestCase):
 
     def test_reader_fail(self):
         o = [
-            ('bla', 'value', u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
-            ('key', 'bla', u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
-            (0, 'value', u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
-            ('key', 0, u'key,value\nhello,world\nhappy,camper\n', ',', False, DefinitionException),
-            ('key', 'value', u'key,value\nhello,world\nhello,camper\n', ',', False, DefinitionException),
-            ('key', 'value', u'key,value\nhello,world\nhello,camper\n', ',', True, NonUniqueDataException),
+            (0, 'bla', 'value', u'key,value\nhello,world\nhappy,camper\n', ',', None, False, False, False, DefinitionException),
+            (1, 'key', 'bla', u'key,value\nhello,world\nhappy,camper\n', ',', None, False, False, False, DefinitionException),
+            (2, 0, 'value', u'key,value\nhello,world\nhappy,camper\n', ',', None, False, False, False, DefinitionException),
+            (3, 'key', 0, u'key,value\nhello,world\nhappy,camper\n', ',', None, False, False, False, DefinitionException),
+            (4, 'key', 'value', u'key,value\nhello,world\nhello,camper\n', ',', 1, False, False, False, None),
+            (5, 'key', 'value', u'key,value\nhello,world\nhello,camper\n', ',', None, True, False, False, NonUniqueDataException),
+            (6, 'key', 'value', u'key;value\nhello;world\nhello;camper\n', ';', 1, False, False, False, None),
+            (7, 'key', 'value', u'key;value\nhello;world\nhello;camper\n', ';', 1, False, False, True, None),
+            (8, 'key', 'value', u'key;value\nhallo;world\nhello;camper\n', ';', 2, False, False, True, None),
         ]
-        for k,v,f,d,u,exc in o:
-            f = StringIO(f)
-            self.assertRaises(exc, read_map_from_csv, key=k, value=v, f=f, delimiter=d, unique=u)
+        for row, key, value, data, delim,size,u,first,as_list, exc in o:
+            f = StringIO(data)
+            if exc:
+                with self.assertRaises(exc) as err:
+                    read_map_from_csv(key=key, value=value, f=f, delimiter=delim, unique=u, first=first)
+                    self.assertEqual(exc, err, "%d failed" % row)
+            else:
+                self.assertEqual(len(read_map_from_csv(key=key, value=value, f=f, delimiter=delim, unique=u, first=first, as_list=as_list)), size, "%d failed" % row)
