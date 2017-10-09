@@ -9,10 +9,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Changed
 - Update transformer with tablib.dataset #82
-- Add bandit check
+- Add [bandit](https://pypi.python.org/pypi/bandit) check to pipeline #87
+- update MappingField to allow first/last overwrite #86
 
 
-## [0.6.2] - 2017-09-17
+## [0.6.1] - 2017-09-17
 ### Added
 - Kinesis extension #69
 - Added help instruction to makefile

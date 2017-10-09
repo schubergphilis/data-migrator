@@ -9,7 +9,8 @@ from data_migrator.utils import isstr
 
 
 def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
-                      as_list=False, unique=False):
+                      as_list=False,
+                      first=True, unique=False):
     '''Generates a map from a csv and adds some validation and list parsing. A
     function that returns a map for MappingField to use as input in its
     MappingField.data_map.
@@ -31,6 +32,8 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
             ordinal position is expected (default second)
         as_list (boolean): If ``True``, *data-migrator* will treat add all
             values for ``key`` as a list. Default is ``False``.
+        first (boolean): If ``True``, *data-migrator* will keep first if non
+            unique values for ``key``. Default is ``True``.
         unique (boolean): If ``True``, *data-migrator* will treat add all non
             unique values for ``key`` as a violation and raise a
             :exc:`~.NonUniqueDataException`. Default is ``False``.
@@ -80,8 +83,8 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
                     'line %d - unique constraint failed: %s' % (i, l[ki]))
             elif as_list:
                 data_map[l[ki]] += v
-            else:
-                raise DefinitionException('line %d - unique contraint failed, expecting as_list for %s:%s' % (i, l[ki], data_map[l[ki]]))
+            elif not first:
+                data_map[l[ki]] = v
         else:
             data_map[l[ki]] = v
     if f != sys.stdin:

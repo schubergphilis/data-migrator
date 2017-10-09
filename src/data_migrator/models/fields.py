@@ -17,7 +17,7 @@ def new_exception(field, exc_class, msg, *args):
 
 
 def _replace(format_str, x):
-    return format_str.format(x)
+    return format_str.format(*x)
 
 
 class BaseField(object):
@@ -184,6 +184,8 @@ class BaseField(object):
             v = self.anonymize(v)
         # check if we have a replacement string to take into account
         if self.replace:
+            if not isinstance(v, tuple):
+                v = (v,)
             v = self.replace(v)
         elif escaper:
             v = escaper(v)

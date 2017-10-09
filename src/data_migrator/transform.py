@@ -118,12 +118,16 @@ class Transformer(object):
             self.log.debug("printing first %d rows of input", self.print_rows)
         for row in self.reader:
             if self.print_rows > 0:
-                self.log.debug("%d: %s", self.print_rows, ",".join(row))
+                self.log.debug("%d: %s", self.print_rows, row)
                 self.print_rows -= 1
             self.rows += 1
             res = []
             for o in self.models:
-                res.append(o.objects.scan_row(row=row, previous=res))
+                try:
+                    scanned = o.objects.scan_row(row=row, previous=res)
+                    res.append(scanned)
+                except DataException:
+                    self.log.warning("Error in data: %s", row)
         self.log.debug("headers of input: %s", ",".join(self.in_headers))
 
     def _write_output(self):
