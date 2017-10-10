@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ## [0.6.2]
 ### Added
 - First datetime field #71
+- Simple csv to model reader #91
 
 ### Changed
 - Update transformer with tablib.dataset #82
