@@ -38,6 +38,7 @@ setup(
     install_requires=[
         'six',
         'boto3',
+        "python-dateutil",
     ],
     zip_safe=True,
 )

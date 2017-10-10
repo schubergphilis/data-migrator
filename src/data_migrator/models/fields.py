@@ -4,6 +4,7 @@
 import uuid
 import json
 import datetime
+import dateutil
 from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
@@ -244,12 +245,20 @@ class DateTimeField(BaseField):
             f: format of the datetime
                 Default is ``%Y-%m-%dT%H:%M:%SZ`` (RFC3999)
         """
-        self.f = f or "%Y-%m-%dT%H:%M:%SZ"
+        self.format = f or getattr(self.__class__, 'format', "%Y-%m-%dT%H:%M:%SZ")
         super(DateTimeField, self).__init__(**kwargs)
+
+    def _value(self, v):
+        if isstr(v):
+            if v == "":
+                return None
+            else:
+                return dateutil.parser.parse(v)
+        return v
 
     def emit(self, v, escaper=None):
         if v is not None and isinstance(v, datetime.datetime):
-            v = v.strftime(self.f)
+            v = v.strftime(self.format)
         return super(DateTimeField, self).emit(v, escaper)
 
 
@@ -280,7 +289,7 @@ class StringField(BaseField):
     schema_type = 'string'
 
     def _value(self, v):
-        return v.strip() if isinstance(v, str) else v
+        return v.strip() if isstr(v) else v
 
 
 class NullStringField(BaseField):
@@ -292,7 +301,7 @@ class NullStringField(BaseField):
     schema_type = 'string'
 
     def _value(self, v):
-        return v.strip() if isinstance(v, str) else v
+        return v.strip() if isstr(v) else v
 
 
 class BooleanField(BaseField):
