@@ -34,13 +34,10 @@ dist: ## Create a distribution
 dev: ## Install this package for development
 	@pip install -e .
 
-dev_requirements: ## Install dev environment requirements
-	@pip install -r py.requirements/build.txt
-
 dev_env: ## Install the dev env
 	@pip install -r py.requirements/docs.txt
-	@pip install -r py.requirements/build.txt
 	@pip install -r py.requirements/environment.txt
+	@pip install -r py.requirements/runtime.txt
 
 tox: ## Run tox
 	tox -e py27,py36,docs

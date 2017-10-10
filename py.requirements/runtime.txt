@@ -1,14 +1,8 @@
 # ============================================================================
-# DATA-MIGRATOR: PYTHON PACKAGE REQUIREMENTS: For build
+# DATA-MIGRATOR: PYTHON PACKAGE REQUIREMENTS: For runtime
 # ============================================================================
 # REQUIRES: pip >= 6.0
 
 six==1.11.0
 boto3==1.4.7
-
-coverage==4.4.1
-codacy-coverage==1.3.7
-tox==2.9.1
-pytest==3.2.3
-flake8==3.4.1
-bandit==1.4.0
+python-dateutil==2.6.0

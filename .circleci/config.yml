@@ -9,14 +9,15 @@ jobs:
     steps:
           - checkout
           - restore_cache:
-              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/runtime.txt" }}
           - run:
               command: |
                 python3 -m venv venv36
                 . venv36/bin/activate
-                pip install -r py.requirements/build.txt
+                pip install -r py.requirements/environment.txt
+                pip install -r py.requirements/runtime.txt
           - save_cache:
-              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              key: deps1-{{ .Branch }}-{{ checksum "py.requirements/runtime.txt" }}
               paths:
                 - "venv36"
           - run:
@@ -40,14 +41,15 @@ jobs:
     steps:
           - checkout
           - restore_cache:
-              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/runtime.txt" }}
           - run:
               command: |
                 virtualenv venv27
                 . venv27/bin/activate
-                pip install -r py.requirements/build.txt
+                pip install -r py.requirements/environment.txt
+                pip install -r py.requirements/runtime.txt
           - save_cache:
-              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/build.txt" }}
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/runtime.txt" }}
               paths:
                 - "venv27"
           - run:

@@ -91,3 +91,35 @@ def read_map_from_csv(key=0, value=1, f=None, delimiter="\t", header=True,
         f.close()
 
     return data_map
+
+
+def read_model_from_csv(model, f=None, delimiter="\t", header=True):
+    '''Reads a model from a csv.
+
+        >>> from data_migrator.contrib.read import read_model_from_csv
+        >>> read_map_from_csv(model=model.TestModel, f=open('table.csv'),
+                              delimiter=';'),
+        >>> len(model.TestModel)
+        10
+
+    Note that by default it is expected to have headers in the csv.
+
+    Args:
+        model: reference to Model to read
+        f: Filehandle to read the csv from into the map
+        delimiter: Option to select another delimiter, other than `\\\\t`
+        header (boolean): If ``True``, *data-migrator* will treat row as a
+            header column. Default is ``True``
+
+    Returns:
+        None, but Model.objects will contain the read records
+
+    '''
+    if not f:
+        f = sys.stdin
+    r = csv.reader(f, delimiter=delimiter)
+
+    if header:
+        next(r, None)
+    for row in r:
+        model.objects.scan_row(row=row)
