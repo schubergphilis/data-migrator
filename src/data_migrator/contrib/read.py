@@ -120,6 +120,6 @@ def read_model_from_csv(model, f=None, delimiter="\t", header=True):
     r = csv.reader(f, delimiter=delimiter)
 
     if header:
-        h = next(r, None)
+        next(r, None)
     for row in r:
         model.objects.scan_row(row=row)
