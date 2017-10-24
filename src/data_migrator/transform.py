@@ -131,7 +131,7 @@ class Transformer(object):
                         self.critical("Error in data[%d]: %s", self.rows, row)
                         sys.exit(1)
                     self.log.warning("Error in data[%d]: %s", self.rows, row)
-                except:
+                except: #pylint: disable=W0702
                     self.log.critical("Uncaught exception in data: %s", row)
                     sys.exit(1)
         self.log.debug("headers of input: %s", ",".join(self.in_headers))

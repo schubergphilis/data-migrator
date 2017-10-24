@@ -59,7 +59,7 @@ class BaseEmitter(object):
         '''
         raise NotImplementedError
 
-    def postamble(self):
+    def postamble(self):  #pylint disable=no-self-use
         '''generate a postamble for the file to emit.
 
         Returns:

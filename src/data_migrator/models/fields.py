@@ -191,7 +191,7 @@ class BaseField(object):
         if self.replace:
             if not isinstance(v, tuple):
                 v = (v,)
-            v = self.replace(v)
+            v = self.replace(v) # pylint: disable=not-callable
         elif escaper:
             v = escaper(v)
         return v
@@ -238,6 +238,8 @@ class IntField(BaseField):
     def _value(self, v):
         return int(v) if isstr(v) else v
 
+IntegerField = IntField
+
 class DateTimeField(BaseField):
     '''Basic datetime field handler'''
     schema_type = 'string'
@@ -256,8 +258,10 @@ class DateTimeField(BaseField):
         if isstr(v):
             if v == "":
                 return None
-            else:
-                return p.parse(v)
+            try:
+                v = p.parse(v)
+            except ValueError:
+                raise DataException("%s could not parse date %s", self.name, v)
         return v
 
     def emit(self, v, escaper=None):
