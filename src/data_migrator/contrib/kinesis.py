@@ -142,7 +142,8 @@ class KinesisTransformer(object):
             self.rows += 1
             res = []
             for o in self.models:
-                res.append(o.objects.scan_row(row=row, previous=res))
+                scanned = o.objects.scan_row(row=row, previous=res)
+                res.append(scanned)
         self.log.debug("headers of input: %s", ",".join(self.in_headers))
 
     def _write_output(self):
