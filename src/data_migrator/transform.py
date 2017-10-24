@@ -128,6 +128,9 @@ class Transformer(object):
                     res.append(scanned)
                 except DataException:
                     self.log.warning("Error in data: %s", row)
+                except:
+                    self.log.critical("Uncaught exception in data: %s", row)
+                    sys.exit(1)
         self.log.debug("headers of input: %s", ",".join(self.in_headers))
 
     def _write_output(self):

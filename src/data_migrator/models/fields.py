@@ -4,7 +4,7 @@
 import uuid
 import json
 import datetime
-import dateutil
+from dateutil import parser as p
 from functools import partial
 
 from data_migrator.exceptions import ValidationException, DataException
@@ -144,10 +144,14 @@ class BaseField(object):
         # see if we want to read a column in the row
         v = None
         if self.pos >= 0:
+            try:
+                _v = row[self.pos]
+            except:
+                raise DataException('parsing %r, row len %d, index %d not found', self.name, len(row), self.pos)
             # do null check if enabled
-            if self.nullable is not None and row[self.pos] == self.nullable:
+            if self.nullable is not None and _v == self.nullable:
                 return v
-            v = row[self.pos]
+            v = _v
             if self.validate and not self.validate(v):
                 raise ValidationException('field %r input data did not validate' % self.name)
             # apply intermediate function on output, default is stripping
@@ -253,7 +257,7 @@ class DateTimeField(BaseField):
             if v == "":
                 return None
             else:
-                return dateutil.parser.parse(v)
+                return p.parse(v)
         return v
 
     def emit(self, v, escaper=None):

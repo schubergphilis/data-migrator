@@ -3,18 +3,22 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
-## [0.6.2.dev3]
+## [0.6.2.dev4]
 ### Added
 - First datetime field #71
 - Simple csv to model reader #91
 
 ### Changed
+- Fixed issue with row parse out of bound
 - Update transformer with tablib.dataset #82
 - Add [bandit](https://pypi.python.org/pypi/bandit) check to pipeline #87
 - update MappingField to allow first/last overwrite #86
 
 
 ## [0.6.1] - 2017-09-17
+### Changed
+- Moved to CircleCI 2.0  #75
+
 ### Added
 - Kinesis extension #69
 - Added help instruction to makefile
