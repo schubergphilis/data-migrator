@@ -12,6 +12,7 @@ _options = {
     'emitter': None,
     'fail_non_unique': False,
     'fail_not_validated': False,
+    'fail_on_data_exception': True,
     'file_name': None,
     'prefix': None,
     'strict': None,
@@ -60,6 +61,9 @@ class Options(object):
 
                 Any field can have its own validator, this is a rough method to
                 prevent bad data from being transformed and loaded.
+            fail_on_data_exception (boolean): If ``True``, *data-migrator* will
+                fail as a whole if row parsing contains data issues.
+                Default is ``True``.
             file_name (string): If set, *data-migrator* will use this as
                 file_name for the emitter instead of the default filename based
                 on model_name.
