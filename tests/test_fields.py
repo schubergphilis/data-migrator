@@ -19,6 +19,10 @@ class TestFields(unittest.TestCase):
         self.assertEqual(f.emit(10), 10)
         self.assertEqual(f.json_schema(), {'f': {'type': 'integer'}})
 
+    def test_index_data_exception(self):
+        f = models.IntField(pos=2, name='f')
+        self.assertRaises(DataException, f.scan, row=["10", "20"])
+
     def test_replacement_string(self):
         f = models.StringField(replacement='hello {}', name='f')
         self.assertEqual(f.emit("world"), "hello world")
