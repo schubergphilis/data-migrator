@@ -127,7 +127,13 @@ class Transformer(object):
                     scanned = o.objects.scan_row(row=row, previous=res)
                     res.append(scanned)
                 except DataException:
-                    self.log.warning("Error in data: %s", row)
+                    if o._meta.fail_on_data_exception:
+                        self.critical("Error in data[%d]: %s", self.rows, row)
+                        sys.exit(1)
+                    self.log.warning("Error in data[%d]: %s", self.rows, row)
+                except:  #pylint: disable=W0702
+                    self.log.critical("Uncaught exception in data: %s", row)
+                    sys.exit(1)
         self.log.debug("headers of input: %s", ",".join(self.in_headers))
 
     def _write_output(self):
