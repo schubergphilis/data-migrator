@@ -3,6 +3,9 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+
+## [0.6.3.dev0]
+
 ## [0.6.2] - 2017-12-16
 ### Added
 - First datetime field #71
