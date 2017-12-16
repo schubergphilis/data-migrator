@@ -3,10 +3,14 @@ This is a simple data-migration package for python lovers. It is declarative lan
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
+<<<<<<< HEAD
 
 ## [0.6.3.dev0]
 
 ## [0.6.2] - 2017-12-16
+=======
+## [0.6.2]
+>>>>>>> Bump version: 0.6.2.dev4 → 0.6.2
 ### Added
 - First datetime field #71
 - Simple csv to model reader #91
