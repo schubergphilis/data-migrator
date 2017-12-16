@@ -7,7 +7,7 @@ with open("README.rst", "r") as f:
 
 setup(
     name='data-migrator',
-    version="0.6.2.dev4",
+    version="0.6.2",
     description='declarative data migration and transformation package',
     long_description=long_description,
     license='MIT',
