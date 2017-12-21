@@ -64,11 +64,7 @@ author = u'Ilja Heitlager'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-<<<<<<< HEAD
 release = "0.6.3.dev0"
-=======
-release = "0.6.2"
->>>>>>> Bump version: 0.6.2.dev4 → 0.6.2
 # The short X.Y version.
 version = ".".join(release.split(".")[0:2])
 

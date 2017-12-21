@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 Data-migrator (version 0.6.3.dev0) is a simple data-migration package for python lovers.
-=======
-Data-migrator (version 0.6.2) is a simple data-migration package for python lovers.
->>>>>>> Bump version: 0.6.2.dev4 → 0.6.2
 
 .. image:: https://img.shields.io/pypi/pyversions/data-migrator.svg
     :target: https://pypi.python.org/pypi/data-migrator
