@@ -10,12 +10,11 @@ restructuring of data in a frictionless and repetitive way. Quite quickly
 ad-hoc scripts or transfer data, upgrade it in sql second is not flexible
 enough. For those cases *data-migrator* is an answer.
 
-Once you 've :doc:`installed </install>` *data-migrator*, we recommend:
+Once you have :doc:`installed </install>` *data-migrator*, we recommend:
 
   * to take a look at the :doc:`Example </example>` first
   * after that continue with the :doc:`Tutorial </tutorial/tutorial0>`
   * or read the :doc:`About </about>` if you want some more background
-
 
 Contents
 ========
@@ -39,3 +38,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+This is version |release| build on |today|
