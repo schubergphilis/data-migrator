@@ -3,7 +3,7 @@ Data-migrator (version 0.6.3.dev1) is a simple data-migration package for python
 .. image:: https://img.shields.io/pypi/pyversions/data-migrator.svg
     :target: https://pypi.python.org/pypi/data-migrator
 
-.. image:: https://circleci.com/gh/schubergphilis/data-migrator.svg?style=svg
+.. image:: https://circleci.com/gh/schubergphilis/data-migrator.svg?style=shield
     :target: https://circleci.com/gh/schubergphilis/data-migrator
 
 ----
