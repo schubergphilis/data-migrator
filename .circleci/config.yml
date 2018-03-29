@@ -67,25 +67,26 @@ jobs:
 
   docs:
     docker:
-      - image: circleci/python:3.6.2
+      - image: circleci/python:2.7.14
     environment:
       TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
     steps:
           - checkout
           - restore_cache:
-              key: deps3-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
           - run:
               command: |
-                python3 -m venv doc36
-                . doc36/bin/activate
-                pip install -r py.requirements/docs.txt
+                python -m venv doc27
+                . doc27/bin/activate
+               pip install -r py.requirements/runtime.txt
+               pip install -r py.requirements/docs.txt
           - save_cache:
-              key: deps3-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
+              key: deps2-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
               paths:
-                - "doc36"
+                - "doc27"
           - run:
               command: |
-                . doc36/bin/activate
+                . doc27/bin/activate
                 pip install -e .
                 cd docs && make html
           - store_artifacts:
