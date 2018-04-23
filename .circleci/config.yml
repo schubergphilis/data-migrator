@@ -76,7 +76,7 @@ jobs:
               key: deps2-{{ .Branch }}-{{ checksum "py.requirements/docs.txt" }}
           - run:
               command: |
-                python -m venv doc27
+                virtualenv doc27
                 . doc27/bin/activate
                 pip install -r py.requirements/runtime.txt
                 pip install -r py.requirements/docs.txt
