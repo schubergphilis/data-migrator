@@ -85,6 +85,7 @@ jobs:
               paths:
                 - "doc27"
           - run:
+              name: docs
               command: |
                 . doc27/bin/activate
                 pip install -e .
