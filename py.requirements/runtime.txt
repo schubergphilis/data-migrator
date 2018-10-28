@@ -5,4 +5,4 @@
 
 six==1.11.0
 boto3==1.7.6
-python-dateutil==2.6.1
+python-dateutil==2.7.5
