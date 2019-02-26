@@ -4,5 +4,5 @@
 # REQUIRES: pip >= 6.0
 
 six==1.12.0
-boto3==1.9.37
+boto3==1.9.103
 python-dateutil==2.8.0
